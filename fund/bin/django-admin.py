@@ -1,4 +1,4 @@
-#!/run/media/mohamed/Elements/ITI/python/Project/fund/fund/bin/python
+#!/run/media/sabreensalama/New Volume/iti 9months/python/Crowd_Funding_Webapp/fund/bin/python
 from django.core import management
 
 if __name__ == "__main__":

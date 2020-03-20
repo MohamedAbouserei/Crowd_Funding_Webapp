@@ -1,0 +1,82 @@
+{% extends "users_auth/index.html" %}
+{% block title %}Categories{% endblock %}
+{% block category %}active{% endblock %}
+{% block css %}
+<!-- Font Awesome -->
+<link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+{% endblock%}
+{% block pagetitle %}
+Categories Table
+{% endblock%}
+
+{% block body_block %}
+<div class="col-12">
+   
+
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">DataTable with default features</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <table id="example1" class="table table-striped" cellspacing="0" width="100%">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Category Name</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>1</td>
+            <td>new cat</td>
+            <td style="float: right;">
+                <span class="right badge badge-danger">
+                
+                  <i style="font-size:24px">X</i> 
+                </span>
+                <span class="right badge badge-info">
+                    <i class="fa fa-pencil-square" style="font-size:24px"></i>
+                </span>
+                
+                
+
+            </td>
+          </tr>
+         
+          </tbody>
+          <tfoot>
+          <tr>
+            <th>ID</th>
+            <th>Category Name</th>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+{% endblock %}
+{% block js %}
+<!-- DataTables -->
+<script src="/static/plugins/datatables/jquery.dataTables.js"></script>
+<script src="/static/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<!-- page script -->
+<script>
+    $(function () {
+      $("#example1").DataTable();
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+      });
+    });
+  </script>
+{% endblock %}

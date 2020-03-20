@@ -17,10 +17,31 @@ Categories Table
 
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">DataTable with default features</h3>
+        <h3 class="card-title">Categories</h3>
+        
       </div>
       <!-- /.card-header -->
+      <div class="card">
+        <div class="card-header">Add Category</div>
+        <div class="card-body">
+            <form method="POST" action="/admins/addcategory/">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Name</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" name="catName" id="catName">
+                  </div>
+                  <div class="col-md-12 text-center"> 
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 90px;">Add</button>
+                  </div>
+                 
+            </form>    
+        </div>
+    </div>
       <div class="card-body">
+
         <table id="example1" class="table table-striped" cellspacing="0" width="100%">
           <thead>
           <tr>
@@ -30,9 +51,10 @@ Categories Table
           </tr>
           </thead>
           <tbody>
+              {% for category in categories %}
           <tr>
-            <td>1</td>
-            <td>new cat</td>
+            <td>{{category.id}}</td>
+            <td>{{category.title}}</td>
             <td style="float: right;">
                 <span class="right badge badge-danger">
                 
@@ -41,11 +63,9 @@ Categories Table
                 <span class="right badge badge-info">
                     <i class="fa fa-pencil-square" style="font-size:24px"></i>
                 </span>
-                
-                
-
             </td>
           </tr>
+          {% endfor %}
          
           </tbody>
           <tfoot>

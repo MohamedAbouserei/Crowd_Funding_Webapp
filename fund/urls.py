@@ -19,7 +19,6 @@ from users_auth import urls
 from Project import urls
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('admins/', include('users_auth.urls')),
-    path('', include('Project.urls')),
-    
+    path('users_auth/', include('users_auth.urls')),
+    path('project/', include('Project.urls')),
 ]

@@ -11,7 +11,7 @@ class Categories(models.Model):
 class Projects(models.Model):
     title = models.CharField(max_length=100,unique=True)
     details = models.TextField(null=True)
-    totaltaget = models.IntegerField()
+    totaltarget = models.IntegerField()
     rate = models.FloatField(default=0.0)
     startdate = models.DateTimeField()
     enddate = models.DateTimeField()

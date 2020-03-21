@@ -1,20 +1,21 @@
 from django.db import models
-
+from users_auth.models import Users
 # Create your models here.
 
 class Categories(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100,unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
 class Projects(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100,unique=True)
     details = models.TextField(null=True)
     totaltaget = models.IntegerField()
     rate = models.FloatField(default=0.0)
     startdate = models.DateTimeField()
     enddate = models.DateTimeField()
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='users')
     cat = models.ForeignKey(Categories, on_delete=models.CASCADE, related_name='categories')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

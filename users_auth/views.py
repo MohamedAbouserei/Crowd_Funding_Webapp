@@ -1,14 +1,13 @@
 from django.shortcuts import render
 
 from Project.models import *
-
+from django.http import HttpResponse
 # Create your views here.
 def index(request):
     
     return render(request, 'users_auth/index.html')
 
 def categories(request):
-    
     categories = Categories.objects.all()
     return render(request, 'users_auth/categories.html',{'categories':categories})
 

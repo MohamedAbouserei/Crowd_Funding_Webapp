@@ -1,0 +1,61 @@
+
+   {% extends "Project/index.html" %}
+   {% block title %}Add Project{% endblock %}
+   {% block css %}<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />{% endblock %}
+   
+
+   {% block body %}
+                <div class="col-12 col-lg-5">
+                    <div class="entry-content">
+                        <h2>Get In touch with us</h2>
+
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tempus vestib ulum mauris. Lorem ipsum dolor sit amet, conse ctetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tempus vestib ulum mauris quis aliquam. Integer accu msan sodales odio, id tempus velit ullamc.</p>
+
+                        <ul class="contact-social d-flex flex-wrap align-items-center">
+                            <li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+
+                        <ul class="contact-info p-0">
+                            <li><i class="fa fa-phone"></i><span>+45 677 8993000 223</span></li>
+                            <li><i class="fa fa-envelope"></i><span>office@template.com</span></li>
+                            <li><i class="fa fa-map-marker"></i><span>Main Str. no 45-46, b3, 56832, Los Angeles, CA</span></li>
+                        </ul>
+                    </div>
+                </div><!-- .col -->
+
+                <div class="col-12 col-lg-7">
+                    <form class="contact-form">
+                        <input class="form-control" type="text" placeholder="Name" name="title">
+                        <input class="form-control" type="text" placeholder="Total Target" name="totaltarget">
+                        <input class="form-control" id="datepicker" type="text" placeholder="Start Date" name="startdate">
+                        <input class="form-control" id="datepickers" type="text" placeholder="End Date" name="enddate">
+                        <textarea class="form-control" rows="15" cols="6" placeholder="Details"></textarea>
+
+                        <span>
+                            <input class="btn gradient-bg" type="submit" value="Save Project">
+                        </span>
+                    </form><!-- .contact-form -->
+
+                </div><!-- .col -->
+         
+    {% endblock %}
+{%block js%}
+    
+    <script type="text/javascript">
+    jQuery(document).ready(function($){
+ 
+       
+            $("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
+            $("#datepickers").datepicker({ dateFormat: 'yy-mm-dd' });
+        });
+    </script>
+<script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+</script>
+
+{% endblock %}

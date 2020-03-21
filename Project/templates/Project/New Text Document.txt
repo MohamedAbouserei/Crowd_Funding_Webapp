@@ -1,0 +1,11 @@
+ if request.method =="POST":
+        form = new_users(request.POST)
+        if form.is_valid():
+            first_name=form.get['first_name']
+           
+            last_name=form.get['last_name']
+            email=form.cleaned_data['email']
+            password=form.cleaned_data['password']
+            confirm_password  = form.cleaned_data['confirm_password']
+            profile_pic  = form.cleaned_data['profile_pic']
+            phone = form.cleaned_data['phone']

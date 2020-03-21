@@ -1,0 +1,14 @@
+<!-- Default form register -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}  add team {% endblock %}
+{% block content %}
+<form class="text-center border border-light p-5" method="post" action="/users_auth/sign_up/">
+    {% csrf_token %}
+   {{ form.as_p }}
+
+    <input type="submit" value="ok">
+
+</form>
+{% endblock %}
+<!-- Default form register -->

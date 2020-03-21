@@ -17,6 +17,9 @@ Including another URLconf
 from django.urls import path, include
 from . import views
 urlpatterns = [
+	  path('home/',views.home ,name='home'),
+	  path('sign_up/', views.sign_up ,name='sing-up'),
+	  path('success/', views.thanks, name='home'),
         path('', views.index, name='index'),
         path('categories/', views.categories, name='categories'),
         path('addcategory/', views.addcategory, name='addcategory'),

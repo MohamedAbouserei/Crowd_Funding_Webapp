@@ -8,8 +8,9 @@ class ProjectForm(ModelForm):
             model = Projects         
   
         # Custom fields 
-            fields =["title", "totaltarget", "startdate", "enddate","details"] 
-  
+            fields =["cat","title", "totaltarget", "startdate", "enddate","details"] 
+    def __str__(self):
+            return self.title
     # this function will be used for the validation 
     def clean(self): 
   
@@ -20,21 +21,26 @@ class ProjectForm(ModelForm):
         title = self.cleaned_data.get('title') 
         totaltarget = self.cleaned_data.get('totaltarget')
         startdate = self.cleaned_data.get('startdate') 
-        startdate=datetime.strptime(startdate, '%m-%d-%Y').date()
-        enddate = self.cleaned_data.get('enddate')   
-        enddate=datetime.strptime(enddate, '%m-%d-%Y').date()
+        enddate = self.cleaned_data.get('enddate')
+
+            
+        
 
   
         # conditions to be met for the username length 
-        if  startdate < enddate: 
-            self._errors['title'] = self.error_class([ 
-                'date error']) 
-        if  totaltarget < 1000: 
-            self._errors['totaltarget'] = self.error_class([ 
-                'Minimum is 1000 $']) 
-        if len(title) <5: 
-            self._errors['title'] = self.error_class([ 
-                'Post Should Contain minimum 10 characters']) 
+        if startdate is not None and enddate is not None:
+            if  startdate > enddate: 
+                self._errors['startdate'] = self.error_class([ 
+                    'date error']) 
+        if totaltarget is not None:
+            if  totaltarget < 1000: 
+                self._errors['totaltarget'] = self.error_class([ 
+                    'Minimum is 1000 $']) 
+        if title is not None:
+            if len(title) <5: 
+                self._errors['title'] = self.error_class([ 
+                    'title Should Contain minimum 5 characters']) 
   
         # return any errors if found 
         return self.cleaned_data 
+    

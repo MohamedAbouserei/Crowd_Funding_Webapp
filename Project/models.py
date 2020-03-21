@@ -6,7 +6,8 @@ class Categories(models.Model):
     title = models.CharField(max_length=100,unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    def __str__(self):
+        return self.title
 
 class Projects(models.Model):
     title = models.CharField(max_length=100,unique=True)
@@ -19,6 +20,8 @@ class Projects(models.Model):
     cat = models.ForeignKey(Categories, on_delete=models.CASCADE, related_name='categories')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.title
 
 class Project_pics(models.Model):
     picture = models.ImageField()

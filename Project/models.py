@@ -44,3 +44,12 @@ class comment_reply(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class Project_User_Donation(models.Model):
+    prj = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='dproject')
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='user')
+    rate = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+

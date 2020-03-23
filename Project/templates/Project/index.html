@@ -56,17 +56,17 @@
             <div class="row">
                 <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                     <div class="site-branding d-flex align-items-center">
-                        <a class="d-block" href="index.html" rel="home"><img class="d-block" src="images/logo.png" alt="logo"></a>
+                        <a class="d-block"  rel="home"><img class="d-block" src="images/logo.png" alt="logo"></a>
                     </div><!-- .site-branding -->
 
                     <nav class="site-navigation d-flex justify-content-end align-items-center">
                         <ul class="d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
-                            <li class="current-menu-item"><a href="index.html">Home</a></li>
-                            <li><a href="about.html">About us</a></li>
-                            <li><a href="causes.html">Causes</a></li>
-                            <li><a href="portfolio.html">Gallery</a></li>
-                            <li><a href="news.html">News</a></li>
-                            <li><a href="contact.html">Contact</a></li>
+                            <li class="current-menu-item"><a>Home</a></li>
+                            <li><a >About us</a></li>
+                            <li><a >Causes</a></li>
+                            <li><a >Gallery</a></li>
+                            <li><a >News</a></li>
+                            <li><a >Contact</a></li>
                         </ul>
                     </nav><!-- .site-navigation -->
 
@@ -86,7 +86,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1>Contact</h1>
+                    <h1>{%block page_name %}{% endblock %}</h1>
                 </div><!-- .col -->
             </div><!-- .row -->
         </div><!-- .container -->
@@ -209,6 +209,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script type='text/javascript' src='/static/js/custom.js'></script>
     <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+   
+    
     {% block js %}{% endblock %}
 
 </body>

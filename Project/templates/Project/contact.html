@@ -3,7 +3,7 @@
    {% load bootstrap4 %} 
    {% bootstrap_messages %} 
    {% block title %}Add Project{% endblock %}
-
+   {%block page_name %}Add Project{% endblock %}
 
    {% block body %}
                 <div class="col-12 col-lg-5">
@@ -33,7 +33,7 @@
                     <form class="contact-form" action="addproject" method="post"><input type='hidden'/> 
                         {%csrf_token %} 
                         {% bootstrap_form form %}  
-                        
+
 
                         <span>
                             <input class="btn gradient-bg" type="submit" value="Save Project">
@@ -42,4 +42,13 @@
 
                 </div><!-- .col -->
          
+<!----------------------------------------------->
+
+                
+
+
+
     {% endblock %}
+{% block js %}
+
+{% endblock %}

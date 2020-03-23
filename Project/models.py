@@ -16,6 +16,7 @@ class Projects(models.Model):
     rate = models.FloatField(default=0.0)
     startdate = models.DateTimeField()
     enddate = models.DateTimeField()
+    tags = models.CharField(null=True,max_length=1000)
     user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='users')
     cat = models.ForeignKey(Categories, on_delete=models.CASCADE, related_name='categories')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -28,12 +29,9 @@ class Project_pics(models.Model):
     prj_pic = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='oproject')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.picture
     
-class Project_tags(models.Model):
-    title = models.CharField(max_length=100)
-    prj_tag = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='tproject')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 class Project_comments(models.Model):
     title = models.CharField(max_length=100)
@@ -53,6 +51,5 @@ class Project_User_Donation(models.Model):
     rate = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
 

@@ -59,6 +59,7 @@ src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         e.preventDefault();
         $form = $(this)
         var formData = new FormData(this);
+     
         $.ajax({
             url: window.location.pathname,
             type: 'POST',

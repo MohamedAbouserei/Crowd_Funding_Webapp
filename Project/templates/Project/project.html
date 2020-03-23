@@ -1,0 +1,105 @@
+{% extends "Project/index.html" %}
+   {% load bootstrap4 %} 
+   {% bootstrap_messages %} 
+   {% block css %}
+   <title>Example of Bootstrap 3 Carousel</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+   {% endblock %}
+   {% block title %}Add Project{% endblock %}
+   {%block page_name %}{{ project.title}}{% endblock %}
+
+   {% block body %}
+   <div id="myCarousel" class="carousel slide" data-ride="carousel" width="1000" height="1000">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        {% for i in pics %}
+        {% if forloop.counter0 == 0 %}
+        <li data-target="#myCarousel" data-slide-to="{{forloop.counter0}}" class="active"></li>
+        {% else %}
+        <li data-target="#myCarousel" data-slide-to="{{forloop.counter0}}" ></li>
+        {% endif %}
+        {% endfor %}
+    </ol>
+    
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+        {% for p in pics %}
+        {% if forloop.counter == 1 %}
+        <div class="item active">
+        {% else %}
+        <div class="item">
+        {% endif %}
+            <img src="{{ p.picture.url }}" alt="Image" width="1000" height="1000">
+      <div class="carousel-caption">
+      
+      </div>
+        </div>
+        {% endfor %}
+        </div>
+    <input type="hidden" value="{{overall}}" id="rater"/>
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+         
+       <div id="rate" name="rate"></div>
+   
+
+    {% endblock %}
+{% block js %}
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+<script>
+jQuery(document).ready(function ($) {
+  
+    $("#rate").rateYo({
+        
+        onInit: function ( rateYoInstance) {
+      console.log("RateYo initialized! with " +$('#rater').val());
+        },
+      starWidth: "40px",
+      ratedFill: "#E74C3C",
+      rating: $('#rater').val(),
+    halfStar: true,
+    onSet: function (rating, rateYoInstance) {
+ 
+ alert("Rating is set to: " + rating);
+ 
+ $.ajax({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            url: window.location.pathname,
+            type: 'POST',
+            data:rating,
+            success: function (response) {
+                $('.error').remove();
+                console.log(response)
+                if(response.error){
+                    console.log("somthig went wrong")
+                }
+                else{
+                    console.log(response.message)
+                    window.location = ""
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+}
+    });
+   
+  });
+</script>
+{% endblock %}

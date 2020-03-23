@@ -2,21 +2,23 @@ import os
 from django.shortcuts import render
 from .forms import * 
 from .models import *
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.views import View
 from django.middleware.csrf import get_token
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.files.storage import FileSystemStorage
-
+from django.db.models import *
 from ajaxuploader.views import AjaxFileUploader
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Create your views here.
 def index(request):
+    rates=Project_User_Donation.objects.values('prj_id').annotate(Sum('rate'))
+    pics=Project_pics.objects.all()
+    projects=Projects.objects.all()
     
-
-    return render(request, 'Project/test.html')
+    return render(request, 'Project/projects.html',{'projects':projects,"rates":rates,"pics":pics})
 
 def categories(request):
     
@@ -76,9 +78,23 @@ def django_image_and_file_upload_ajax(request):
         prj=Project_pics(picture=request.FILES['picture'],prj_pic=tmp)
         prj.save("projects/"+str(request.POST.get('prj_pic')))
         #form.save()
-        return JsonResponse({'error': False, 'message':str(request.FILES['picture'])})
+        return JsonResponse({'error': False, 'message':"uploaded"})
        else:
            return JsonResponse({'error': True, 'errors': form.errors})
     else:
         form = ImageFileUploadForm()
         return render(request, 'Project/test.html', {'form': form})
+def project(request,prj_id):
+    if request.method == 'POST':
+        project = Projects.objects.get(id=prj_id)
+        project.Nor=project.Nor+1
+        fullrate=project.rate+float(request.body)
+        project.rate=fullrate
+        project.save()
+        overall=project.rate/project.Nor
+        return JsonResponse({'error': False, 'message':str(overall)})
+    else:
+        project = Projects.objects.get(id=prj_id)
+        pics = project.oproject.all()
+        overall=project.rate/project.Nor
+        return render(request, 'Project/project.html', {'project': project,"pics":pics,"overall":overall})

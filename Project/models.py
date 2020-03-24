@@ -15,6 +15,7 @@ class Projects(models.Model):
     totaltarget = models.IntegerField()
     rate = models.FloatField(default=0)
     Nor=models.IntegerField(default=0)
+    reports=models.IntegerField(default=0)
     startdate = models.DateTimeField()
     enddate = models.DateTimeField()
     tags = models.CharField(null=True,max_length=1000)
@@ -35,6 +36,9 @@ class Project_pics(models.Model):
 class Project_comments(models.Model):
     title = models.CharField(max_length=100)
     prj_comment = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='cproject')
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='cuser')
+    likes=models.IntegerField(default=0)
+    dislikes=models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -50,5 +54,8 @@ class Project_User_Donation(models.Model):
     rate = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+
 
 

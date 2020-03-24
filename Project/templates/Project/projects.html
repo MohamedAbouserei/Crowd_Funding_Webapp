@@ -16,11 +16,18 @@
                 <div class="col-12 col-lg-6">
                     <div class="cause-wrap d-flex flex-wrap justify-content-between">
                         <figure class="m-0">
+                            {% if pics|length != 0 %}
+                            
                             {% for pic in pics %}
                             {% if pic.id == project.id%}
                             <img src="{{ pic.picture.url }}" alt="">
                             {% endif %}
                             {% endfor %}
+                            {% else %}
+                            <img src="/static/images/default.png" alt="">
+                            {% endif %}
+
+
                         </figure>
 
                         <div class="cause-content-wrap">
@@ -52,9 +59,11 @@
                                 </div><!-- .tipWrap -->
                                         {% for rate in rates %}
                                         {% if rate.prj_id == project.id %}
+                                        {% if project.totaltarget != 0 %}
                                         {% widthratio rate.rate__sum project.totaltarget 100 as ratio %}
                                 <span class="fill ." data-percentage={{ratio}}>
                                     </span>
+                                {% endif %}
                                 {% endif %}
                             {% endfor %}
                             </div><!-- .fund-raised-bar -->

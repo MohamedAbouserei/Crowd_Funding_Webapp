@@ -2,7 +2,7 @@ import os
 from django.shortcuts import render
 from .forms import * 
 from .models import *
-from django.http import JsonResponse,HttpResponse
+from django.http import JsonResponse,HttpResponse,HttpResponseRedirect
 from django.views import View
 from django.middleware.csrf import get_token
 from django.shortcuts import render_to_response
@@ -94,7 +94,64 @@ def project(request,prj_id):
         overall=project.rate/project.Nor
         return JsonResponse({'error': False, 'message':str(overall)})
     else:
+        rates=Project_User_Donation.objects.values('prj_id').annotate(Sum('rate')).filter(prj_id=prj_id)
         project = Projects.objects.get(id=prj_id)
         pics = project.oproject.all()
-        overall=project.rate/project.Nor
-        return render(request, 'Project/project.html', {'project': project,"pics":pics,"overall":overall})
+        comments=Project_comments.objects.filter(prj_comment=prj_id).order_by('updated_at').reverse()
+        users=Users.objects.all()
+        if(project.Nor!=0):
+            overall=project.rate/project.Nor
+        else:
+            overall=0
+        return render(request, 'Project/project.html', {'project': project,"pics":pics,"overall":overall,"rates":rates[0]['rate__sum'],"comments":comments,"users":users})
+
+def addcomment(request,prj_id):
+    if request.method == 'POST':
+        comment = Project_comments.objects.create(title=request.POST.get('title'),prj_comment=Projects.objects.get(id=prj_id),user=Users.objects.get(id=1)) 
+        comment.save()
+        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+        
+def addlike(request,prj_id):
+    if request.method == 'POST':
+        comment = Project_comments.objects.get(id=request.POST.get('comment_id'))
+        comment.likes = comment.likes + 1
+        comment.save()
+        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+
+def adddislike(request,prj_id):
+    if request.method == 'POST':
+        comment = Project_comments.objects.get(id=request.POST.get('comment_id'))
+        comment.dislikes = comment.dislikes + 1
+        comment.save()
+        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+    
+def deletecomment(request,prj_id):
+    if request.method == 'POST':
+        Project_comments.objects.get(id=request.POST.get('comment_id')).delete()
+        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+    
+
+def donate(request,prj_id):
+    if request.method == 'POST':
+        rates=Project_User_Donation.objects.values('prj_id').annotate(Sum('rate')).filter(prj_id=prj_id)
+        project=Projects.objects.get(id=prj_id)
+        if not (rates[0]['rate__sum'] + int(request.POST.get('donation_amount'))) > project.totaltarget :
+            donation = Project_User_Donation.objects.create(prj=Projects.objects.get(id=prj_id),user=Users.objects.get(id=1),rate=request.POST.get('donation_amount')) 
+            donation.save()
+        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+    
+def addreport(request,prj_id):
+    if request.method == 'POST':
+        project = Projects.objects.get(id=prj_id)
+        project.reports = project.reports + 1
+        project.save()
+        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+
+def deleteproject(request,prj_id):
+    if request.method == 'POST':
+        project=Projects.objects.get(id=prj_id)
+        ratio = float(Project_User_Donation.objects.values('prj_id').annotate(Sum('rate')).filter(prj_id=prj_id)[0]['rate__sum'])/project.totaltarget *100
+        if ratio <= 25:
+            project.delete()
+    return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+    

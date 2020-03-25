@@ -17,7 +17,6 @@ def index(request):
     rates=Project_User_Donation.objects.values('prj_id').annotate(Sum('rate'))
     pics=Project_pics.objects.all()
     projects=Projects.objects.all()
-    
     return render(request, 'Project/projects.html',{'projects':projects,"rates":rates,"pics":pics})
 
 def categories(request):
@@ -44,7 +43,7 @@ def addproject(request):
   
             # Finally write the changes into database 
             project.save()   
-  
+        
             # redirect it to some another page indicating data 
             # was inserted successfully 
             return HttpResponse("data submitted successfully") 
@@ -54,7 +53,7 @@ def addproject(request):
             # Redirect back to the same page if the data 
             # was invalid 
             categories = Categories.objects.all()    
-            return render(request, "Project/contact.html", {'form':details,'categories':categories})   
+            return render(request, "Project/add_project.html", {'form':details,'categories':categories})   
     else: 
   
         # If the request is a GET request then, 
@@ -62,7 +61,7 @@ def addproject(request):
         # render it into the page 
         form = ProjectForm(None)
         categories = Categories.objects.all()    
-        return render(request, 'Project/contact.html', {'form':form,'categories':categories}) 
+        return render(request, 'Project/add_project.html', {'form':form,'categories':categories}) 
 
 def django_image_and_file_upload_ajax(request):
     if request.method == 'POST':
@@ -83,7 +82,7 @@ def django_image_and_file_upload_ajax(request):
            return JsonResponse({'error': True, 'errors': form.errors})
     else:
         form = ImageFileUploadForm()
-        return render(request, 'Project/test.html', {'form': form})
+        return render(request, 'Project/project_images.html', {'form': form})
 def project(request,prj_id):
     if request.method == 'POST':
         project = Projects.objects.get(id=prj_id)
@@ -95,15 +94,23 @@ def project(request,prj_id):
         return JsonResponse({'error': False, 'message':str(overall)})
     else:
         rates=Project_User_Donation.objects.values('prj_id').annotate(Sum('rate')).filter(prj_id=prj_id)
-        project = Projects.objects.get(id=prj_id)
-        pics = project.oproject.all()
-        comments=Project_comments.objects.filter(prj_comment=prj_id).order_by('updated_at').reverse()
-        users=Users.objects.all()
-        if(project.Nor!=0):
-            overall=project.rate/project.Nor
+        if Projects.objects.get(id=prj_id):
+            project = Projects.objects.get(id=prj_id)
+        
+            pics = project.oproject.all()
+            comments=Project_comments.objects.filter(prj_comment=prj_id).order_by('updated_at').reverse()
+            users=Users.objects.all()
+            if(project.Nor!=0):
+                overall=project.rate/project.Nor
+            else:
+                overall=0
+            if rates :
+                return render(request, 'Project/project.html', {'project': project,"pics":pics,"overall":overall,"rates":rates[0]['rate__sum'],"comments":comments,"users":users})
+            else :
+                return render(request, 'Project/project.html', {'project': project,"pics":pics,"overall":overall,"comments":comments,"users":users})
         else:
-            overall=0
-        return render(request, 'Project/project.html', {'project': project,"pics":pics,"overall":overall,"rates":rates[0]['rate__sum'],"comments":comments,"users":users})
+                    return HttpResponseRedirect('/project/')
+
 
 def addcomment(request,prj_id):
     if request.method == 'POST':
@@ -135,7 +142,11 @@ def donate(request,prj_id):
     if request.method == 'POST':
         rates=Project_User_Donation.objects.values('prj_id').annotate(Sum('rate')).filter(prj_id=prj_id)
         project=Projects.objects.get(id=prj_id)
-        if not (rates[0]['rate__sum'] + int(request.POST.get('donation_amount'))) > project.totaltarget :
+        if rates :
+            if not (rates[0]['rate__sum'] + int(request.POST.get('donation_amount'))) > project.totaltarget :
+                donation = Project_User_Donation.objects.create(prj=Projects.objects.get(id=prj_id),user=Users.objects.get(id=1),rate=request.POST.get('donation_amount')) 
+                donation.save()
+        else:
             donation = Project_User_Donation.objects.create(prj=Projects.objects.get(id=prj_id),user=Users.objects.get(id=1),rate=request.POST.get('donation_amount')) 
             donation.save()
         return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
@@ -150,8 +161,13 @@ def addreport(request,prj_id):
 def deleteproject(request,prj_id):
     if request.method == 'POST':
         project=Projects.objects.get(id=prj_id)
-        ratio = float(Project_User_Donation.objects.values('prj_id').annotate(Sum('rate')).filter(prj_id=prj_id)[0]['rate__sum'])/project.totaltarget *100
-        if ratio <= 25:
+        rates=Project_User_Donation.objects.values('prj_id').annotate(Sum('rate')).filter(prj_id=prj_id)
+        if rates:
+            ratio = float(Project_User_Donation.objects.values('prj_id').annotate(Sum('rate')).filter(prj_id=prj_id)[0]['rate__sum'])/project.totaltarget *100
+            if ratio <= 25:
+                project.delete()
+        else: 
             project.delete()
-    return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+
     

@@ -4,7 +4,6 @@
    {% block title %}Add Project{% endblock %}
    {%block page_name %}Projects{% endblock %}
 
-
    {% block body %}
     <div class="featured-cause">
         <div class="container">
@@ -14,23 +13,9 @@
 <div class="row">
 {% endif %}
                 <div class="col-12 col-lg-6">
-                    <div class="cause-wrap d-flex flex-wrap justify-content-between">
-                        <figure class="m-0">
-                            {% if pics|length != 0 %}
-                            
-                            {% for pic in pics %}
-                            {% if pic.id == project.id%}
-                            <img src="{{ pic.picture.url }}" alt="">
-                            {% endif %}
-                            {% endfor %}
-                            {% else %}
-                            <img src="/static/images/default.png" alt="">
-                            {% endif %}
-
-
-                        </figure>
-
-                        <div class="cause-content-wrap">
+                    <div class="cause-wrap d-flex flex-wrap justify-content-between" style="width: 550px;text-align: center;">
+                   
+                        <div class="cause-content-wrap" >
                             <header class="entry-header d-flex flex-wrap align-items-center">
                                 <h3 class="entry-title w-100 m-0"><a href="#">{{project.title}}</a></h3>
 
@@ -43,39 +28,30 @@
                                 </div><!-- .cats-links -->
                             </header><!-- .entry-header -->
 
-                            <div class="entry-content">
+                            <div class="cats-links">
                                 <p class="m-0">{{ project.details }}</p>
                             </div><!-- .entry-content -->
 
-                            <div class="entry-footer mt-5">
-                                <a href="#" class="btn gradient-bg mr-2">Donate Now</a>
+                            <div class="entry-footer mt-5" >
+                                <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2" style="width: 500px;text-align: center;">Donate Now</a>
                             </div><!-- .entry-footer -->
                         </div><!-- .cause-content-wrap -->
 
                         <div class="fund-raised w-100">
-                            <div class="featured-fund-raised-bar barfiller">
-                                <div class="tipWrap">
-                                    <span class="tip"></span>
-                                </div><!-- .tipWrap -->
-                                        {% for rate in rates %}
-                                        {% if rate.prj_id == project.id %}
-                                        {% if project.totaltarget != 0 %}
-                                        {% widthratio rate.rate__sum project.totaltarget 100 as ratio %}
-                                <span class="fill ." data-percentage={{ratio}}>
-                                    </span>
-                                {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                            </div><!-- .fund-raised-bar -->
+                          <!-- .fund-raised-bar -->
 
                             <div class="fund-raised-details d-fle x flex-wrap justify-content-between align-items-center">
                                 <div class="row">
                                 <div class="fund-raised-total mt-4 col-12 col-lg-6">
+                                    
                                     {% for rate in rates %}
-                                    {% if rate.prj_id == project.id %}
+                                    {% if rate.prj_id == project.id and rate %}
                                     Raised:${{ rate.rate__sum }}
-                                {% endif %}
-                                {% endfor %}
+                                    {% endif %}
+                                    {% empty %}
+                                    Raised:$0
+                                    {% endfor %}
+                                  
                                 </div><!-- .fund-raised-total -->
 
                                 <div class="fund-raised-goal mt-4 col-12 col-lg-6" style="float: right; text-align: right;">

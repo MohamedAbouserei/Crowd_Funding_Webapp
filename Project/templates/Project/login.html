@@ -1,3 +1,5 @@
+{% load bootstrap4 %} 
+{% bootstrap_messages %} 
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <link href="/static/css/login.css" rel="stylesheet" >
 
@@ -33,13 +35,10 @@
             {% endif %}
                 <div class="control">
                     <div class="label">Email Address</div>
-                    {{ form.email }}
+                    {% bootstrap_form form %}
                 </div>
                 
-                <div class="control">
-                     <div class="label">Password</div>
-                     {{ form.password }}
-                    </div>
+                
                 <div align="center">
                      <button class="btn btn-orange"  value="Register" class="btn btn-success">LOGIN</button>
                 </div>

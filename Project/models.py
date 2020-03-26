@@ -15,7 +15,6 @@ class Projects(models.Model):
     totaltarget = models.IntegerField()
     rate = models.FloatField(default=0)
     Nor=models.IntegerField(default=0)
-    reports=models.IntegerField(default=0)
     startdate = models.DateTimeField()
     enddate = models.DateTimeField()
     tags = models.CharField(null=True,max_length=1000)
@@ -54,6 +53,25 @@ class Project_User_Donation(models.Model):
     rate = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class Project_User_Comment_Post(models.Model):
+    prj = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='sproject')
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='suser')
+    comment = models.ForeignKey(Project_comments, on_delete=models.CASCADE, related_name='scomment')
+    like = models.BooleanField(default=False)
+    dislike = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Project_User_Report(models.Model):
+    prj = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='rproject')
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='ruser')
+    reports = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+
 
 
 

@@ -117,14 +117,17 @@ def project(request,prj_id):
                     similar=Projects.objects.filter(Q(tags__contains=tags[0]) | Q(tags__contains=tags[1]))
                 else:
                     similar=Projects.objects.filter(tags__contains=tags[0])
+            likes=Project_User_Comment_Post.objects.filter(prj_id=prj_id,like=True).values('comment_id').annotate(Count('like'))
+            dislikes=Project_User_Comment_Post.objects.filter(prj_id=prj_id,dislike=True).values('comment_id').annotate(Count('dislike'))
+            reports=Project_User_Report.objects.filter(prj_id=prj_id,user_id=request.session.get('0'))            
             if(project.Nor!=0):
                 overall=project.rate/project.Nor
             else:
                 overall=0
             if rates :
-                return render(request, 'Project/project.html', {'similar':similar,'project': project,"pics":pics,"overall":overall,"rates":rates[0]['rate__sum'],"comments":comments,"users":users})
+                return render(request, 'Project/project.html', {'reports':reports,'dislikes':dislikes,'likes':likes,'similar':similar,'project': project,"pics":pics,"overall":overall,"rates":rates[0]['rate__sum'],"comments":comments,"users":users})
             else :
-                return render(request, 'Project/project.html', {'similar':similar,'project': project,"pics":pics,"overall":overall,"comments":comments,"users":users})
+                return render(request, 'Project/project.html', {'reports':reports,'dislikes':dislikes,'likes':likes,'similar':similar,'project': project,"pics":pics,"overall":overall,"comments":comments,"users":users})
         else:
                     return HttpResponseRedirect('/project/')
 
@@ -132,24 +135,32 @@ def project(request,prj_id):
 def addcomment(request,prj_id):
     if request.session.get('0',False) is False :return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
-        comment = Project_comments.objects.create(title=request.POST.get('title'),prj_comment=Projects.objects.get(id=prj_id),user=Users.objects.get(id=1)) 
+        comment = Project_comments.objects.create(title=request.POST.get('title'),prj_comment=Projects.objects.get(id=prj_id),user=Users.objects.get(id=request.session.get('0'))) 
         comment.save()
         return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def addlike(request,prj_id):
     if request.session.get('0',False) is False :return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
-        comment = Project_comments.objects.get(id=request.POST.get('comment_id'))
-        comment.likes = comment.likes + 1
-        comment.save()
+        comment,created = Project_User_Comment_Post.objects.get_or_create(comment_id=request.POST.get('comment_id'),prj_id=prj_id,user_id=request.session.get('0'))
+        if created:
+            comment.like = True
+            comment.save()
+        else:
+            comment.like = True
+            comment.save()
         return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def adddislike(request,prj_id):
     if request.session.get('0',False) is False :return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
-        comment = Project_comments.objects.get(id=request.POST.get('comment_id'))
-        comment.dislikes = comment.dislikes + 1
-        comment.save()
+        comment,created = Project_User_Comment_Post.objects.get_or_create(comment_id=request.POST.get('comment_id'),prj_id=prj_id,user_id=request.session.get('0'))
+        if created:
+            comment.dislike = True
+            comment.save()
+        else:
+            comment.dislike = True
+            comment.save()
         return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def deletecomment(request,prj_id):
@@ -176,9 +187,13 @@ def donate(request,prj_id):
 def addreport(request,prj_id):
     if request.session.get('0',False) is False :return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
-        project = Projects.objects.get(id=prj_id)
-        project.reports = project.reports + 1
-        project.save()
+        project,created = Project_User_Report.objects.get_or_create(prj_id=prj_id,user_id=request.session.get('0'))
+        if created:
+            project.reports = True
+            project.save()
+        else:
+            project.reports = True
+            project.save()
         return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def deleteproject(request,prj_id):

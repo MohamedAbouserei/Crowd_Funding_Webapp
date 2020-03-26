@@ -19,15 +19,19 @@
 
    {% block body %}
    <span style="float:left;"><a href="#" class="demo">
+       {% if person.id == project.id %}
     <form method="POST" action="/project/{{ project.id }}/deleteproject/">{% csrf_token %}
         <button  class="btn btn-danger submit">
       <span class="glyphicon glyphicon-remove" style="font-size: 50px;color: red;"></span>
       </button>
     </form>
+    {% endif %}
     </a>
     </span>
+    {% for report in reports %}
+   {% empty %}
    <form method="POST" action="/project/{{ project.id }}/report/">{% csrf_token %}<input type="hidden" name="report" id="report" value="{{ project.id }}"/><button class="submit"><i class="fa fa-flag" aria-hidden="true"></i></button></form> 
-
+    {% endfor %}
        <div class="highlighted-cause">
         <div class="container">
             <div class="row">

@@ -4,6 +4,9 @@ from datetime import datetime
 from Project.models import * 
 import re
 class ProjectForm(ModelForm): 
+    def __init__(self, *args, **kwargs):
+        self.user_id = kwargs.pop('user_id', None)
+        super().__init__(*args, **kwargs)
     class Meta: 
         # write the name of models for which the form is made 
             model = Projects         
@@ -25,6 +28,7 @@ class ProjectForm(ModelForm):
         startdate = self.cleaned_data.get('startdate') 
         enddate = self.cleaned_data.get('enddate')
         tags = self.cleaned_data.get('tags')
+        user_id = self.user_id
 
 
             
@@ -56,4 +60,4 @@ class ProjectForm(ModelForm):
 class ImageFileUploadForm(forms.ModelForm):
     class Meta:
         model = Project_pics
-        fields = ('picture',"prj_pic",) 
+        fields = ('picture',) 

@@ -36,9 +36,7 @@ def thanks(request):
     return render(request,'users_auth/success.html',{"user": user })
 
 def user_login(request):
- global user_id
- if not user_id :
-    
+    global user_id
     form=User_Login()
     if request.method == 'POST':
         form=User_Login(request.POST)
@@ -49,6 +47,7 @@ def user_login(request):
             if user:
                 #return HttpResponse("You are logged in your id is !")
                 user_id=user[0].id
+                request.session[0]=user[0].id
                 title="you are logged in using %s%s" %(user[0].first_name,user[0].last_name)
                 return HttpResponseRedirect('/project/')
             else:
@@ -56,8 +55,6 @@ def user_login(request):
 
     else:
          return render(request,"Project/login.html",{"form": form})
- else :
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 

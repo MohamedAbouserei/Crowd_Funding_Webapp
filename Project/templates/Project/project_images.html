@@ -35,6 +35,17 @@
                    <form class="contact-form"  enctype="multipart/form-data" id="id_ajax_upload_form" method="POST"
                    novalidate="">
                      {% csrf_token %}
+                     <div class="form-group">
+                        <label for="{{ form.player.id_for_label }}" class="col-sm-2 control-label">Project</label>
+                        <div class="col-sm-10">    
+                          <select id="prj_pic" name="prj_pic" class="form-control">
+                            <option value="" selected>Please select a Project</option>
+                            {% for project in projects %}
+                            <option value="{{ project.id }}">{{ project.title }}</option>
+                            {% endfor %}
+                          </select>    
+                        </div>
+                      </div>
                      {% bootstrap_form form %}
                         <span>
                             <input class="btn gradient-bg" type="submit" value="Save Project">

@@ -167,7 +167,42 @@
 
                         <input class="btn gradient-bg mt-5" type="submit" value="Donate Now">
                     </form>
+                    
                 </div>
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="donation-form-wrap">
+                    
+                    <h4 class="mt-5">Similar Projects .....</h4>
+
+                    <form class="donation-form" >
+                        {% csrf_token %}
+                        <div class="donate-amount-wrap d-flex flex-wrap align-items-center mt-5">
+                            {% for proj in similar %}
+                            {% if proj.id != project.id%}
+                            <a href="/project/{{ proj.id }}/details/">
+                            <label class="radio-label">
+                                <input type="hidden" name="donation_amount" href="/proj/{{ project.id }}/details/"  />
+                                <span class="donate-amount">{{proj.title}}</span>
+                            </label>
+                            </a>
+                        {% endif %}
+                        {% empty %}
+                        <a href="#">
+                            <label class="radio-label">
+                                <input type="button" name="donation_amount" href="#"  />
+                                <span class="donate-amount">No Project Avaliables</span>
+                            </label>
+                        </a>
+                            {% endfor %}
+                            
+                        </div>
+                    
+                </div>
+                
             </div>
         </div>
     </div>

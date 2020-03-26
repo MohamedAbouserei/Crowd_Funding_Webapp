@@ -17,6 +17,7 @@ urlpatterns = [
         path('<int:prj_id>/donate/', views.donate),
         path('<int:prj_id>/report/', views.addreport),
         path('<int:prj_id>/deleteproject/', views.deleteproject),
+        path('logout/', views.logout),
 
 
 

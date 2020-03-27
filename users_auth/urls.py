@@ -22,9 +22,13 @@ urlpatterns = [
     path('activate/<uidb64>/<token>/', views.activate_account, name='activate'),
 	path('success/', views.thanks, name='success'),
     path('login/', views.user_login, name='login'),
-    path('index/', views.index, name='index'),
     path('categories/', views.categories, name='categories'),
     path('addcategory/', views.addcategory, name='addcategory'),
+    path('<int:cat_id>/deletecategory/', views.deletecategory, name='deletecategory'),
+    path('reports/', views.reports, name='reports'),
+    path('<int:rep_id>/deletereportproject/', views.deletereportproject, name='deleteproject'),
+
+
 
 
 ]

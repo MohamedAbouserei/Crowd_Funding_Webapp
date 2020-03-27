@@ -38,7 +38,22 @@
                     </div><!-- .header-bar-email -->
 
                     <div class="header-bar-text">
-                        <p>PHONE: <span>+24 3772 120 091 / +56452 4567</span></p>
+                        <div>
+                            <ul class="nav nav-list">
+                               <form id="suggestion_form">
+                                   {% csrf_token %}
+                                  <li><input id="suggestion" name="suggestion" type="text" class="form-control search-query span10" placeholder="Find Projects" aria-label="Username" aria-describedby="basic-addon1">
+                                  </li>
+                                    <ul class="list-group" style="background-color: white; position: absolute;
+                                    width: 18em;display: none; z-index: 100;
+                                   " id="searchbox">
+                                        
+                                    </ul>
+                                </form>
+                            </ul>
+                            </div>
+                            <div id="user">
+                            </div>
                     </div><!-- .header-bar-text -->
                 </div><!-- .col -->
 
@@ -60,6 +75,7 @@
                     </div><!-- .site-branding -->
 
                     <nav class="site-navigation d-flex justify-content-end align-items-center">
+                        
                         <ul class="d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
                             <li ><a>Home</a></li>
                             <li><a href="/project/" >Projects</a></li>
@@ -88,6 +104,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
+                    
                     <h1>{%block page_name %}{% endblock %}</h1>
                 </div><!-- .col -->
             </div><!-- .row -->
@@ -211,9 +228,46 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script type='text/javascript' src='/static/js/custom.js'></script>
     <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-   
+  
     
     {% block js %}{% endblock %}
+    <script 
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+
+    <script type="text/javascript">
+        $(document).ready( function(){
+            $('#suggestion_form').keyup(function(){
+                $form = $(this)
+                var formData = new FormData(this);
+                var query = $(this).val();
+                $.ajax({
+                    url: "/project/search/",
+                    type: 'POST',
+                    data:formData ,
+                    dataType: "json",
+                    success: function(data){
+                        console.log("SUCCESS");
+                        console.log(data["message"]);
+                        $("#searchbox").css("display","block");
+                        $("#searchbox").empty()
+                        for(i in data["message"])
+                        {
+                            $('#searchbox').append('<li class="list-group-item" ><a id="'+i+'" href="/project/'+i+'/details">'+data["message"][i]+'</a></li>');
+                            $('#'+i+'').click();
+                        }
+                    },
+                    failure: function(data){
+                        console.log("FAIL");
+                        console.log(data);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
+        });
+ 
+           </script>
 </body>
 </html>

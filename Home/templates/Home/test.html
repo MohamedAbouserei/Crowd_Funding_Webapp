@@ -1,0 +1,88 @@
+
+   {% extends "Project/index.html" %}
+   {% load bootstrap4 %} 
+   {% bootstrap_messages %} 
+   {% block title %}Add Project{% endblock %}
+   {%block page_name %}Add Project picture{% endblock %}
+
+
+   {% block body %}
+                <div class="col-12 col-lg-5">
+                    <div class="entry-content">
+                        <h2>Get In touch with us</h2>
+
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tempus vestib ulum mauris. Lorem ipsum dolor sit amet, conse ctetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tempus vestib ulum mauris quis aliquam. Integer accu msan sodales odio, id tempus velit ullamc.</p>
+
+                        <ul class="contact-social d-flex flex-wrap align-items-center">
+                            <li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+
+                        <ul class="contact-info p-0">
+                            <li><i class="fa fa-phone"></i><span>+45 677 8993000 223</span></li>
+                            <li><i class="fa fa-envelope"></i><span>office@template.com</span></li>
+                            <li><i class="fa fa-map-marker"></i><span>Main Str. no 45-46, b3, 56832, Los Angeles, CA</span></li>
+                        </ul>
+                    </div>
+                </div><!-- .col -->
+
+                <div class="col-12 col-lg-7">
+                   
+                   <form class="contact-form"  enctype="multipart/form-data" id="id_ajax_upload_form" method="POST"
+                   novalidate="">
+                     {% csrf_token %}
+                     {% bootstrap_form form %}
+                        <span>
+                            <input class="btn gradient-bg" type="submit" value="Save Project">
+                        </span>
+                    </form><!-- .contact-form -->
+
+                </div><!-- .col -->
+         
+<!----------------------------------------------->
+
+                
+
+
+
+    {% endblock %}
+{% block js %}
+<script 
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    // form upload
+    $('#id_ajax_upload_form').submit(function(e){
+        e.preventDefault();
+        $form = $(this)
+        var formData = new FormData(this);
+     
+        $.ajax({
+            url: window.location.pathname,
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                $('.error').remove();
+                console.log(response)
+                if(response.error){
+                    $.each(response.errors, function(name, error){
+                        error = '<small class="text-muted error">' + error + '</small>'
+                        $form.find('[name=' + name + ']').after(error);
+                    })
+                }
+                else{
+                    alert(response.message)
+                    window.location = ""
+                }
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+    // end
+   </script>
+{% endblock %}

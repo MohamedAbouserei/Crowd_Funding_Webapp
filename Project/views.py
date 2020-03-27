@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from django.template.response import TemplateResponse
 from django.contrib.postgres.search import SearchVector
+from django.views.decorators.csrf import csrf_exempt
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Create your views here.
@@ -221,3 +222,18 @@ def person(request):
         return {'person': Users.objects.filter(id= request.session.get('0'))[0]} # of course some filter here
     except:
         return {}
+
+@csrf_exempt
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def django_search_ajax(request):
+    if request.session.get('0',False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False :return HttpResponseRedirect('/users_auth/login/') 
+    if request.method == 'POST':
+       projects=Projects.objects.all()
+       result={}
+       starts_with = request.POST.get('suggestion').strip()
+       if starts_with:
+        for project in projects:
+                if starts_with in project.tags or project.title :
+                    
+                    result.update({project.id:str(project)})
+       return JsonResponse({'error': False, 'message':result})

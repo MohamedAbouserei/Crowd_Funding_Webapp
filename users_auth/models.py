@@ -12,5 +12,7 @@ class Users(models.Model):
     picture = models.FileField(null=True,upload_to='pic_images/')
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
+    email_confirmed = models.BooleanField(default=False)
+
 
 

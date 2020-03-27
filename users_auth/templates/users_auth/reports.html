@@ -1,6 +1,6 @@
 {% extends "users_auth/index.html" %}
 {% block title %}Categories{% endblock %}
-{% block category %}active{% endblock %}
+{% block reprorts %}active{% endblock %}
 {% block css %}
 <!-- Font Awesome -->
 <link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
@@ -17,46 +17,31 @@ Categories Table
 
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">Categories</h3>
+        <h3 class="card-title">Reports</h3>
         
       </div>
-      <!-- /.card-header -->
-      <div class="card">
-        <div class="card-header">Add Category</div>
-        <div class="card-body">
-            <form method="POST" action="/users_auth/addcategory/">
-                {% csrf_token %}
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="inputGroup-sizing-default">Name</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" name="catName" id="catName">
-                  </div>
-                  <div class="col-md-12 text-center"> 
-                    
-                    <button type="submit" class="btn btn-primary" style="width: 90px;">Add</button>
-                  </div>
-                 
-            </form>    
-        </div>
-    </div>
+    
       <div class="card-body">
 
         <table id="example1" class="table table-striped" cellspacing="0" width="100%">
           <thead>
           <tr>
             <th>ID</th>
-            <th>Category Name</th>
+            <th>Report Project Name</th>
+            <th>User Name</th>
+            <th>Date Reproted</th>
             <th>Actions</th>
           </tr>
           </thead>
           <tbody>
-              {% for category in categories %}
+              {% for report in reports %}
           <tr>
-            <td>{{category.id}}</td>
-            <td>{{category.title}}</td>
+            <td>{{ report.id }}</td>
+            <td>{{ report.prj.title }}</td>
+            <td>{{ report.user.first_name }} {{ report.user.last_name }}</td>
+            <td>{{ report.updated_at }}</td>
             <td style="float: right;">
-              <form action="/users_auth/{{ category.id }}/deletecategory/" method="POST">
+                <form action="/users_auth/{{ report.prj_id }}/deletereportproject/" method="POST">
                 <button type="submit" style=" background-color: transparent;border: none;">
                     {% csrf_token %}
                 <span class="right badge badge-danger">
@@ -65,7 +50,6 @@ Categories Table
                 </span>
             </button>
             </form>
-                
             </td>
           </tr>
           {% endfor %}
@@ -74,7 +58,10 @@ Categories Table
           <tfoot>
           <tr>
             <th>ID</th>
-            <th>Category Name</th>
+            <th>Report Project Name</th>
+            <th>User Name</th>
+            <th>Date Reproted</th>
+            <th>Actions</th>
           </tr>
           </tfoot>
         </table>

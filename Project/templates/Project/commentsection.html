@@ -37,9 +37,10 @@
 
             <form method="POST" action="/project/{{ project.id }}/like/">{% csrf_token %}<input type="hidden" name="comment_id" id="comment_id" value="{{ comment.id }}"/>
               <button class="comment-like submit"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+
               {% for like in likes %}
               {% if comment.id == like.comment_id  %}            
-              {{ like.like__count }}
+              {{ like.status__count }}
               {% endif %}
               {% endfor %}
      
@@ -50,7 +51,8 @@
             <form method="POST" action="/project/{{ project.id }}/dislike/">{% csrf_token %}<input type="hidden" name="comment_id" id="comment_id" value="{{ comment.id }}"/><button class="comment-dislike submit"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> 
               {% for dislike in dislikes %}
               {% if comment.id == dislike.comment_id %}
-              {{ dislike.dislike__count }}
+              {{ dislike.status__count }}
+              
               {% endif %}
               {% endfor %}
             </button></form> 

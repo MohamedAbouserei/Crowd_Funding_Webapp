@@ -33,11 +33,9 @@ class Project_pics(models.Model):
     
 
 class Project_comments(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100,blank=False,default="----")
     prj_comment = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='cproject')
     user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='cuser')
-    likes=models.IntegerField(default=0)
-    dislikes=models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -58,8 +56,7 @@ class Project_User_Comment_Post(models.Model):
     prj = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='sproject')
     user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='suser')
     comment = models.ForeignKey(Project_comments, on_delete=models.CASCADE, related_name='scomment')
-    like = models.BooleanField(default=False)
-    dislike = models.BooleanField(default=False)
+    status = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

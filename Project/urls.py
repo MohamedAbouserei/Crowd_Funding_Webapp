@@ -10,6 +10,18 @@ urlpatterns = [
         path('addproject', views.addproject, name='addproject'),
         path('addproject/pic', views.django_image_and_file_upload_ajax),
         path('<int:prj_id>/details/', views.project),
+        path('<int:prj_id>/addcomment/', views.addcomment),
+        path('<int:prj_id>/like/', views.addlike),
+        path('<int:prj_id>/dislike/', views.adddislike),
+        path('<int:prj_id>/deletecomment/', views.deletecomment),
+        path('<int:prj_id>/donate/', views.donate),
+        path('<int:prj_id>/report/', views.addreport),
+        path('<int:prj_id>/deleteproject/', views.deleteproject),
+        path('logout/', views.logout),
+
+
+
+
 
         
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

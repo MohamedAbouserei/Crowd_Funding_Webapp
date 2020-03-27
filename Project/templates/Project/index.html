@@ -34,7 +34,7 @@
             <div class="row flex-wrap justify-content-center justify-content-lg-between align-items-lg-center">
                 <div class="col-12 col-lg-8 d-none d-md-flex flex-wrap justify-content-center justify-content-lg-start mb-3 mb-lg-0">
                     <div class="header-bar-email">
-                        MAIL: <a href="#">contact@ourcharity.com</a>
+                        Hi, <a href="#">{{ person.first_name }}</a>
                     </div><!-- .header-bar-email -->
 
                     <div class="header-bar-text">
@@ -44,7 +44,7 @@
 
                 <div class="col-12 col-lg-4 d-flex flex-wrap justify-content-center justify-content-lg-end align-items-center">
                     <div class="donate-btn">
-                        <a href="#">Donate Now</a>
+                        <a href="/project/">Donate Now</a>
                     </div><!-- .donate-btn -->
                 </div><!-- .col -->
             </div><!-- .row -->
@@ -61,12 +61,14 @@
 
                     <nav class="site-navigation d-flex justify-content-end align-items-center">
                         <ul class="d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
-                            <li class="current-menu-item"><a>Home</a></li>
-                            <li><a >About us</a></li>
-                            <li><a >Causes</a></li>
-                            <li><a >Gallery</a></li>
-                            <li><a >News</a></li>
-                            <li><a >Contact</a></li>
+                            <li ><a>Home</a></li>
+                            <li><a href="/project/" >Projects</a></li>
+                            <li><a href="/project/addproject" >Add Project</a></li>
+                            <li><a href="/project/addproject/pic" >Add Project Pictures</picture></a></li>
+                            <li><a href="#" >Profile</picture></a></li>
+                            <li><a href="/project/logout" >Logout</picture></a></li>
+
+
                         </ul>
                     </nav><!-- .site-navigation -->
 

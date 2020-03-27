@@ -1,0 +1,92 @@
+{% extends "users_auth/index.html" %}
+{% block title %}Categories{% endblock %}
+{% block reprorts %}active{% endblock %}
+{% block css %}
+<!-- Font Awesome -->
+<link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+{% endblock%}
+{% block pagetitle %}
+Categories Table
+{% endblock%}
+
+{% block body_block %}
+<div class="col-12">
+   
+
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Reports</h3>
+        
+      </div>
+    
+      <div class="card-body">
+
+        <table id="example1" class="table table-striped" cellspacing="0" width="100%">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Report Project Name</th>
+            <th>User Name</th>
+            <th>Date Reproted</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+              {% for report in reports %}
+          <tr>
+            <td>{{ report.id }}</td>
+            <td>{{ report.prj.title }}</td>
+            <td>{{ report.user.first_name }} {{ report.user.last_name }}</td>
+            <td>{{ report.updated_at }}</td>
+            <td style="float: right;">
+                <form action="/users_auth/{{ report.prj_id }}/deletereportproject/" method="POST">
+                <button type="submit" style=" background-color: transparent;border: none;">
+                    {% csrf_token %}
+                <span class="right badge badge-danger">
+                
+                  <i style="font-size:24px">X</i> 
+                </span>
+            </button>
+            </form>
+            </td>
+          </tr>
+          {% endfor %}
+         
+          </tbody>
+          <tfoot>
+          <tr>
+            <th>ID</th>
+            <th>Report Project Name</th>
+            <th>User Name</th>
+            <th>Date Reproted</th>
+            <th>Actions</th>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+{% endblock %}
+{% block js %}
+<!-- DataTables -->
+<script src="/static/plugins/datatables/jquery.dataTables.js"></script>
+<script src="/static/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<!-- page script -->
+<script>
+    $(function () {
+      $("#example1").DataTable();
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+      });
+    });
+  </script>
+{% endblock %}

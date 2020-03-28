@@ -1,6 +1,7 @@
 {% extends "Project/index.html" %}
 {% load bootstrap4 %}
 {% bootstrap_messages %}
+
 {% block css %}
 <title>Example of Bootstrap 3 Carousel</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -14,6 +15,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <style>
+    .homeDetailsFont {
+        height: 312px important;
+        float: left;
+        color: #757586;
+        font-size: 16px;
+        line-height: 1.8;
+        font-family: 'Montserrat', sans-serif;
+
+
+    }
+
     .fa {
         font-size: 25px;
     }
@@ -25,8 +37,6 @@
 {% endblock %}
 {% block title %}Home{% endblock %}
 {%block page_name %}Home{% endblock %}
-
-{% block body %}
 <span style="float:left;"><a href="#" class="demo">
         {% if person.id == project.id %}
         <form method="POST" action="/project/{{ project.id }}/deleteproject/">{% csrf_token %}
@@ -44,6 +54,10 @@
             aria-hidden="true"></i></button></form>
 {% endfor %}
   <div class="highlighted-cause">
+
+
+    {% block body %}
+
     <div class="container">
         <div class="row">
             <div class="col-12 col-lg-5 order-1 order-lg-2" height="1000">
@@ -101,15 +115,9 @@
                                                 Goal: ${{ project.totaltarget}}
                                             </div><!-- .fund-raised-goal -->
                                         </div><!-- .fund-raised-details -->
-                                        <h2 style="float: left; color: #757586;
-                                        font-size: 16px;
-                                        line-height: 1.8;
-                                        font-family: 'Montserrat', sans-serif;"> {{ project.totalrate }}</h2>
+                                        <h2 class="homeDetailsFont"> {{ project.totalrate }}</h2>
                                         <span class="fa fa-star checked" style="float: left;"></span>
-                                        <h2 style="float: left; color: #757586;
-                                        font-size: 16px;
-                                        line-height: 1.8;
-                                        font-family: 'Montserrat', sans-serif;"> / 5</h2>
+                                        <h2 class="homeDetailsFont"> / 5.0</h2>
                                         <span class="fa fa-star checked" value="5"></span>
 
 
@@ -145,6 +153,86 @@
     </div><!-- .container -->
 </div><!-- .highlighted-cause -->
  
+
+
+<div class="featured-cause homeDetailsFont">
+    <div class="container">
+
+        {%for project in updatedProjects %}
+        {% if  forloop.counter0|divisibleby:2 %}
+        <div class="row">
+            {% endif %}
+            <div class="col-12 col-lg-6">
+                <div class="cause-wrap d-flex flex-wrap justify-content-between"
+                    style="width: 550px;text-align: center; height:312px;">
+
+                    <div class="cause-content-wrap">
+                        <div>
+                            <header class="entry-header d-flex flex-wrap align-items-center">
+                                <h3 class="entry-title w-100 m-0"><a href="#">{{project.title}}</a></h3>
+
+                                <div class="posted-date">
+                                    <a href="#"> {{ project.startdate|date:"D d M Y" }}</a>
+                                </div><!-- .posted-date -->
+
+                                <div class="cats-links" class="homeDetailsFont">
+                                    <a href="#">{{ project.enddate|date:"D d M Y" }}</a>
+                                </div><!-- .cats-links -->
+                            </header><!-- .entry-header -->
+                        </div>
+                        <div class="cats-links homeDetailsFont" style="height: 70%; box-sizing: initial;">
+                            <p class="m-0">{{ project.details }}</p>
+                        </div><!-- .entry-content -->
+
+                        <div class="entry-footer mt-5">
+                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate Now</a>
+                        </div><!-- .entry-footer -->
+                    </div><!-- .cause-content-wrap -->
+
+                    <div class="fund-raised w-100">
+                        <!-- .fund-raised-bar -->
+
+                        <div class="fund-raised-details d-fle x flex-wrap justify-content-between align-items-center">
+                            <div class="row">
+                                <div class="fund-raised-total mt-4 col-12 col-lg-6">
+
+                                    {% for rate in rates %}
+                                    {% if rate.prj_id == project.id and rate %}
+                                    Raised:${{ rate.rate__sum }}
+                                    {% endif %}
+                                    {% empty %}
+                                    Raised:$0
+                                    {% endfor %}
+
+                                </div><!-- .fund-raised-total -->
+
+                                <div class="fund-raised-goal mt-4 col-12 col-lg-6"
+                                    style="float: right; text-align: right;">
+                                    Goal: ${{ project.totaltarget }}
+
+                                </div><!-- .fund-raised-goal -->
+                            </div>
+                        </div><!-- .fund-raised-details -->
+                    </div><!-- .fund-raised -->
+                </div><!-- .cause-wrap -->
+            </div><!-- .col -->
+
+            {% if forloop.counter|divisibleby:2 %}
+        </div><!-- .row -->
+        {% endif %}
+        {% endfor %}
+    </div><!-- .container -->
+</div><!-- .featured-cause -->
+
+
+
+
+
+
+
+
+
 <div class="short-content-wrap">
     <div class="container">
         <div class="row">

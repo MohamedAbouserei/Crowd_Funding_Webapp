@@ -257,7 +257,9 @@ def home(request):
                 "details" : project.details,
                 "totaltarget" : project.totaltarget,
                 "totalrate" : round(float(project.rate/project.Nor),1),
-                "rates" : donations
+                "rates" : donations,
+                'startdate' : project.startdate,
+                'enddate' :project.enddate
             })
         else:
             context["projects"].append({
@@ -266,9 +268,29 @@ def home(request):
                 "details" : project.details,
                 "totaltarget" : project.totaltarget,
                 "totalrate" : float(0),
-                "rates" : donations
+                "rates" : donations,
+                'startdate' : project.startdate,
+                'enddate' :project.enddate
             })
-    
+    updatedProjects = {
+        "projects" : [
+        ]
+    }
+    index = 0
+    for project in context["projects"]:
+        updatedProjects["projects"].append({
+                "id" : project["id"],
+                "title" : project["title"],
+                "details" : project["details"],
+                "totaltarget" : project["totaltarget"],
+                "totalrate" : project["totalrate"],
+                "rate" : project["rates"],
+                'startdate' : project["startdate"],
+                'enddate' :project["enddate"]
+            })
+        if(index == 4):
+            break
+        index = index + 1
     context["projects"] = sorted(context["projects"], key=lambda k: k['totalrate'],reverse=True) 
         
     contextToSend = {
@@ -289,7 +311,7 @@ def home(request):
             break
         index = index + 1
         
-    return render(request, 'Project/home.html', context = contextToSend)
+    return render(request, 'Project/home.html', {'projects': contextToSend["projects"],'updatedProjects': updatedProjects["projects"]})
 
 @csrf_exempt
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)

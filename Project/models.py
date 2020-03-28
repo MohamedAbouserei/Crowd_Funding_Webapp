@@ -24,6 +24,8 @@ class Projects(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.title
+    def __id__(self):
+        return self.id
 
 class Project_pics(models.Model):
     picture = models.ImageField()

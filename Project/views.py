@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from django.template.response import TemplateResponse
 from django.contrib.postgres.search import SearchVector
+from django.db import connection
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Create your views here.
@@ -221,3 +222,74 @@ def person(request):
         return {'person': Users.objects.filter(id= request.session.get('0'))[0]} # of course some filter here
     except:
         return {}
+    
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def home(request):
+    if request.session.get('0',False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:return HttpResponseRedirect('/users_auth/login/') 
+    # rates=Project_User_Donation.objects.values('prj_id').annotate(Sum('rate'))
+    # pics=Project_pics.objects.all()
+    # projects_overallrate = {}
+    # project = Projects.objects.get(id=prj_id)
+    # project.Nor=project.Nor+1
+    # fullrate=project.rate+float(request.body)
+    # project.rate=fullrate
+    # project.save()
+    # overall=project.rate/project.Nor
+    
+    
+    projects=Projects.objects.all().order_by("-updated_at")
+    context = {
+        "projects" : [
+        ]
+    }
+    for project in projects:
+        donations = 0
+        rates = Project_User_Donation.objects.values('prj_id').annotate(Sum('rate')).filter(prj_id=project.id)    
+        for k in rates:
+            if k["rate__sum"]:
+                donations = donations + k["rate__sum"]
+            else:
+                donations = 0
+        if project.Nor != 0:
+            context["projects"].append({
+                "id" : project.id,
+                "title" : project.title,
+                "details" : project.details,
+                "totaltarget" : project.totaltarget,
+                "totalrate" : float(project.rate/project.Nor),
+                "rates" : donations
+            })
+        else:
+            context["projects"].append({
+                "id" : project.id,
+                "title" : project.title,
+                "details" : project.details,
+                "totaltarget" : project.totaltarget,
+                "totalrate" : float(0),
+                "rates" : donations
+            })
+    
+            
+        
+    contextToSend = {
+        "projects" : [
+        ]
+    }
+    index = 0
+    for project in context["projects"]:
+        contextToSend["projects"].append({
+                "id" : project["id"],
+                "title" : project["title"],
+                "details" : project["details"],
+                "totaltarget" : project["totaltarget"],
+                "totalrate" : project["totalrate"],
+                "rate" : project["rates"]
+            })
+        
+        
+        
+        if(index == 4):
+            break
+        index = index + 1
+        
+    return render(request, 'Project/home.html', context = contextToSend)

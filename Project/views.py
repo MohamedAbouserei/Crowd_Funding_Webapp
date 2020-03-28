@@ -256,7 +256,7 @@ def home(request):
                 "title" : project.title,
                 "details" : project.details,
                 "totaltarget" : project.totaltarget,
-                "totalrate" : float(project.rate/project.Nor),
+                "totalrate" : round(float(project.rate/project.Nor),1),
                 "rates" : donations
             })
         else:
@@ -269,7 +269,7 @@ def home(request):
                 "rates" : donations
             })
     
-            
+    context["projects"] = sorted(context["projects"], key=lambda k: k['totalrate'],reverse=True) 
         
     contextToSend = {
         "projects" : [

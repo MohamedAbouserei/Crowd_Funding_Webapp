@@ -13,9 +13,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<style>
+    .fa {
+        font-size: 25px;
+    }
+
+    .checked {
+        color: #F05731;
+    }
+</style>
 {% endblock %}
-{% block title %}Add Project{% endblock %}
-{%block page_name %}{{ project.title}}{% endblock %}
+{% block title %}Home{% endblock %}
+{%block page_name %}Home{% endblock %}
 
 {% block body %}
 <span style="float:left;"><a href="#" class="demo">
@@ -37,14 +46,8 @@
   <div class="highlighted-cause">
     <div class="container">
         <div class="row">
-
-
-
             <div class="col-12 col-lg-5 order-1 order-lg-2" height="1000">
-
-
-
-                <div id="myCarousel" class="carousel slide" data-ride="carousel" style="width: 1000px; height: 200px; ">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel" style="width: 1000px; height: 250px; ">
                     <!-- Indicators -->
                     <ol class="carousel-indicators">
                         {% for project in projects %}
@@ -64,58 +67,74 @@
                             {% else %}
                             <div class="item">
                                 {% endif %}
-                                
                                 <div class="col-12 col-lg-7 order-2 order-lg-1">
                                     <div class="section-heading" style="margin-left: 130px;">
-                                        <h2 class="entry-title">{{ project.title}}</h2>
+                                        <h2 class="entry-title"><a
+                                                href="/project/{{ project.id }}/details/">{{ project.title}}</a></h2>
+
                                     </div><!-- .section-heading -->
-                                    
+
                                     <div class="fund-raised w-100 mt-5" style="margin-left: 200px;">
-                                        <div class="featured-fund-raised-bar barfiller">
-                                            <div class="tipWrap">
-                                                <span class="tip"></span>
-                                            </div><!-- .tipWrap -->
+
+                                        <div class="progress">
                                             {% if project.totaltarget != 0 %}
                                             {% widthratio project.rate project.totaltarget 100 as ratio %}
-                                            <span class="fill" data-percentage="{{ ratio}}"></span>
-                                            {% endif %}
-                                            <div style="margin-left: 130px;">
-                                                <input type="hidden" value="{{ project.totalrate }}" id="rater"  />
+                                            <div class="progress-bar progress-bar-warning" role="progressbar"
+                                                aria-valuenow="{{ ratio }}" aria-valuemin="0" aria-valuemax="100"
+                                                style="width:{{ ratio }}%; background-color: #F05731">
+                                                <span class="sr-only">{{ ratio }}</span>
+                                                {% endif %}
                                             </div>
-                                        </div><!-- .fund-raised-bar -->
-                                        
-                                        <div
-                                            class="fund-raised-details d-flex flex-wrap justify-content-between align-items-center">
+                                        </div>
+
+                                        <div style="margin-left: 130px;">
+                                            <input type="hidden" value="{{ project.totalrate }}" id="rater" />
+                                        </div>
+
+                                        <div class="fund-raised-details d-flex flex-wrap justify-content-between align-items-center"
+                                            style="margin-top: -30px; margin-bottom: 10px;">
                                             <div class="fund-raised-total mt-4">
-                                                Raised: ${{ rates}}
+                                                Raised: ${{ project.rate }}
                                             </div><!-- .fund-raised-total -->
 
                                             <div class="fund-raised-goal mt-4">
                                                 Goal: ${{ project.totaltarget}}
                                             </div><!-- .fund-raised-goal -->
                                         </div><!-- .fund-raised-details -->
+                                        <h2 style="float: left; color: #757586;
+                                        font-size: 16px;
+                                        line-height: 1.8;
+                                        font-family: 'Montserrat', sans-serif;"> {{ project.totalrate }}</h2>
+                                        <span class="fa fa-star checked" style="float: left;"></span>
+                                        <h2 style="float: left; color: #757586;
+                                        font-size: 16px;
+                                        line-height: 1.8;
+                                        font-family: 'Montserrat', sans-serif;"> / 5</h2>
+                                        <span class="fa fa-star checked" value="5"></span>
+
+
                                     </div><!-- .fund-raised -->
 
                                 </div><!-- .col -->
-                                
+
 
                             </div>
                             {% empty %}
                             <img src="/static/images/default.png" alt="" width="1000" max-height="300">
 
-                            
+
                         </div>
                         {% endfor %}
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
                     </div>
-                    <!-- Left and right controls -->
-                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
                 </div>
 
 
@@ -125,7 +144,7 @@
         </div><!-- .row -->
     </div><!-- .container -->
 </div><!-- .highlighted-cause -->
- <div id="rate" name="rate"></div>
+ 
 <div class="short-content-wrap">
     <div class="container">
         <div class="row">

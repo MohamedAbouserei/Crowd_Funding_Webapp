@@ -285,9 +285,6 @@ def home(request):
                 "totalrate" : project["totalrate"],
                 "rate" : project["rates"]
             })
-        
-        
-        
         if(index == 4):
             break
         index = index + 1

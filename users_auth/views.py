@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from users_auth.forms import *
 from users_auth.models import Users
+import re
 
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
@@ -40,24 +41,46 @@ def home(request):
 
 
 def signup_new(request):
+    template="users_auth/sign_up.html"
+    form = New_users()
     if request.method == 'POST':
         form = New_users(request.POST)
         if form.is_valid():
+            print(form.cleaned_data)
+            if Users.objects.filter(email=form.cleaned_data['email']).exists():
+                return render(request, template, {
+                    'form': form,
+                    'error_message': 'Email already exists.'
+                })
+            else:
+                
+                if form.cleaned_data['password'] != form.cleaned_data['re_password'] :
+                    return render(request, template, {
+                        'form': form,
+                        'error_message': 'Passwords do not match.',
+                    })
+                elif re.match("(01)[0-9]{9}", form.cleaned_data['us_phone']) :
+                    return render(request, template, {
+                        'form': form,
+                        'phone_error':'your phone not match egyptian phones'
+                    })
+ 
             user = form.save(commit=False)
             user.is_active = False
             user.save()
             current_site = get_current_site(request)
             email_subject = 'Activate Your Account'
             message = render_to_string('users_auth/activation.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-                'token': account_activation_token.make_token(user),
-            })
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                    'token': account_activation_token.make_token(user),
+                })
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(email_subject, message, to=[to_email])
             email.send()
             return render(request, 'users_auth/acc_sent.html')
+
     else:
         form = New_users()
         return render(request, 'users_auth/sign_up.html', {'form': form})

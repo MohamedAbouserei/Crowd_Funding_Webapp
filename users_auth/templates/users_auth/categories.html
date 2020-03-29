@@ -24,7 +24,7 @@ Categories Table
       <div class="card">
         <div class="card-header">Add Category</div>
         <div class="card-body">
-            <form method="POST" action="/users_auth/addcategory/">
+            <form method="POST" action="/admins/addcategory/">
                 {% csrf_token %}
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -56,13 +56,16 @@ Categories Table
             <td>{{category.id}}</td>
             <td>{{category.title}}</td>
             <td style="float: right;">
+              <form action="/users_auth/{{ category.id }}/deletecategory/" method="POST">
+                <button type="submit" style=" background-color: transparent;border: none;">
+                    {% csrf_token %}
                 <span class="right badge badge-danger">
                 
                   <i style="font-size:24px">X</i> 
                 </span>
-                <span class="right badge badge-info">
-                    <i class="fa fa-pencil-square" style="font-size:24px"></i>
-                </span>
+            </button>
+            </form>
+                
             </td>
           </tr>
           {% endfor %}

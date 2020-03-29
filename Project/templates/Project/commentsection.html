@@ -1,0 +1,82 @@
+
+<body data-rsssl=1>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="comments">
+        <div class="comments-details">
+          <span class="total-comments comments-sort">{{ comments|length }} Comments</span>
+            
+        </div>
+        <div class="comment-box add-comment">
+          <span class="commenter-pic">
+            <img src="/static/images/icons8-user-48.png" class="img-fluid">
+          </span>
+          <span class="commenter-name">
+            <form action="/project/{{ project.id }}/addcomment/" method="POST">
+              {% csrf_token %}
+            <input type="text" placeholder="Add a public comment" name="title" id="title">
+            <button type="submit" class="btn btn-default">Comment</button>
+            <button type="cancel" class="btn btn-default">Cancel</button>
+            </form>
+          </span>
+        </div>
+        {% for comment in comments %}
+        <div class="comment-box" >
+          <span class="commenter-pic">
+            <img src="/static/images/icons8-user-48.png" class="img-fluid">
+          </span>
+          <span class="commenter-name">
+            
+            <a href="#">{{comment.user.first_name}} {{comment.user.last_name}}</a> <span class="comment-time">{{ comment.updated_at|date:"D d M Y" }}</span>
+         
+          </span>       
+          <p class="comment-txt more">{{ comment.title }}</p>
+          <div class="comment-meta">
+            <span style="float:left;">
+
+            <form method="POST" action="/project/{{ project.id }}/like/">{% csrf_token %}<input type="hidden" name="comment_id" id="comment_id" value="{{ comment.id }}"/>
+              <button class="comment-like submit"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+
+              {% for like in likes %}
+              {% if comment.id == like.comment_id  %}            
+              {{ like.status__count }}
+              {% endif %}
+              {% endfor %}
+     
+            </button></form>
+                   </span>
+          <span style="float: right;">
+           
+            <form method="POST" action="/project/{{ project.id }}/dislike/">{% csrf_token %}<input type="hidden" name="comment_id" id="comment_id" value="{{ comment.id }}"/><button class="comment-dislike submit"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> 
+              {% for dislike in dislikes %}
+              {% if comment.id == dislike.comment_id %}
+              {{ dislike.status__count }}
+              
+              {% endif %}
+              {% endfor %}
+            </button></form> 
+            
+          </span>
+          {% if person.id == comment.user_id or person.id == project.user_id   %}
+          <span style="float: right;">
+          <form method="POST" action="/project/{{ project.id }}/deletecomment/">{% csrf_token %}<input type="hidden" name="comment_id" id="comment_id" value="{{ comment.id }}"/> <button class="comment-reply delete-popup"><i class="fa fa-remove" aria-hidden="true" id="{{ comment.id }}"></i> Delete</button></form>         
+        </span>  
+        {% endif %}
+          <button class="comment-reply reply-popup" style="visibility: hidden;" hidden><i class="fa fa-reply-all" aria-hidden="true" id="{{ comment.id }}"></i> Reply</button>         
+          </div>
+          <div class="comment-box add-comment reply-box">
+            <span class="commenter-pic">
+              <img src="/static/images/icons8-user-48.png" class="img-fluid">
+            </span>
+            <span class="commenter-name">
+              <input type="text" placeholder="Add a public reply" name="Add Comment">
+              <button type="submit" class="btn btn-default">Reply</button>
+              <button type="cancel" class="btn btn-default reply-popup">Cancel</button>
+            </span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>

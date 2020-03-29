@@ -62,8 +62,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-lg-12 order-1 order-lg-2" height="1000">
-                <div id="myCarousel" class="carousel slide" data-ride="carousel"
-                    style=" height: 250px;  ">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel" style=" height: 250px;  ">
                     <!-- Indicators -->
                     <ol class="carousel-indicators">
                         {% for project in projects %}
@@ -120,7 +119,14 @@
                                         <h2 class="homeDetailsFont"> {{ project.totalrate }}</h2>
                                         <span class="fa fa-star checked" style="float: left;"></span>
                                         <h2 class="homeDetailsFont"> / 5.0</h2>
-                                        <span class="fa fa-star checked" value="5"></span>
+                                        <span class="fa fa-star checked" value="5" style="float: left;"></span>
+
+                                        {% if project.featured %}
+                                            <p class="homeDetailsFont" style="color: green;font-weight: bold; margin-left: 170px;">Featured</p>
+                                        {% else %}
+                                            <p class="homeDetailsFont" style="color: #F05731;font-weight: bold; margin-left: 170px;">Not Featured</p>
+                                        {% endif %}
+
 
 
                                     </div><!-- .fund-raised -->
@@ -186,6 +192,15 @@
                                 <div class="posted-date" class="homeDetailsFont">
                                     <a href="#">{{ project.enddate|date:"D d M Y" }}</a>
                                 </div><!-- .cats-links -->
+                                {% if project.featured %}
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#" style="color: green;font-weight: bold;">Featured</a>
+                                </div><!-- .cats-links -->
+                                {% else %}
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#" style="color: #F05731;font-weight: bold;">Not Featured</a>
+                                </div><!-- .cats-links -->
+                                {% endif %}
                             </header><!-- .entry-header -->
                         </div>
                         <div class="cats-links homeDetailsFont" style="height: 70%; box-sizing: initial;">
@@ -206,13 +221,7 @@
                             <div class="row">
                                 <div class="fund-raised-total mt-4 col-12 col-lg-6">
 
-                                    {% for rate in rates %}
-                                    {% if rate.prj_id == project.id and rate %}
-                                    Raised:${{ rate.rate__sum }}
-                                    {% endif %}
-                                    {% empty %}
-                                    Raised:$0
-                                    {% endfor %}
+                                    Raised:${{ project.rate }}
 
                                 </div><!-- .fund-raised-total -->
 
@@ -233,16 +242,16 @@
     </div><!-- .container -->
 </div><!-- .featured-cause -->
 
-
-<hr style="margin-top: 30px; background-color: #F05731">
+{% if featuredP %}
+<hr style="margin-top: 30px; background-color: #F05731;">
 <div style="height: 70px;"></div>
 <div class="featured-cause homeDetailsFont">
 
-    <h1 class="title"> Most Recent Projects </h1>
+    <h1 class="title"> Projects Featured By Admin </h1>
 
     <div class="container">
 
-        {%for project in updatedProjects %}
+        {%for project in featuredP %}
         {% if  forloop.counter0|divisibleby:2 %}
         <div class="row">
             {% endif %}
@@ -259,9 +268,18 @@
                                     <a href="#"> {{ project.startdate|date:"D d M Y" }}</a>
                                 </div><!-- .posted-date -->
 
-                                <div class="cats-links" class="homeDetailsFont">
+                                <div class="posted-date" class="homeDetailsFont">
                                     <a href="#">{{ project.enddate|date:"D d M Y" }}</a>
                                 </div><!-- .cats-links -->
+                                {% if project.featured %}
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#" style="color: green;font-weight: bold;">Featured</a>
+                                </div><!-- .cats-links -->
+                                {% else %}
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#" style="color: #F05731;font-weight: bold;">Not Featured</a>
+                                </div><!-- .cats-links -->
+                                {% endif %}
                             </header><!-- .entry-header -->
                         </div>
                         <div class="cats-links homeDetailsFont" style="height: 70%; box-sizing: initial;">
@@ -282,13 +300,7 @@
                             <div class="row">
                                 <div class="fund-raised-total mt-4 col-12 col-lg-6">
 
-                                    {% for rate in rates %}
-                                    {% if rate.prj_id == project.id and rate %}
-                                    Raised:${{ rate.rate__sum }}
-                                    {% endif %}
-                                    {% empty %}
-                                    Raised:$0
-                                    {% endfor %}
+                                    Raised:${{ project.rate }}
 
                                 </div><!-- .fund-raised-total -->
 
@@ -308,6 +320,7 @@
         {% endfor %}
     </div><!-- .container -->
 </div><!-- .featured-cause -->
+{% endif %}
 
 
 

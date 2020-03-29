@@ -311,7 +311,7 @@ def home(request):
             break
         index = index + 1
         
-    return render(request, 'Project/home.html', {'projects': contextToSend["projects"],'updatedProjects': updatedProjects["projects"]})
+    return render(request, 'Project/home.html', {'projects': contextToSend["projects"],'updatedProjects': updatedProjects["projects"],'keys': [1,2,3]})
 
 @csrf_exempt
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)

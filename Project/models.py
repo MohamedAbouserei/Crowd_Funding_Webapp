@@ -26,6 +26,7 @@ class Projects(models.Model):
         return self.title
     def __id__(self):
         return self.id
+    
 
 class Project_pics(models.Model):
     picture = models.ImageField()

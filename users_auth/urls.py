@@ -27,6 +27,8 @@ urlpatterns = [
     path('addcategory/', views.addcategory, name='addcategory'),
     path('<int:cat_id>/deletecategory/', views.deletecategory, name='deletecategory'),
     path('reports/', views.reports, name='reports'),
+    path('featuredProjects/', views.featuredProjects, name='featuredProjects'),
+    path('<int:projectId>/makeOrCancelFeature/', views.makeOrCancelFeature, name='makeOrCancelFeature'),
     path('<int:rep_id>/deletereportproject/', views.deletereportproject, name='deleteproject'),
 
 

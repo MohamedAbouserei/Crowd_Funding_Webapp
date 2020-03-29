@@ -930,8 +930,19 @@ ul.tabs-nav .tab-nav.active {
     width: 100%;
 }
 
-.featured-cause .cause-content-wrap {
-    width: calc(100% - 280px);
+.featured-cause .cause-content-wrap header {
+    text-align: left !important;
+}
+
+.cats-links {
+margin-top: 20px;
+height: auto !important;
+    box-sizing: initial;
+    margin-bottom: 0;
+    width: 100%;
+    text-align: left;
+    height: 100px;
+    overflow: hidden;
 }
 
 .cause-content-wrap .entry-title a {
@@ -956,7 +967,7 @@ ul.tabs-nav .tab-nav.active {
     margin-right: 14px;
 }
 
-.cause-content-wrap .posted-date a::after {
+.cause-content-wrap .posted-date:not(:last-child) a::after {
     content: '';
     position: absolute;
     top: 0;
@@ -974,7 +985,7 @@ ul.tabs-nav .tab-nav.active {
 }
 
 .cause-wrap .fund-raised {
-    margin-top: 64px;
+	
 }
 
 .fund-raised-details {
@@ -1995,6 +2006,13 @@ ul.tabs-nav .tab-nav.active {
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
+.site-footer {
+    	position: relative;
+    height: auto;
+    width: 100%;
+    overflow: hidden;
+    margin-top: 40px;
+}
 .footer-widgets {
     position: relative;
     padding: 96px 0 90px;

@@ -1,0 +1,113 @@
+{% extends "users_auth/index.html" %}
+{% block title %}Featured Projects{% endblock %}
+{% block featuredProjects %}active{% endblock %}
+{% block css %}
+<!-- Font Awesome -->
+<link rel="stylesheet" href="/static/plugins/fontawesome-free/css/all.min.css">
+<!-- Ionicons -->
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+{% endblock%}
+{% block pagetitle %}
+Projects Table
+{% endblock%}
+
+{% block body_block %}
+<div class="col-12">
+   
+
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Projects</h3>
+        
+      </div>
+    
+      <div class="card-body">
+
+        <table id="example1" class="table table-striped" cellspacing="0" width="100%">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Project Title</th>
+            <th>Project Details</th>
+            <th>Project Target</th>
+            <th>Project Rate</th>
+            <th>Project Donations</th>
+            <th>Project Start-Date</th>
+            <th>Project End-Date</th>
+            <th>Projects Featured-By-Admin</th>
+            <th>Make Or Cancel Feature</th>
+
+          </tr>
+          </thead>
+          <tbody>
+              {% for project in projects %}
+          <tr>
+            <td>{{ project.id }}</td>
+            <td>{{ project.title }}</td>
+            <td>{{ project.details }}</td>
+            <td>{{ project.totaltarget }}</td>
+            <td>{{ project.totalrate }}</td>
+            <td>{{ project.rates }}</td>
+            <td>{{ project.startdate }}</td>
+            <td>{{ project.enddate }}</td>
+            <td>{{ project.featured }}</td>
+            <td style="float: right;">
+                <form action="/users_auth/{{ project.id }}/makeOrCancelFeature/" method="POST">
+                <button type="submit" style=" background-color: transparent;border: none;">
+                    {% csrf_token %}
+                {% if project.featured %}
+                <span class="right badge badge-danger">
+                  <i style="font-size:16px">Edit</i> 
+                </span>
+                {% else %}
+                <span class="right badge badge-info">
+                    <i style="font-size:16px">Edit</i> 
+                </span>
+                {% endif %}
+            </button>
+            </form>
+            </td>
+          </tr>
+          {% endfor %}
+         
+          </tbody>
+          <tfoot>
+          <tr>
+            <th>ID</th>
+            <th>Project Title</th>
+            <th>Project Details</th>
+            <th>Project Target</th>
+            <th>Project Rate</th>
+            <th>Project Donations</th>
+            <th>Project Start-Date</th>
+            <th>Project End-Date</th>
+            <th>Projects Featured-By-Admin</th>
+            <th>Make Or Cancel Feature</th>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+{% endblock %}
+{% block js %}
+<!-- DataTables -->
+<script src="/static/plugins/datatables/jquery.dataTables.js"></script>
+<script src="/static/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<!-- page script -->
+<script>
+    $(function () {
+      $("#example1").DataTable();
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+      });
+    });
+  </script>
+{% endblock %}

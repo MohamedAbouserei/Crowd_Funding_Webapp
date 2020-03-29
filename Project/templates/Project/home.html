@@ -1,0 +1,383 @@
+{% extends "Project/index.html" %}
+{% load bootstrap4 %}
+{% bootstrap_messages %}
+
+{% block css %}
+<title>Example of Bootstrap 3 Carousel</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/css/comment.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="/static/js/comment.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<style>
+    .homeDetailsFont {
+        height: 312px important;
+        float: left;
+        color: #757586;
+        font-size: 16px;
+        line-height: 1.8;
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 40px;
+
+
+    }
+
+    .fa {
+        font-size: 25px;
+    }
+
+    .checked {
+        color: #F05731;
+    }
+</style>
+{% endblock %}
+{% block title %}Home{% endblock %}
+{%block page_name %}Home{% endblock %}
+<span style="float:left;"><a href="#" class="demo">
+        {% if person.id == project.id %}
+        <form method="POST" action="/project/{{ project.id }}/deleteproject/">{% csrf_token %}
+            <button class="btn btn-danger submit">
+                <span class="glyphicon glyphicon-remove" style="font-size: 50px;color: red;"></span>
+            </button>
+        </form>
+        {% endif %}
+    </a>
+</span>
+{% for report in reports %}
+{% empty %}
+<form method="POST" action="/project/{{ project.id }}/report/">{% csrf_token %}<input type="hidden" name="report"
+        id="report" value="{{ project.id }}" /><button class="submit"><i class="fa fa-flag"
+            aria-hidden="true"></i></button></form>
+{% endfor %}
+  <div class="highlighted-cause">
+
+
+    {% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-12 order-1 order-lg-2" height="1000">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel" style=" height: 250px;  ">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        {% for project in projects %}
+                        {% if forloop.counter0 == 0 %}
+                        <li data-target="#myCarousel" data-slide-to="{{forloop.counter0}}" class="active"></li>
+                        {% else %}
+                        <li data-target="#myCarousel" data-slide-to="{{forloop.counter0}}"></li>
+                        {% endif %}
+                        {% endfor %}
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        {% for project in projects %}
+                        {% if forloop.counter == 1 %}
+                        <div class="item active">
+                            {% else %}
+                            <div class="item">
+                                {% endif %}
+                                <div class="col-12 col-lg-7 order-2 order-lg-1">
+                                    <div class="section-heading" style="margin-left: 130px;">
+                                        <h2 class="entry-title"><a
+                                                href="/project/{{ project.id }}/details/">{{ project.title}}</a></h2>
+
+                                    </div><!-- .section-heading -->
+
+                                    <div class="fund-raised w-100 mt-5" style="margin-left: 200px;">
+
+                                        <div class="progress">
+                                            {% if project.totaltarget != 0 %}
+                                            {% widthratio project.rate project.totaltarget 100 as ratio %}
+                                            <div class="progress-bar progress-bar-warning" role="progressbar"
+                                                aria-valuenow="{{ ratio }}" aria-valuemin="0" aria-valuemax="100"
+                                                style="width: {{ratio}}%;background-color: #F05731">
+                                                <span class="sr-only">{{ ratio }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div style="margin-left: 130px;">
+                                            <input type="hidden" value="{{ project.totalrate }}" id="rater" />
+                                        </div>
+
+                                        <div class="fund-raised-details d-flex flex-wrap justify-content-between align-items-center"
+                                            style="margin-top: -30px; margin-bottom: 10px;">
+                                            <div class="fund-raised-total mt-4">
+                                                Raised: ${{ project.rate }}
+                                            </div><!-- .fund-raised-total -->
+
+                                            <div class="fund-raised-goal mt-4">
+                                                Goal: ${{ project.totaltarget}}
+                                            </div><!-- .fund-raised-goal -->
+                                        </div><!-- .fund-raised-details -->
+                                        <h2 class="homeDetailsFont"> {{ project.totalrate }}</h2>
+                                        <span class="fa fa-star checked" style="float: left;"></span>
+                                        <h2 class="homeDetailsFont"> / 5.0</h2>
+                                        <span class="fa fa-star checked" value="5" style="float: left;"></span>
+
+                                        {% if project.featured %}
+                                            <p class="homeDetailsFont" style="color: green;font-weight: bold; margin-left: 170px;">Featured</p>
+                                        {% else %}
+                                            <p class="homeDetailsFont" style="color: #F05731;font-weight: bold; margin-left: 170px;">Not Featured</p>
+                                        {% endif %}
+
+
+
+                                    </div><!-- .fund-raised -->
+
+                                </div><!-- .col -->
+
+
+                            </div>
+                            {% empty %}
+                            <img src="/static/images/default.png" alt="" width="1000" max-height="300">
+
+
+                        </div>
+                        {% endfor %}
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+
+
+
+
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div><!-- .highlighted-cause -->
+ 
+
+
+
+<hr style="margin-top: 30px; background-color: #F05731;">
+<div style="height: 70px;"></div>
+<div class="featured-cause homeDetailsFont">
+
+    <h1 class="title"> Most Recent Projects </h1>
+
+    <div class="container">
+
+        {%for project in updatedProjects %}
+        {% if  forloop.counter0|divisibleby:2 %}
+        <div class="row">
+            {% endif %}
+            <div class="col-12 col-lg-6">
+                <div class="cause-wrap d-flex flex-wrap justify-content-between"
+                    style="width: 550px;text-align: center; height:312px;">
+
+                    <div class="cause-content-wrap">
+                        <div>
+                            <header class="entry-header d-flex flex-wrap align-items-center">
+                                <h3 class="entry-title w-100 m-0"><a href="#">{{project.title}}</a></h3>
+
+                                <div class="posted-date">
+                                    <a href="#"> {{ project.startdate|date:"D d M Y" }}</a>
+                                </div><!-- .posted-date -->
+
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#">{{ project.enddate|date:"D d M Y" }}</a>
+                                </div><!-- .cats-links -->
+                                {% if project.featured %}
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#" style="color: green;font-weight: bold;">Featured</a>
+                                </div><!-- .cats-links -->
+                                {% else %}
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#" style="color: #F05731;font-weight: bold;">Not Featured</a>
+                                </div><!-- .cats-links -->
+                                {% endif %}
+                            </header><!-- .entry-header -->
+                        </div>
+                        <div class="cats-links homeDetailsFont" style="height: 70%; box-sizing: initial;">
+                            <p class="m-0">{{ project.details }}</p>
+                        </div><!-- .entry-content -->
+
+                        <div class="entry-footer mt-5">
+                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
+                                Now</a>
+                        </div><!-- .entry-footer -->
+                    </div><!-- .cause-content-wrap -->
+
+                    <div class="fund-raised w-100">
+                        <!-- .fund-raised-bar -->
+
+                        <div class="fund-raised-details d-fle x flex-wrap justify-content-between align-items-center">
+                            <div class="row">
+                                <div class="fund-raised-total mt-4 col-12 col-lg-6">
+
+                                    Raised:${{ project.rate }}
+
+                                </div><!-- .fund-raised-total -->
+
+                                <div class="fund-raised-goal mt-4 col-12 col-lg-6">
+                                    Goal: ${{ project.totaltarget }}
+
+                                </div><!-- .fund-raised-goal -->
+                            </div>
+                        </div><!-- .fund-raised-details -->
+                    </div><!-- .fund-raised -->
+                </div><!-- .cause-wrap -->
+            </div><!-- .col -->
+
+            {% if forloop.counter|divisibleby:2 %}
+        </div><!-- .row -->
+        {% endif %}
+        {% endfor %}
+    </div><!-- .container -->
+</div><!-- .featured-cause -->
+
+{% if featuredP %}
+<hr style="margin-top: 30px; background-color: #F05731;">
+<div style="height: 70px;"></div>
+<div class="featured-cause homeDetailsFont">
+
+    <h1 class="title"> Projects Featured By Admin </h1>
+
+    <div class="container">
+
+        {%for project in featuredP %}
+        {% if  forloop.counter0|divisibleby:2 %}
+        <div class="row">
+            {% endif %}
+            <div class="col-12 col-lg-6">
+                <div class="cause-wrap d-flex flex-wrap justify-content-between"
+                    style="width: 550px;text-align: center; height:312px;">
+
+                    <div class="cause-content-wrap">
+                        <div>
+                            <header class="entry-header d-flex flex-wrap align-items-center">
+                                <h3 class="entry-title w-100 m-0"><a href="#">{{project.title}}</a></h3>
+
+                                <div class="posted-date">
+                                    <a href="#"> {{ project.startdate|date:"D d M Y" }}</a>
+                                </div><!-- .posted-date -->
+
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#">{{ project.enddate|date:"D d M Y" }}</a>
+                                </div><!-- .cats-links -->
+                                {% if project.featured %}
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#" style="color: green;font-weight: bold;">Featured</a>
+                                </div><!-- .cats-links -->
+                                {% else %}
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#" style="color: #F05731;font-weight: bold;">Not Featured</a>
+                                </div><!-- .cats-links -->
+                                {% endif %}
+                            </header><!-- .entry-header -->
+                        </div>
+                        <div class="cats-links homeDetailsFont" style="height: 70%; box-sizing: initial;">
+                            <p class="m-0">{{ project.details }}</p>
+                        </div><!-- .entry-content -->
+
+                        <div class="entry-footer mt-5">
+                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
+                                Now</a>
+                        </div><!-- .entry-footer -->
+                    </div><!-- .cause-content-wrap -->
+
+                    <div class="fund-raised w-100">
+                        <!-- .fund-raised-bar -->
+
+                        <div class="fund-raised-details d-fle x flex-wrap justify-content-between align-items-center">
+                            <div class="row">
+                                <div class="fund-raised-total mt-4 col-12 col-lg-6">
+
+                                    Raised:${{ project.rate }}
+
+                                </div><!-- .fund-raised-total -->
+
+                                <div class="fund-raised-goal mt-4 col-12 col-lg-6">
+                                    Goal: ${{ project.totaltarget }}
+
+                                </div><!-- .fund-raised-goal -->
+                            </div>
+                        </div><!-- .fund-raised-details -->
+                    </div><!-- .fund-raised -->
+                </div><!-- .cause-wrap -->
+            </div><!-- .col -->
+
+            {% if forloop.counter|divisibleby:2 %}
+        </div><!-- .row -->
+        {% endif %}
+        {% endfor %}
+    </div><!-- .container -->
+</div><!-- .featured-cause -->
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+{% block js %}
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+<script>
+    jQuery(document).ready(function ($) {
+
+        $("#rate").rateYo({
+
+            onInit: function (rateYoInstance) {
+                console.log("RateYo initialized! with " + $('#rater').val());
+            },
+            starWidth: "40px",
+            ratedFill: "#E74C3C",
+            rating: $('#rater').val(),
+            halfStar: true,
+            onSet: function (rating, rateYoInstance) {
+
+                alert("Rating is set to: " + rating);
+
+                $.ajax({
+                    headers: {
+                        "X-CSRFToken": '{{csrf_token}}'
+                    },
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: rating,
+                    success: function (response) {
+                        $('.error').remove();
+                        console.log(response)
+                        if (response.error) {
+                            console.log("somthig went wrong")
+                        } else {
+                            console.log(response.message)
+                            window.location = ""
+                        }
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+        });
+
+    });
+</script>
+{% endblock %}

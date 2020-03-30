@@ -285,17 +285,19 @@ def person(request):
 def home(request):
     if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
-    # rates=Project_User_Donation.objects.values('prj_id').annotate(Sum('rate'))
-    # pics=Project_pics.objects.all()
-    # projects_overallrate = {}
-    # project = Projects.objects.get(id=prj_id)
-    # project.Nor=project.Nor+1
-    # fullrate=project.rate+float(request.body)
-    # project.rate=fullrate
-    # project.save()
-    # overall=project.rate/project.Nor
-
     projects = Projects.objects.all().order_by("-created_at")
+    categories = Categories.objects.all().order_by("-created_at")
+
+    categoriesContext = {
+        "categories": [
+        ]
+    }
+    for category in categories:
+        categoriesContext["categories"].append({
+            "id": category.id,
+            "title": category.title,
+        })
+
     context = {
         "projects": [
         ]
@@ -375,8 +377,6 @@ def home(request):
             break
         index = index + 1
 
-
-
     updatedProjects = {
         "projects": [
         ]
@@ -418,7 +418,64 @@ def home(request):
             break
         index = index + 1
 
-    return render(request, 'Project/home.html', {'projects': contextToSend["projects"], 'updatedProjects': updatedProjects["projects"], 'featuredP': featuredProjectsContextToSend["projects"]})
+    return render(request, 'Project/home.html', {'projects': contextToSend["projects"], 'updatedProjects': updatedProjects["projects"], 'featuredP': featuredProjectsContextToSend["projects"], "categories": categoriesContext["categories"]})
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def lisCategoryProjects(request, cat_id):
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+        return HttpResponseRedirect('/users_auth/login/')
+    if request.method == 'GET':
+        projects = Projects.objects.all().order_by("-created_at")
+        category = Categories.objects.get(id=cat_id)
+        categoryTitle = category.title
+        catContext = {
+            "category": [
+            ]
+        }
+        catContext["category"].append({"title": category.title})
+        context = {
+            "projects": [
+            ]
+        }
+        for project in projects:
+            donations = 0
+            rates = Project_User_Donation.objects.values(
+                'prj_id').annotate(Sum('rate')).filter(prj_id=project.id)
+            for k in rates:
+                if k["rate__sum"]:
+                    donations = donations + k["rate__sum"]
+                else:
+                    donations = 0
+            if project.cat_id == cat_id:
+                if project.Nor != 0:
+                    context["projects"].append({
+                    "id": project.id,
+                    "title": project.title,
+                    "details": project.details,
+                    "totaltarget": project.totaltarget,
+                    "totalrate": round(float(project.rate/project.Nor), 1),
+                    "rates": donations,
+                    'startdate': project.startdate,
+                    'enddate': project.enddate,
+                    'featured': project.featured,
+                    'created_at': project.created_at
+                })
+                else:
+                    context["projects"].append({
+                        "id": project.id,
+                        "title": project.title,
+                        "details": project.details,
+                        "totaltarget": project.totaltarget,
+                        "totalrate": float(0),
+                        "rates": donations,
+                        'startdate': project.startdate,
+                        'enddate': project.enddate,
+                        'featured': project.featured,
+                        'created_at': project.created_at
+                    })
+
+        return render(request, 'Project/catProjects.html',{ "projects" : context["projects"] , "category" : categoryTitle})
 
 
 @csrf_exempt

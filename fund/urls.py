@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from users_auth import urls
-from Project import urls
+from Project import urls , views
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
+    path('', views.home),
     path('admin/', admin.site.urls),
     path('users_auth/', include('users_auth.urls')),
     path('project/', include('Project.urls')),

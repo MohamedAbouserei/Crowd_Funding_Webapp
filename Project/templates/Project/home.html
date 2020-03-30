@@ -15,6 +15,57 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <style>
+    .categoryButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100px;
+        position: relative;
+        margin: 20px;
+        height: -webkit-calc(100% - 90px);
+        height: -moz-calc(100% - 90px);
+        height: -o-calc(100% - 90px);
+        height: calc(100% - 90px);
+        width: 90%;
+        background-color: #FFE1DB;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        border-radius: 30px;
+        height: 100px;
+    }
+
+    .categoryButton:hover {
+        background-color: #F05731;
+        color: whitesmoke;
+
+    }
+
+    .categoryDivSection {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin: 20px;
+        height: -webkit-calc(100% - 90px);
+        height: -moz-calc(100% - 90px);
+        height: -o-calc(100% - 90px);
+        height: calc(100% - 90px);
+        width: 90%;
+        margin-left: 40px;
+        margin-bottom: -30px;
+    }
+
+    .hr-danger {
+        background-image: -webkit-linear-gradient(left, rgba(244, 67, 54, .8), rgba(244, 67, 54, .6), rgba(0, 0, 0, 0));
+    }
+
+    hr {
+        height: 4px;
+        margin-left: 15px;
+        margin-bottom: -3px;
+    }
+
     .homeDetailsFont {
         height: 312px important;
         float: left;
@@ -23,8 +74,6 @@
         line-height: 1.8;
         font-family: 'Montserrat', sans-serif;
         margin-bottom: 40px;
-
-
     }
 
     .fa {
@@ -122,9 +171,12 @@
                                         <span class="fa fa-star checked" value="5" style="float: left;"></span>
 
                                         {% if project.featured %}
-                                            <p class="homeDetailsFont" style="color: green;font-weight: bold; margin-left: 170px;">Featured</p>
+                                        <p class="homeDetailsFont"
+                                            style="color: green;font-weight: bold; margin-left: 170px;">Featured</p>
                                         {% else %}
-                                            <p class="homeDetailsFont" style="color: #F05731;font-weight: bold; margin-left: 170px;">Not Featured</p>
+                                        <p class="homeDetailsFont"
+                                            style="color: #F05731;font-weight: bold; margin-left: 170px;">Not Featured
+                                        </p>
                                         {% endif %}
 
 
@@ -164,9 +216,8 @@
 
 
 
-<hr style="margin-top: 30px; background-color: #F05731;">
-<div style="height: 70px;"></div>
-<div class="featured-cause homeDetailsFont">
+<div class="featured-cause homeDetailsFont" style="margin-top: 0px;">
+    <div style="height: 10px;"></div>
 
     <h1 class="title"> Most Recent Projects </h1>
 
@@ -242,12 +293,12 @@
     </div><!-- .container -->
 </div><!-- .featured-cause -->
 
-{% if featuredP %}
-<hr style="margin-top: 30px; background-color: #F05731;">
-<div style="height: 70px;"></div>
-<div class="featured-cause homeDetailsFont">
-
+<div class="featured-cause homeDetailsFont" style="width: 100%;">
+    <hr class="hr-danger">
+    <div style="height: 70px;"></div>
+    
     <h1 class="title"> Projects Featured By Admin </h1>
+    {% if featuredP %}
 
     <div class="container">
 
@@ -319,8 +370,10 @@
         {% endif %}
         {% endfor %}
     </div><!-- .container -->
+    {% else %}
+    <h1 class="title" style="margin-left: 30%; margin-top: 100px; margin-bottom: 50px;"> No Projects Featured By Admin </h1>
+    {% endif %}
 </div><!-- .featured-cause -->
-{% endif %}
 
 
 
@@ -328,8 +381,28 @@
 
 
 
+<div class="featured-cause homeDetailsFont" style="width: 100%;">
+    <hr class="hr-danger">
+    <div style="height: 70px;"></div>
+    <h1 class="title" style="margin-bottom: -60px ;"> Categories </h1>
+    {% for category in categories %}
+    {% if  forloop.counter0|divisibleby:2 %}
+    <div class="row entry-footer mt-5 categoryDivSection">
+        {% endif %}
+        <div class="entry-footer mt-5 categoryDivSection" style="width: 40%;">
+            <div class="entry-footer mt-5 categoryDivSection">
 
+                <a href="/project/{{ category.id }}/catProjects"
+                    class="btn categoryButton mr-2">{{ category.title }}</a>
+            </div>
 
+        </div>
+        {% if forloop.counter|divisibleby:2 %}
+    </div><!-- .row -->
+    {% endif %}
+    {% endfor %}
+
+</div>
 
 
 {% endblock %}

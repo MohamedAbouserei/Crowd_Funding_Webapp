@@ -88,6 +88,7 @@
 {% endblock %}
 {% block title %}Home{% endblock %}
 {%block page_name %}Home{% endblock %}
+{% block home %}current-menu-item{% endblock %}
 <span style="float:left;"><a href="#" class="demo">
         {% if person.id == project.id %}
         <form method="POST" action="/project/{{ project.id }}/deleteproject/">{% csrf_token %}

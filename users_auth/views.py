@@ -53,21 +53,27 @@ def signup_new(request):
                     'error_message': 'Email already exists.'
                 })
             else:
-
-                if form.cleaned_data['password'] != form.cleaned_data['re_password'] :
+                result=re.match("(01)[0-9]{9}", form.cleaned_data['us_phone'])
+                if form.cleaned_data['password'] != form.cleaned_data['re_password']  and not result:
+                    result_arr=['Passwords do not match','your phone not match egyptian phones']
                     return render(request, template, {
                         'form': form,
-                        'error_message': 'Passwords do not match.',
+                        'error_message': result_arr
                     })
-                elif re.match("(01)[0-9]{9}", form.cleaned_data['us_phone']) :
+                elif form.cleaned_data['password'] != form.cleaned_data['re_password']:
                     return render(request, template, {
                         'form': form,
-                        'phone_error':'your phone not match egyptian phones'
+                        'error': 'Passwords do not match'
+                    })
+
+                elif not result :
+                    return render(request, template, {
+                        'form': form,
+                        'error':'your phone not match egyptian phones'
                     })
 
             user = form.save(commit=False)
             user.is_active = False
-            user.save()
             current_site = get_current_site(request)
             email_subject = 'Activate Your Account'
             message = render_to_string('users_auth/activation.html', {
@@ -79,7 +85,7 @@ def signup_new(request):
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(email_subject, message, to=[to_email])
             email.send()
-            return render(request, 'users_auth/acc_sent.html')
+            return render(request, 'users_auth/sign_up.html',{"form":form ,"submitted":"Please confirm your email address to complete the registration"})
 
     else:
         form = New_users()

@@ -107,7 +107,7 @@
         </div><!-- .nav-bar -->
     </header><!-- .site-header -->
 
-    <div class="page-header">
+    <div class="page-header" {% block pageHeader %}{% endblock %}>
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -128,7 +128,7 @@
     </div>
 </div>
 
-    <footer class="site-footer">
+    <footer class="site-footer" {% block pagefooter %}{% endblock %}>
         <div class="footer-widgets">
             <div class="container">
                 <div class="row">

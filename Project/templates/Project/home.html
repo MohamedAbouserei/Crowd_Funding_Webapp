@@ -89,6 +89,8 @@
 {% block title %}Home{% endblock %}
 {%block page_name %}Home{% endblock %}
 {% block home %}current-menu-item{% endblock %}
+{% block pageHeader %} style="margin: 0 0 60px 0" {% endblock %}
+{% block pagefooter %} style="margin-bottom: -100px !important;"{% endblock %}
 <span style="float:left;"><a href="#" class="demo">
         {% if person.id == project.id %}
         <form method="POST" action="/project/{{ project.id }}/deleteproject/">{% csrf_token %}

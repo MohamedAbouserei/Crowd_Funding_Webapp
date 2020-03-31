@@ -220,6 +220,7 @@ a:hover, a:active {
 }
 
 .site-navigation ul li a:hover,
+.site-navigation ul li a:active,
 .site-navigation ul li.current-menu-item a {
     border-bottom: 3px solid #ff5a00;
     color: #ff5a00;

@@ -121,7 +121,7 @@ def user_login(request):
                 user_id = user[0].id
                 request.session[0] = user[0].id
                 if user[0].usertype == True:
-                    return HttpResponseRedirect('/project/')
+                    return HttpResponseRedirect('/project/home')
                 else:
                     return HttpResponseRedirect('/users_auth/categories/')
             else:

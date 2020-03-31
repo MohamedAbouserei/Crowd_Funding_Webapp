@@ -1,5 +1,6 @@
 body{
     background-color: #2B2B2B;   
+    
    }
    
    *{
@@ -8,7 +9,10 @@ body{
        
    }
    
-   
+   .container{
+       width:500px,
+
+}
    div h3 span{
         color : #FFF;
         font-size:14px;

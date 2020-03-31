@@ -8,7 +8,7 @@ class Users(models.Model):
     password = models.CharField(null=False, max_length=50)
     re_password = models.CharField(null=False, max_length=50)
     usertype=models.BooleanField(default=True)
-    us_phone=models.CharField(null=True,max_length=12)
+    us_phone=models.CharField(null=True,max_length=11)
     date_birth =models.DateField(null=True)
     faceboo_link= models.URLField(null=True)
     picture = models.FileField(null=True,upload_to='pic_images/')

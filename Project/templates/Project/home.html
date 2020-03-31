@@ -107,282 +107,32 @@
         id="report" value="{{ project.id }}" /><button class="submit"><i class="fa fa-flag"
             aria-hidden="true"></i></button></form>
 {% endfor %}
-  <div class="highlighted-cause">
 
 
-    {% block body %}
+{% block body %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-lg-12 order-1 order-lg-2" height="1000">
-                <div id="myCarousel" class="carousel slide" data-ride="carousel" style=" height: 250px;  ">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                        {% for project in projects %}
-                        {% if forloop.counter0 == 0 %}
-                        <li data-target="#myCarousel" data-slide-to="{{forloop.counter0}}" class="active"></li>
-                        {% else %}
-                        <li data-target="#myCarousel" data-slide-to="{{forloop.counter0}}"></li>
-                        {% endif %}
-                        {% endfor %}
-                    </ol>
-
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
-                        {% for project in projects %}
-                        {% if forloop.counter == 1 %}
-                        <div class="item active">
-                            {% else %}
-                            <div class="item">
-                                {% endif %}
-                                <div class="col-12 col-lg-7 order-2 order-lg-1">
-                                    <div class="section-heading" style="margin-left: 130px;">
-                                        <h2 class="entry-title" ><a
-                                                href="/project/{{ project.id }}/details/" style="color: #757586;">{{ project.title}}</a></h2>
-
-                                    </div><!-- .section-heading -->
-
-                                    <div class="fund-raised w-100 mt-5" style="margin-left: 200px;">
-
-                                        <div class="progress">
-                                            {% if project.totaltarget != 0 %}
-                                            {% widthratio project.rate project.totaltarget 100 as ratio %}
-                                            <div class="progress-bar progress-bar-warning" role="progressbar"
-                                                aria-valuenow="{{ ratio }}" aria-valuemin="0" aria-valuemax="100"
-                                                style="width: {{ratio}}%;background-color: #F05731">
-                                                <span class="sr-only">{{ ratio }}</span>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-
-                                        <div style="margin-left: 130px;">
-                                            <input type="hidden" value="{{ project.totalrate }}" id="rater" />
-                                        </div>
-
-                                        <div class="fund-raised-details d-flex flex-wrap justify-content-between align-items-center"
-                                            style="margin-top: -30px; margin-bottom: 10px;">
-                                            <div class="fund-raised-total mt-4">
-                                                Raised: ${{ project.rate }}
-                                            </div><!-- .fund-raised-total -->
-
-                                            <div class="fund-raised-goal mt-4">
-                                                Goal: ${{ project.totaltarget}}
-                                            </div><!-- .fund-raised-goal -->
-                                        </div><!-- .fund-raised-details -->
-                                        <h2 class="homeDetailsFont"> {{ project.totalrate }}</h2>
-                                        <span class="fa fa-star checked" style="float: left;"></span>
-                                        <h2 class="homeDetailsFont"> / 5.0</h2>
-                                        <span class="fa fa-star checked" value="5" style="float: left;"></span>
-
-                                        {% if project.featured %}
-                                        <p class="homeDetailsFont"
-                                            style="color: green;font-weight: bold; margin-left: 170px;">Featured</p>
-                                        {% else %}
-                                        <p class="homeDetailsFont"
-                                            style="color: #F05731;font-weight: bold; margin-left: 170px;">Not Featured
-                                        </p>
-                                        {% endif %}
+{% include "Project/homeTop5Slider.html" %}
 
 
-
-                                    </div><!-- .fund-raised -->
-
-                                </div><!-- .col -->
+{% include "Project/cardDraw.html" with header="Most Recent Projects" projectsToDraw=updatedProjects %}
 
 
-                            </div>
-                            {% empty %}
-                            <img src="/static/images/default.png" alt="" width="1000" max-height="300">
-
-
-                        </div>
-                        {% endfor %}
-                        <!-- Left and right controls -->
-                        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
-                </div>
-
-
-
-
-            </div><!-- .col -->
-        </div><!-- .row -->
-    </div><!-- .container -->
-</div><!-- .highlighted-cause -->
- 
-
-
-
-<div class="featured-cause homeDetailsFont" style="margin-top: 0px;">
-    <div style="height: 10px;"></div>
-
-    <h1 class="title"> Most Recent Projects </h1>
-
-    <div class="container">
-
-        {%for project in updatedProjects %}
-        {% if  forloop.counter0|divisibleby:2 %}
-        <div class="row">
-            {% endif %}
-            <div class="col-12 col-lg-6">
-                <div class="cause-wrap d-flex flex-wrap justify-content-between"
-                    style="width: 550px;text-align: center; height:312px;">
-
-                    <div class="cause-content-wrap">
-                        <div>
-                            <header class="entry-header d-flex flex-wrap align-items-center">
-                                <h3 class="entry-title w-100 m-0"><a href="#">{{project.title}}</a></h3>
-
-                                <div class="posted-date">
-                                    <a href="#"> {{ project.startdate|date:"D d M Y" }}</a>
-                                </div><!-- .posted-date -->
-
-                                <div class="posted-date" class="homeDetailsFont">
-                                    <a href="#">{{ project.enddate|date:"D d M Y" }}</a>
-                                </div><!-- .cats-links -->
-                                {% if project.featured %}
-                                <div class="posted-date" class="homeDetailsFont">
-                                    <a href="#" style="color: green;font-weight: bold;">Featured</a>
-                                </div><!-- .cats-links -->
-                                {% else %}
-                                <div class="posted-date" class="homeDetailsFont">
-                                    <a href="#" style="color: #F05731;font-weight: bold;">Not Featured</a>
-                                </div><!-- .cats-links -->
-                                {% endif %}
-                            </header><!-- .entry-header -->
-                        </div>
-                        <div class="cats-links homeDetailsFont" style="height: 70%; box-sizing: initial;">
-                            <p class="m-0">{{ project.details }}</p>
-                        </div><!-- .entry-content -->
-
-                        <div class="entry-footer mt-5">
-                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
-                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
-                                Now</a>
-                        </div><!-- .entry-footer -->
-                    </div><!-- .cause-content-wrap -->
-
-                    <div class="fund-raised w-100">
-                        <!-- .fund-raised-bar -->
-
-                        <div class="fund-raised-details d-fle x flex-wrap justify-content-between align-items-center">
-                            <div class="row">
-                                <div class="fund-raised-total mt-4 col-12 col-lg-6">
-
-                                    Raised:${{ project.rate }}
-
-                                </div><!-- .fund-raised-total -->
-
-                                <div class="fund-raised-goal mt-4 col-12 col-lg-6">
-                                    Goal: ${{ project.totaltarget }}
-
-                                </div><!-- .fund-raised-goal -->
-                            </div>
-                        </div><!-- .fund-raised-details -->
-                    </div><!-- .fund-raised -->
-                </div><!-- .cause-wrap -->
-            </div><!-- .col -->
-
-            {% if forloop.counter|divisibleby:2 %}
-        </div><!-- .row -->
-        {% endif %}
-        {% endfor %}
-    </div><!-- .container -->
-</div><!-- .featured-cause -->
-
+{% if featuredP %}
 <div class="featured-cause homeDetailsFont" style="width: 100%;">
     <hr class="hr-danger">
-    <div style="height: 70px;"></div>
-    
-    <h1 class="title"> Projects Featured By Admin </h1>
-    {% if featuredP %}
-
-    <div class="container">
-
-        {%for project in featuredP %}
-        {% if  forloop.counter0|divisibleby:2 %}
-        <div class="row">
-            {% endif %}
-            <div class="col-12 col-lg-6">
-                <div class="cause-wrap d-flex flex-wrap justify-content-between"
-                    style="width: 550px;text-align: center; height:312px;">
-
-                    <div class="cause-content-wrap">
-                        <div>
-                            <header class="entry-header d-flex flex-wrap align-items-center">
-                                <h3 class="entry-title w-100 m-0"><a href="#">{{project.title}}</a></h3>
-
-                                <div class="posted-date">
-                                    <a href="#"> {{ project.startdate|date:"D d M Y" }}</a>
-                                </div><!-- .posted-date -->
-
-                                <div class="posted-date" class="homeDetailsFont">
-                                    <a href="#">{{ project.enddate|date:"D d M Y" }}</a>
-                                </div><!-- .cats-links -->
-                                {% if project.featured %}
-                                <div class="posted-date" class="homeDetailsFont">
-                                    <a href="#" style="color: green;font-weight: bold;">Featured</a>
-                                </div><!-- .cats-links -->
-                                {% else %}
-                                <div class="posted-date" class="homeDetailsFont">
-                                    <a href="#" style="color: #F05731;font-weight: bold;">Not Featured</a>
-                                </div><!-- .cats-links -->
-                                {% endif %}
-                            </header><!-- .entry-header -->
-                        </div>
-                        <div class="cats-links homeDetailsFont" style="height: 70%; box-sizing: initial;">
-                            <p class="m-0">{{ project.details }}</p>
-                        </div><!-- .entry-content -->
-
-                        <div class="entry-footer mt-5">
-                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
-                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
-                                Now</a>
-                        </div><!-- .entry-footer -->
-                    </div><!-- .cause-content-wrap -->
-
-                    <div class="fund-raised w-100">
-                        <!-- .fund-raised-bar -->
-
-                        <div class="fund-raised-details d-fle x flex-wrap justify-content-between align-items-center">
-                            <div class="row">
-                                <div class="fund-raised-total mt-4 col-12 col-lg-6">
-
-                                    Raised:${{ project.rate }}
-
-                                </div><!-- .fund-raised-total -->
-
-                                <div class="fund-raised-goal mt-4 col-12 col-lg-6">
-                                    Goal: ${{ project.totaltarget }}
-
-                                </div><!-- .fund-raised-goal -->
-                            </div>
-                        </div><!-- .fund-raised-details -->
-                    </div><!-- .fund-raised -->
-                </div><!-- .cause-wrap -->
-            </div><!-- .col -->
-
-            {% if forloop.counter|divisibleby:2 %}
-        </div><!-- .row -->
-        {% endif %}
-        {% endfor %}
-    </div><!-- .container -->
-    {% else %}
-    <h1 class="title" style="margin-left: 30%; margin-top: 100px; margin-bottom: 50px;"> No Projects Featured By Admin </h1>
-    {% endif %}
-</div><!-- .featured-cause -->
-
-
-
-
-
+    <div style="height: 10px;"></div>
+</div>
+{% include "Project/cardDraw.html" with header="Featured Projects by Admin" projectsToDraw=featuredP %}
+{% else %}
+<div class="featured-cause homeDetailsFont" style="width: 100%;">
+    <hr class="hr-danger">
+    <div style="height: 10px;"></div>
+    <h1 class="title" style="margin-top: 30px;"> Featured Projects by Admin </h1>
+    <h1 class="title" style="margin-left: 30%; margin-top: 100px; margin-bottom: 50px;"> No Projects Featured By Admin
+        Yet
+    </h1>
+</div>
+{% endif %}
 
 
 <div class="featured-cause homeDetailsFont" style="width: 100%;">

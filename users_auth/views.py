@@ -53,21 +53,26 @@ def signup_new(request):
                     'error_message': 'Email already exists.'
                 })
             else:
-                
-                if form.cleaned_data['password'] != form.cleaned_data['re_password'] :
+                result= re.match("(01)[0-9]{9}", form.cleaned_data['us_phone'])
+                if form.cleaned_data['password'] != form.cleaned_data['re_password']  and not result :
+                    list_error=['Passwords do not match','your phone not match egyptian phones']
                     return render(request, template, {
                         'form': form,
-                        'error_message': 'Passwords do not match.',
+                        'error_message': list_error,
                     })
-                elif re.match("(01)[0-9]{9}", form.cleaned_data['us_phone']) :
+                elif not result :
                     return render(request, template, {
                         'form': form,
-                        'phone_error':'your phone not match egyptian phones'
+                        'error':'your phone not match egyptian phones'
+                    })
+                elif form.cleaned_data['password'] != form.cleaned_data['re_password']   :
+                    return render(request, template, {
+                        'form': form,
+                        'error': 'Passwords do not match',
                     })
  
             user = form.save(commit=False)
             user.is_active = False
-            user.save()
             current_site = get_current_site(request)
             email_subject = 'Activate Your Account'
             message = render_to_string('users_auth/activation.html', {
@@ -125,10 +130,10 @@ def user_login(request):
                 else:
                     return HttpResponseRedirect('/users_auth/categories/')
             else:
-                return render(request, "Project/login.html", {"form": form})
+                return render(request, "users_auth/login.html", {"form": form})
 
     else:
-        return render(request, "Project/login.html", {"form": form})
+        return render(request, "users_auth/login.html", {"form": form})
 
 
 

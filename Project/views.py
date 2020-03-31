@@ -107,9 +107,8 @@ def django_image_and_file_upload_ajax(request):
             return JsonResponse({'error': True, 'errors': form.errors})
     else:
         form = ImageFileUploadForm()
-        # projects = Users.objects.filter(
-        #     id=int(request.session.get('0')))[0].users.all()
-        projects = Projects.objects.all().order_by("-created_at")
+        projects = Users.objects.filter(
+            id=int(request.session.get('0')))[0].users.all()
         return render(request, 'Project/project_images.html', {'form': form, 'projects': projects})
 
 

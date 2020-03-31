@@ -53,7 +53,7 @@ def signup_new(request):
                     'error_message': 'Email already exists.'
                 })
             else:
-                
+
                 if form.cleaned_data['password'] != form.cleaned_data['re_password'] :
                     return render(request, template, {
                         'form': form,
@@ -64,7 +64,7 @@ def signup_new(request):
                         'form': form,
                         'phone_error':'your phone not match egyptian phones'
                     })
- 
+
             user = form.save(commit=False)
             user.is_active = False
             user.save()
@@ -129,7 +129,6 @@ def user_login(request):
 
     else:
         return render(request, "Project/login.html", {"form": form})
-
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)

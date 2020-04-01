@@ -283,8 +283,8 @@ def person(request):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
-        return HttpResponseRedirect('/users_auth/login/')
+    # if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    #     return HttpResponseRedirect('/users_auth/login/')
     projects = Projects.objects.all().order_by("-created_at")
     categories = Categories.objects.all().order_by("-created_at")
 

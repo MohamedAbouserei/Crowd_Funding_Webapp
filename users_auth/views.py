@@ -32,6 +32,7 @@ from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.decorators.cache import cache_control
 from django.db.models import *
 from django.contrib.auth.models import User
+import re
 
 user_id = ""
 
@@ -45,6 +46,11 @@ def signup_new(request):
     form = New_users()
     if request.method == 'POST':
         form = New_users(request.POST)
+        if not re.match("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,6}$",request.POST.get('email')):
+            return render(request, template, {
+                    'form': form,
+                    'error_message': 'Thi Is Invalid Email.'
+                })
         if form.is_valid():
             print(form.cleaned_data)
             if Users.objects.filter(email=form.cleaned_data['email']).exists():
@@ -86,6 +92,8 @@ def signup_new(request):
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(email_subject, message, to=[to_email])
             email.send()
+            request.session["submitted"] = "Please confirm your email address to complete the registration"
+            return HttpResponseRedirect('/users_auth/login/')
             return render(request, 'users_auth/sign_up.html',{"form":form ,"submitted":"Please confirm your email address to complete the registration"})
 
     else:
@@ -121,26 +129,45 @@ def user_profile (request):
 
 def user_login(request):
     global user_id
+    template="Project/login.html"
     form = User_Login()
-    if request.method == 'POST':
-        form = User_Login(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            user = Users.objects.filter(email=email, password=password)
-            if user:
-                # return HttpResponse("You are logged in your id is !")
-                user_id = user[0].id
-                request.session[0] = user[0].id
-                if user[0].usertype == True:
-                    return HttpResponseRedirect('/project/home')
-                else:
-                    return HttpResponseRedirect('/users_auth/categories/')
-            else:
-                return render(request, "Project/login.html", {"form": form})
-
+    if not Users.objects.filter(email=request.POST.get('email')).exists() and not request.POST.get('email') == None:
+                return render(request, template, {
+                    'form': form,
+                    'error_message': 'Email does not exists Please register First.'
+                })
+    elif  not request.POST.get('email') == None and not Users.objects.get(email=request.POST.get('email')).email_confirmed:
+        return render(request, template, {
+                    'form': form,
+                    'error_message': 'Your Email Does Not Activated Yet Please Activate Your Email First.'
+                })
     else:
-        return render(request, "Project/login.html", {"form": form})
+        if request.method == 'POST':
+            form = User_Login(request.POST)
+            if form.is_valid():
+                email = form.cleaned_data.get('email')
+                password = form.cleaned_data.get('password')
+                user = Users.objects.filter(email=email, password=password)
+                if user:
+                    # return HttpResponse("You are logged in your id is !")
+                    user_id = user[0].id
+                    request.session[0] = user[0].id
+                    if user[0].usertype == True:
+                        return HttpResponseRedirect('/project/home')
+                    else:
+                        return HttpResponseRedirect('/users_auth/categories/')
+                else:
+                    return render(request, "Project/login.html", {"form": form})
+
+        else:
+            if request.session.get('submitted',False) is False:
+                return render(request, "Project/login.html", {"form": form})
+            else:
+                tempVar = request.session.get('submitted')
+                request.session['submitted'] = False
+                return render(request, "Project/login.html", {"form": form, "val":tempVar})
+                
+                
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)

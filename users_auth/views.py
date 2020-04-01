@@ -114,6 +114,10 @@ def thanks(request):
     user = Users.objects.all()
     return render(request, 'users_auth/success.html', {"user": user})
 
+def user_profile (request):
+    user=Users.objects.get(id=user_id)
+    return render(request,"/users_auth/user_profile.html", {"user":user})
+
 
 def user_login(request):
     global user_id

@@ -31,7 +31,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.decorators.cache import cache_control
 from django.db.models import *
-
+from django.contrib.auth.models import User
 
 user_id = ""
 
@@ -74,6 +74,7 @@ def signup_new(request):
 
             user = form.save(commit=False)
             user.is_active = False
+            user.save()
             current_site = get_current_site(request)
             email_subject = 'Activate Your Account'
             message = render_to_string('users_auth/activation.html', {
@@ -99,7 +100,7 @@ def activate_account(request, uidb64, token):
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if user is not None and account_activation_token.check_token(user, token):
-        user.is_active = False
+        user.email_confirmed= True
         user.save()
         #login(request, user)
         # return redirect('home')

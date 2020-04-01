@@ -1,0 +1,22 @@
+<!-- Default form register -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}  add team {% endblock %}
+{% block content %}
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="..." alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">{{ user.first_name }}</h5>
+      <h5 class="card-title">{{ user.last_name }}</h5>
+      <h5 class="card-title">{{ user.email }}</h5>
+      <h5 class="card-title">{{ user.password }}</h5>
+
+
+
+      
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+
+
+{% endblock %}

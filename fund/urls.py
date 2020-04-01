@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from users_auth import urls
-from Project import urls
+from users_auth import urls,views
+from Project import urls 
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
+    path('', views.signup_new),
     path('admin/', admin.site.urls),
+    path('admins/addcategory/', views.addcategory, name='addcategory'),
     path('users_auth/', include('users_auth.urls')),
     path('project/', include('Project.urls')),
 ]

@@ -8,6 +8,8 @@ from django.forms import ValidationError
 
 
 class New_users(ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    re_password = forms.CharField(widget=forms.PasswordInput())
     class Meta:
         model = Users
         fields = ['first_name', 'last_name', 'email','password', 're_password','us_phone']
@@ -34,6 +36,7 @@ class User_Login(ModelForm):
 
 
 class user_profile(ModelForm):
+     password = forms.CharField(widget=forms.PasswordInput())
      class Meta:
         model = Users
         fields = ['first_name','last_name','email','password','us_phone','date_birth','faceboo_link','picture']           

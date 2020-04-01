@@ -3,67 +3,74 @@
 {% load static %}
 {% block title %}  add team {% endblock %}
 {% block content %}
-<div class="container">
-    <form class="text-center border border-light p-5" method="post" action="/users_auth/sign_up/">
-        {% csrf_token %}
-    <!--   {{ form.as_p }}-->
-         <div class="col-md-8 col-md-offset-2">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Register</div>
-                        <div class="panel-body">
-                            {% if error_message %}
-                            <p class="bg-danger p-d ml-b">{{ error_message }}</p>
-                            {% endif %}
 
-                            {% if phone_error %}
-                            <p class="bg-danger p-d ml-b">{{ phone_error }}</p>
-                            {% endif %}
-    
-                         <div class="form-group clearfix">
-                                <label  class="col-md-4 control-label text-right">First Name:</label>
-                                <div class="col-md-6">
-                                    {{ form.first_name }}
-                                </div>
-                            </div>
-                            <div class="form-group clearfix">
-                                <label  class="col-md-4 control-label text-right">Last Name:</label>
-                                <div class="col-md-6">
-                                    {{ form.last_name }}
-                                </div>
-                            </div>
-    
-                            <div class="form-group clearfix">
-                                <label class="col-md-4 control-label text-right">Email<span class="text-red">*</span>:</label>
-                                <div class="col-md-6">
-                                    {{ form.email }}
-                                </div>
-                            </div>
-                            <div class="form-group clearfix">
-                                <label  class="col-md-4 control-label text-right">Password<span class="text-red">*</span>:</label>
-                                <div class="col-md-6">
-                                    {{ form.password }}
-                                </div>
-                            </div>
-                            <div class="form-group clearfix">
-                                <label  class="col-md-4 control-label text-right">Confirm password:</label>
-                                <div class="col-md-6">
-                                    {{ form.re_password }}
-                                </div>
-                            </div>
-    
-                            <div class="form-group clearfix">
-                                <label  class="col-md-4 control-label text-right">Phone Number:</label>
-                                <div class="col-md-6">
-                                    {{ form.us_phone }}
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-md-offset-4">
-                                <input type="submit" value="Register" class="btn btn-success">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    </form>
-    </div>
-{% endblock %}
+ 
+
+
+
 <!-- Default form register -->
+
+{% load bootstrap4 %} 
+{% bootstrap_messages %} 
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="/static/css/login.css" rel="stylesheet" >
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href='http://fonts.googleapis.com/css?family=Raleway:400,200' rel='stylesheet' type='text/css'>
+
+<div class="container">
+	<div class="row login_box">
+	    <div class="col-md-12 col-xs-12" align="center">
+            <div class="line"><h3>{% now "TIME_FORMAT" %}</h3></div>
+            <div class="outter"><img src="/static/images/teamwork.png" class="image-circle"/></div>   
+            <h1>Hi Guest</h1>
+            <span>Egyption</span>
+	    </div>
+        <div class="col-md-6 col-xs-6 follow line" align="center">
+            <h3>
+                 Countless <br/> <span>PROJECTS</span>
+            </h3>
+        </div>
+        <div class="col-md-6 col-xs-6 follow line" align="center">
+            <h3>
+                 Endless <br/> <span>INVESTMENTS</span>
+            </h3>
+        </div>
+        <form class="text-center border border-light p-5" method="post" action="/users_auth/sign_up/">
+            {% csrf_token %}
+        <div class="col-md-12 col-xs-12 login_control">
+            <div class="panel-body">
+                {% if error_message %}
+                <p class="bg-danger p-d ml-b">{{ error_message }}</p>
+                {% endif %}
+
+                {% if error %}
+                <p class="bg-danger p-d ml-b">{{ error }}</p>
+                {% endif %}
+
+                {% if submitted %}
+                <div class="alert alert-success">
+                    <strong>S{ submitted }}</strong>
+                  </div>
+                {% endif %}
+                </div>
+                <div class="control">
+                    <div class="label"><a href="/users_auth/login">I am already a member</a></div>
+                    {% bootstrap_form form %}
+                </div>
+                
+                
+                <div align="center">
+                     <button class="btn btn-orange"  value="Register" class="btn btn-success">LOGIN</button>
+                </div>
+                
+        </div>
+        </form>
+        
+            
+    </div>
+</div>
+{% endblock %}

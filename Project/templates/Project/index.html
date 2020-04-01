@@ -84,10 +84,10 @@
                         <nav class="site-navigation d-flex justify-content-end align-items-center">
 
                             <ul class="d-flex flex-column flex-lg-row justify-content-lg-end align-content-center">
-                                <li><a href="/project/home"> Home</a></li>
-                                <li><a href="/project/">Projects</a></li>
-                                <li><a href="/project/addproject">Add Project</a></li>
-                                <li><a href="/project/addproject/pic">Add Project Pictures</picture></a></li>
+                                <li class="{% block home %}{% endblock %}" ><a href="/project/home"> Home</a></li>
+                                <li class="{% block projects %}{% endblock %}"><a href="/project/">Projects</a></li>
+                                <li class="{% block addproject %}{% endblock %}"><a href="/project/addproject">Add Project</a></li>
+                                <li class="{% block addprojectPic %}{% endblock %}"><a href="/project/addproject/pic">Add Project Pictures</picture></a></li>
                                 <li><a href="#">Profile</picture></a></li>
                                 <li><a href="/project/logout">Logout</picture></a></li>
 
@@ -107,7 +107,7 @@
         </div><!-- .nav-bar -->
     </header><!-- .site-header -->
 
-    <div class="page-header">
+    <div class="page-header" {% block pageHeader %}{% endblock %}>
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -126,8 +126,9 @@
             </div>
         </div>
     </div>
+</div>
 
-    <footer class="site-footer">
+    <footer class="site-footer" {% block pagefooter %}{% endblock %}>
         <div class="footer-widgets">
             <div class="container">
                 <div class="row">

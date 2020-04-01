@@ -1,0 +1,90 @@
+{% extends "Project/index.html" %}
+{% load bootstrap4 %}
+{% bootstrap_messages %}
+{% block title %}{{category}} Projects{% endblock %}
+{%block page_name %}Category Projects{% endblock %}
+{% block projects %}current-menu-item{% endblock %}
+
+{% block body %}
+<div class="featured-cause" style="width: 100%;">
+    <div class="container">
+
+        {% if projects %}
+        {%for project in projects %}
+        {% if  forloop.counter0|divisibleby:2 %}
+        <div class="row">
+            {% endif %}
+            <div class="col-12 col-lg-6">
+                <div class="cause-wrap d-flex flex-wrap justify-content-between"
+                    style="width: 550px;text-align: center;">
+
+                    <div class="cause-content-wrap">
+                        <header class="entry-header d-flex flex-wrap align-items-center">
+                            <h3 class="entry-title w-100 m-0"><a href="#">{{project.title}}</a></h3>
+
+                            <div class="posted-date">
+                                <a href="#"> {{ project.startdate|date:"D d M Y" }}</a>
+                            </div><!-- .posted-date -->
+
+                            <div class="cats-links">
+                                <a href="#">{{ project.enddate|date:"D d M Y" }}</a>
+                            </div><!-- .cats-links -->
+                        </header><!-- .entry-header -->
+
+                        <div class="cats-links">
+                            <p class="m-0">{{ project.details }}</p>
+                        </div><!-- .entry-content -->
+
+                        <div class="entry-footer mt-5">
+                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                style="width: 500px;text-align: center;">Donate Now</a>
+                        </div><!-- .entry-footer -->
+                    </div><!-- .cause-content-wrap -->
+
+                    <div class="fund-raised w-100">
+                        <!-- .fund-raised-bar -->
+
+                        <div class="fund-raised-details d-fle x flex-wrap justify-content-between align-items-center">
+                            <div class="row">
+                                <div class="fund-raised-total mt-4 col-12 col-lg-6">
+
+                                    {% for rate in rates %}
+                                    {% if rate.prj_id == project.id and rate %}
+                                    Raised:${{ rate.rate__sum }}
+                                    {% endif %}
+                                    {% empty %}
+                                    Raised:$0
+                                    {% endfor %}
+
+                                </div><!-- .fund-raised-total -->
+
+                                <div class="fund-raised-goal mt-4 col-12 col-lg-6"
+                                    style="float: right; text-align: right;">
+                                    Goal: ${{ project.totaltarget }}
+
+                                </div><!-- .fund-raised-goal -->
+                            </div>
+                        </div><!-- .fund-raised-details -->
+                    </div><!-- .fund-raised -->
+                </div><!-- .cause-wrap -->
+            </div><!-- .col -->
+
+            {% if forloop.counter|divisibleby:2 %}
+        </div><!-- .row -->
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <h1 class="title" style=" float: left; padding-right: 15px;"> No Projects in </h1><p></p>
+        <h1 class="title" style="color: #F05731; float: left; padding-right: 15px; font-weight: bold;"> {{category}}</h1><p></p>
+        <h1 class="title" style="margin-top: 150px"> Category </h1>
+
+        {% endif %}
+    </div><!-- .container -->
+</div><!-- .featured-cause -->
+
+
+
+{% endblock %}
+{% block js %}
+
+{% endblock %}

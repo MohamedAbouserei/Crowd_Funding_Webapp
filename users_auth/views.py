@@ -128,21 +128,7 @@ def user_login(request):
     global user_id
     template="Project/login.html"
     form = User_Login()
-<<<<<<< HEAD
-    if request.method == 'POST':
-        form = User_Login(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            user = Users.objects.get(email=email, password=password)
-            if user:
-                # return HttpResponse("You are logged in your id is !")
-                user_id = user.id
-                print (user_id)
-                request.session[0] = user.id
-                if user.usertype == True:
-                    return HttpResponseRedirect('/project/home')
-=======
+
     if not Users.objects.filter(email=request.POST.get('email')).exists() and not request.POST.get('email') == None:
                 return render(request, template, {
                     'form': form,
@@ -168,7 +154,6 @@ def user_login(request):
                         return HttpResponseRedirect('/project/home')
                     else:
                         return HttpResponseRedirect('/users_auth/categories/')
->>>>>>> d8d7619361398620768b4f36a8b262b9a8bdc7bc
                 else:
                     return render(request, "Project/login.html", {"form": form})
 

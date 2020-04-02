@@ -3,20 +3,45 @@
 {% load static %}
 {% block title %}  add team {% endblock %}
 {% block content %}
-<div class="card" style="width: 18rem;">
-    <img class="card-img-top" src="..." alt="Card image cap">
+<div class="container">
+<div class="card" style="width: 500px;">
     <div class="card-body">
+      <h1>Personal Info</h1>
       <h5 class="card-title">{{ user.first_name }}</h5>
       <h5 class="card-title">{{ user.last_name }}</h5>
       <h5 class="card-title">{{ user.email }}</h5>
-      <h5 class="card-title">{{ user.password }}</h5>
+      <h5 class="card-title"> {{ user.password }}</h5>
+      <a href="/users_auth/edit_user_profile/" class="btn btn-primary">Edit</a>
+      <a href="/users_auth/delete_profile/" class="btn btn-primary">Delete</a>
 
-
-
-      
-      <a href="#" class="btn btn-primary">Go somewhere</a>
     </div>
   </div>
+
+
+
+  <div class="card" style="width: 500px;">
+      <div class="card-body">
+        <h1>Projects Info</h1>
+        {% for project in projects %}
+        <h5 class="card-title">{{ project.title }}</h5>
+        {% endfor %}
+
+      </div>
+    </div>
+
+
+
+    <div class="card" style="width: 500px;">
+        <div class="card-body">
+          <h1>Donation Info</h1>
+
+          {% for don in donation %}
+          <h5 class="card-title">{{ don.rate }}</h5>
+          {% endfor %}
+  
+        </div>
+      </div>
+    </div>
 
 
 {% endblock %}

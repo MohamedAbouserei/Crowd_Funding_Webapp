@@ -11,7 +11,7 @@ class Users(models.Model):
     us_phone=models.CharField(null=True,max_length=12)
     date_birth =models.DateField(null=True)
     faceboo_link= models.URLField(null=True)
-    picture = models.FileField(null=True,upload_to='pic_images/')
+    picture = models.FileField(upload_to='images/', null=True, verbose_name="")
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     email_confirmed = models.BooleanField(default=False)

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from users_auth.forms import *
+from users_auth.forms import New_users,User_Login,User_profile
 from users_auth.models import Users
 import re
 
@@ -80,7 +80,7 @@ def signup_new(request):
             message = render_to_string('users_auth/activation.html', {
                     'user': user,
                     'domain': current_site.domain,
-                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
                     'token': account_activation_token.make_token(user),
                 })
             to_email = form.cleaned_data.get('email')
@@ -114,9 +114,6 @@ def thanks(request):
     user = Users.objects.all()
     return render(request, 'users_auth/success.html', {"user": user})
 
-def user_profile (request):
-    user=Users.objects.get(id=user_id)
-    return render(request,"/users_auth/user_profile.html", {"user":user})
 
 
 def user_login(request):
@@ -127,12 +124,13 @@ def user_login(request):
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
-            user = Users.objects.filter(email=email, password=password)
+            user = Users.objects.get(email=email, password=password)
             if user:
                 # return HttpResponse("You are logged in your id is !")
-                user_id = user[0].id
-                request.session[0] = user[0].id
-                if user[0].usertype == True:
+                user_id = user.id
+                print (user_id)
+                request.session[0] = user.id
+                if user.usertype == True:
                     return HttpResponseRedirect('/project/home')
                 else:
                     return HttpResponseRedirect('/users_auth/categories/')
@@ -141,6 +139,65 @@ def user_login(request):
 
     else:
         return render(request, "Project/login.html", {"form": form})
+
+def user_profile (request):
+    user=Users.objects.get(id=user_id)
+    project_detail=Projects.objects.filter(user_id=user_id)
+    donation=Project_User_Donation.objects.filter(user_id=user_id)
+    return render(request,"users_auth/user_profile.html", 
+               {"user":user,"projects":project_detail,"donation":donation})
+
+
+
+def update_user_data(request):
+    
+        variable=float(request.session.get('0'))
+        var=int(variable)
+        user=Users.objects.get(id=var)
+        initial_dict={"first_name":user.first_name,"last_name":user.last_name,"email":user.email,"password":user.password ,"us_phone":user.us_phone}
+        print(initial_dict["first_name"])
+        form=User_profile(request.POST or None,request.FILES or None, initial = initial_dict)
+        
+        if request.method== "POST":
+
+                if form.is_valid():
+                        user.first_name=form.cleaned_data['first_name']
+                        user.last_name=form.cleaned_data['last_name']
+                        user.email=form.cleaned_data['email']
+                        user.password=form.cleaned_data['password']
+                        user.re_password=form.cleaned_data['password']
+                        user.us_phone=form.cleaned_data['us_phone']
+                        user.date_birth=form.cleaned_data['date_birth']
+                        user.faceboo_link=form.cleaned_data['faceboo_link']
+                        user.save()
+
+
+
+
+
+                        return HttpResponse('your data saved')
+        else:
+             form=User_profile(request.POST or None,request.FILES or None, initial = initial_dict)
+        return render(request,"users_auth/edit_profile.html",{"form":form })
+        
+
+
+
+
+def delete_profile(request):
+    variable=float(request.session.get('0'))
+    var=int(variable)
+ 
+    if request.method== "POST":
+      form=DeleteAccount(request.POST )
+      if form.is_valid:
+        #   user=Users.objects.delete(id=var)
+          user.delete()
+    else:
+         form=DeleteAccount()
+    return render(request,"users_auth/delete_account.html")
+
+          
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)

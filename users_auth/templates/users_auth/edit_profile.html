@@ -1,0 +1,15 @@
+<!-- Default form register -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}  add team {% endblock %}
+{% block content %}
+    <form class="text-center border border-light p-5" method="post" action="/users_auth/edit_user_profile/">
+        {% csrf_token %}
+        {{  form.as_p }}
+    <!--   {{ form.as_p }}-->
+    <button class="btn btn-orange"  value="Register" class="btn btn-success">submit</button>
+
+    </form>
+
+{% endblock %}
+<!-- Default form register -->

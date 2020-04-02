@@ -27,17 +27,15 @@ class User_Login(ModelForm):
 
 class User_profile(ModelForm):
     # user = Users.objects.get(id=user_id)
+    def __init__(self, *args, **kwargs):
+       super(User_profile, self).__init__(*args, **kwargs)
+       self.fields['email'].widget.attrs['readonly'] = True
+
     class Meta:
         model = Users
-        fields = ['picture','first_name','last_name','email','password','us_phone','date_birth','faceboo_link']    
+        fields = ['picture','first_name','last_name','email','password','country','us_phone','date_birth','faceboo_link']    
       
-    # def __init__(self, *args, **kwargs):
-    #     self.instance= kwargs.pop('instance')
-    #     super(User_profile, self).__init__(*args, **kwargs)
-    #     self.fields['first_name'].initial =instance.first_name
-    #     self.fields['last_name'].initial = user["last_name"]
-    #     self.fields['email'].initial = user["email"]
-    #     self.fields['password'].initial = user["password"]
+
 
 class DeleteAccount(ModelForm):
      class Meta:

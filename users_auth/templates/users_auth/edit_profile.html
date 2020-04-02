@@ -2,7 +2,7 @@
 <!-- Default form register -->
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}  Login {% endblock %}
+{% block title %}  edit profile {% endblock %}
 {% block content %}
 
  
@@ -44,19 +44,12 @@
             {% csrf_token %}
         <div class="col-md-12 col-xs-12 login_control">
             <div class="panel-body">
-                {% if error_message %}
-                <p class="bg-danger p-d ml-b" style="color: red;">{{ error_message }}</p>
-                {% endif %}
 
                 {% if error %}
                 <p class="bg-danger p-d ml-b" style="color: red;">{{ error }}</p>
                 {% endif %}
 
-                {% if val %}
-                <div class="alert alert-success">
-                    <strong>{{ val }}</strong>
-                  </div>
-                {% endif %}
+      
                 </div>
                 <div class="control">
                     <div class="label">Edit Your profile </a></div>

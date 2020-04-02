@@ -49,7 +49,7 @@ def signup_new(request):
         if not re.match("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,6}$",request.POST.get('email')):
             return render(request, template, {
                     'form': form,
-                    'error_message': 'Thi Is Invalid Email.'
+                    'error_message': 'This Is Invalid Email.'
                 })
         if form.is_valid():
             print(form.cleaned_data)
@@ -182,15 +182,25 @@ def update_user_data(request):
         var=int(variable)
         user=Users.objects.get(id=var)
         initial_dict={"first_name":user.first_name,"last_name":user.last_name,"email":user.email,
-        "password":user.password ,"us_phone":user.us_phone,"date_birth":user.date_birth,"facebook_link":user.faceboo_link,"picture":user.picture}
+        "password":user.password ,"us_phone":user.us_phone,"date_birth":user.date_birth,"faceboo_link":user.faceboo_link,"picture":user.picture}
         print(initial_dict["first_name"])
-        form=User_profile(request.POST or  None, initial = initial_dict)
-        
+
+
+        form=User_profile( initial = initial_dict)
+
         if request.method== "POST":
-                form=User_profile(request.POST or  None,request.FILES, initial = initial_dict)
+            if form.is_valid():
+                form=User_profile(request.POST or  None,request.FILES or None, initial = initial_dict)
 
-
-                if form.is_valid():
+                regx="/(?:http:\/\/)?(?:www\.)?facebook\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-]*)/"
+                result=re.match(regx, form.cleaned_data['faceboo_link'])
+                template="users_auth/edit_profile.html"
+                if not result :
+                        return render(request, template, {
+                            'form': form,
+                            'error':'you must enter facebook link'
+                        })
+                else:
                         user.first_name=form.cleaned_data['first_name']
                         user.last_name=form.cleaned_data['last_name']
                         user.email=form.cleaned_data['email']
@@ -200,11 +210,12 @@ def update_user_data(request):
                         user.date_birth=form.cleaned_data['date_birth']
                         user.faceboo_link=form.cleaned_data['faceboo_link']
                         user.picture=form.cleaned_data['picture']
+                        user.country=form.cleaned_data['country']
                         user.save()
 
                         return HttpResponse('your data saved')
         else:
-             form=User_profile(request.POST or None,request.FILES or None, initial = initial_dict)
+             form=User_profile( initial = initial_dict)
         return render(request,"users_auth/edit_profile.html",{"form":form })
         
 

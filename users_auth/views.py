@@ -48,15 +48,10 @@ def signup_new(request):
         form = New_users(request.POST)
         if not re.match("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,6}$", request.POST.get('email')):
             return render(request, template, {
-<<<<<<< HEAD
                     'form': form,
                     'error_message': 'This Is Invalid Email.'
                 })
-=======
-                'form': form,
-                'error_message': 'Thi Is Invalid Email.'
-            })
->>>>>>> e9ba7f99ef07f46e2f20fce5e7b5aafa51f78afc
+
         if form.is_valid():
             print(form.cleaned_data)
             if Users.objects.filter(email=form.cleaned_data['email']).exists():
@@ -182,7 +177,6 @@ def user_profile(request):
 
 
 def update_user_data(request):
-<<<<<<< HEAD
     
         variable=float(request.session.get('0'))
         var=int(variable)
@@ -224,19 +218,7 @@ def update_user_data(request):
              form=User_profile( initial = initial_dict)
         return render(request,"users_auth/edit_profile.html",{"form":form })
         
-=======
-    variable = float(request.session.get('0'))
-    var = int(variable)
-    user = Users.objects.get(id=var)
-    initial_dict = {"first_name": user.first_name, "last_name": user.last_name, "email": user.email,
-                    "password": user.password, "us_phone": user.us_phone, "date_birth": user.date_birth,
-                    "facebook_link": user.faceboo_link, "picture": user.picture}
-    print(initial_dict["first_name"])
-    form = User_profile(request.POST or None, initial=initial_dict)
 
-    if request.method == "POST":
-        form = User_profile(request.POST or None, request.FILES, initial=initial_dict)
->>>>>>> e9ba7f99ef07f46e2f20fce5e7b5aafa51f78afc
 
         if form.is_valid():
             user.first_name = form.cleaned_data['first_name']

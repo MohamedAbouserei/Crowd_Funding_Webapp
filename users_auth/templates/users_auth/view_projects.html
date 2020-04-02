@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}  edit profile {% endblock %}
+{% block content %}
+
+ 
+<div class="container">
+  <div class="project-page">
+    <div class="page">
+<div class="d-flex flex-column">
+    {% if error %}
+    <div class="p-2">{{ error  }}</div>
+
+    {%  endif %}
+    {% for project in projects %}
+    <div class="p-2">{{ project.title }}</div>
+    {% endfor %}
+  </div>
+</div>
+</div>
+</div>
+
+
+
+  {% endblock %}

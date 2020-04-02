@@ -1,7 +1,8 @@
+
 <!-- Default form register -->
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}  Login {% endblock %}
+{% block title %}  edit profile {% endblock %}
 {% block content %}
 
  
@@ -39,26 +40,19 @@
                  Endless <br/> <span>INVESTMENTS</span>
             </h3>
         </div>
-        <form class="text-center border border-light p-5" method="post" action="/users_auth/login/">
+        <form class="text-center border border-light p-5" method="post" action="/users_auth/edit_user_profile/">
             {% csrf_token %}
         <div class="col-md-12 col-xs-12 login_control">
             <div class="panel-body">
-                {% if error_message %}
-                <p class="bg-danger p-d ml-b" style="color: red;">{{ error_message }}</p>
-                {% endif %}
 
                 {% if error %}
                 <p class="bg-danger p-d ml-b" style="color: red;">{{ error }}</p>
                 {% endif %}
 
-                {% if val %}
-                <div class="alert alert-success">
-                    <strong>{{ val }}</strong>
-                  </div>
-                {% endif %}
+      
                 </div>
                 <div class="control">
-                    <div class="label"><a href="/users_auth/sign_up">New Member Register NOW</a></div>
+                    <div class="label">Edit Your profile </a></div>
                     {% bootstrap_form form %}
                 </div>
                 
@@ -74,3 +68,5 @@
     </div>
 </div>
 {% endblock %}
+
+<!-- Default form register -->

@@ -3,20 +3,120 @@
 {% load static %}
 {% block title %}  add team {% endblock %}
 {% block content %}
-<div class="card" style="width: 18rem;">
-    <img class="card-img-top" src="..." alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">{{ user.first_name }}</h5>
-      <h5 class="card-title">{{ user.last_name }}</h5>
-      <h5 class="card-title">{{ user.email }}</h5>
-      <h5 class="card-title">{{ user.password }}</h5>
+<div id="user-profile-2" class="user-profile">
+  <div class="tabbable">
+    <ul class="nav nav-tabs padding-18">
+      <li class="active">
+        <a data-toggle="tab" href="#home">
+          Profile
+        </a>
+      </li>
 
+      <li>
+        <a data-toggle="tab" href="/users_auth/edit_user_profile/">
+          edit Profile
+        </a>
+      </li>
 
+      <li>
+        <a data-toggle="tab" href="/users_auth/delete_profile/">
+          Delete Profile
+        </a>
+      </li>
 
-      
-      <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
+      <li>
+
+        <a data-toggle="tab" href="/users_auth/view_projects/">
+         Projects
+        </a>
+      </li>
+
+      <li>
+        <a data-toggle="tab" href="#pictures">
+          Donations
+        </a>
+      </li>
+    </ul>
   </div>
+    <div class="tab-content no-border padding-24">
+      <div id="home" class="tab-pane in active">
+        <div class="row">
+          <div class="col-xs-12 col-sm-3 center">
+            <span class="profile-picture">
+              <img class="editable img-responsive " alt=" Avatar" id="avatar2" src="http://bootdey.com/img/Content/avatar/avatar6.png">
+            </span>
 
+          <div class="col-xs-12 col-sm-9">
+            <h4 class="blue">
+              <span class="middle">{{ user.first_name }} {{ user.last_name }}</span>
+
+              <span class="label label-purple arrowed-in-right">
+                <i class="ace-icon fa fa-circle smaller-80 align-middle"></i>
+                online
+              </span>
+            </h4>
+
+
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Location </div>
+
+                <div class="profile-info-value">
+                  <i class="fa fa-map-marker light-orange bigger-110"></i>
+                  <span>{{ user.country }}</span>
+                 
+                </div>
+              </div>
+
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Email </div>
+
+                <div class="profile-info-value">
+                  <span>{{ user.email }}</span>
+                </div>
+              </div>
+
+              <div class="profile-info-row">
+                <div class="profile-info-name"> Password</div>
+
+                <div class="profile-info-value">
+                  <span>{{ user.password }}</span>
+                </div>
+              </div>
+
+              <div class="profile-info-row">
+                <div class="profile-info-name">Phone </div>
+
+                <div class="profile-info-value">
+                  <span>{{ user.us_phone }}</span>
+                </div>
+              </div>
+              <div class="profile-info-row">
+                <div class="profile-info-name">Facebook Link </div>
+
+                <div class="profile-info-value">
+                  <span>{{ user.faceboo_link }}</span>
+                </div>
+              </div>
+
+              <div class="profile-info-row">
+                <div class="profile-info-name">Date of Birth </div>
+
+                <div class="profile-info-value">
+                  <span>{{ user.date_birth }}</span>
+                </div>
+              </div>
+
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            
+
+
+
+
+  
 
 {% endblock %}

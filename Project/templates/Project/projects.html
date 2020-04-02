@@ -35,8 +35,15 @@
                         </div><!-- .entry-content -->
 
                         <div class="entry-footer mt-5">
+                            {% if project.user_id == userID %}
                             <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
-                                style="width: 500px;text-align: center;">Donate Now</a>
+                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
+                                for Yourself Now</a>
+                            {% else %}
+                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
+                                Now</a>
+                            {% endif %}
                         </div><!-- .entry-footer -->
                     </div><!-- .cause-content-wrap -->
 
@@ -46,15 +53,15 @@
                         <div class="fund-raised-details d-fle x flex-wrap justify-content-between align-items-center">
                             <div class="row">
                                 <div class="fund-raised-total mt-4 col-12 col-lg-6">
-
                                     {% for rate in rates %}
                                     {% if rate.prj_id == project.id and rate %}
                                     Raised:${{ rate.rate__sum }}
                                     {% endif %}
-                                    {% empty %}
-                                    Raised:$0
                                     {% endfor %}
-
+                                    {% if project.flag == False %}
+                                    Raised:$0
+                                    {% endif %}
+                                    
                                 </div><!-- .fund-raised-total -->
 
                                 <div class="fund-raised-goal mt-4 col-12 col-lg-6"

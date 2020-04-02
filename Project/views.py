@@ -28,8 +28,16 @@ def index(request):
     rates = Project_User_Donation.objects.values(
         'prj_id').annotate(Sum('rate'))
     pics = Project_pics.objects.all()
-    projects = Projects.objects.all().order_by("-updated_at")
-    return render(request, 'Project/projects.html', {'projects': projects, "rates": rates, "pics": pics})
+    projects = Projects.objects.values().order_by("-updated_at")
+    print(rates)
+    for project in projects:
+        for rate in rates:
+            if rate["prj_id"] == project["id"]:
+                project["flag"] = True
+                break
+            else:
+                project["flag"] = False
+    return render(request, 'Project/projects.html', {'projects': projects, "rates": rates, "pics": pics, "userID": request.session.get('0')})
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -322,7 +330,8 @@ def home(request):
                 'startdate': project.startdate,
                 'enddate': project.enddate,
                 'featured': project.featured,
-                'created_at': project.created_at
+                'created_at': project.created_at,
+                'user': project.user_id
             })
         else:
             context["projects"].append({
@@ -335,7 +344,8 @@ def home(request):
                 'startdate': project.startdate,
                 'enddate': project.enddate,
                 'featured': project.featured,
-                'created_at': project.created_at
+                'created_at': project.created_at,
+                'user': project.user_id
             })
     # context["projects"] = sorted(
     #     context["projects"], key=lambda k: k['created_at'], reverse=True)
@@ -354,7 +364,8 @@ def home(request):
                 "rate": project["rates"],
                 'startdate': project["startdate"],
                 'enddate': project["enddate"],
-                'featured':  project["featured"]
+                'featured':  project["featured"],
+                'user': project["user"]
             })
     index = 0
     featuredProjectsContextToSend = {
@@ -371,7 +382,8 @@ def home(request):
             "rate": project["rate"],
             'startdate': project["startdate"],
             'enddate': project["enddate"],
-            'featured':  project["featured"]
+            'featured':  project["featured"],
+            'user': project["user"]
         })
         if(index == 4):
             break
@@ -392,7 +404,8 @@ def home(request):
             "rate": project["rates"],
             'startdate': project["startdate"],
             'enddate': project["enddate"],
-            'featured':  project["featured"]
+            'featured':  project["featured"],
+            'user': project["user"]
         })
         if(index == 4):
             break
@@ -413,13 +426,13 @@ def home(request):
             "totaltarget": project["totaltarget"],
             "totalrate": project["totalrate"],
             "rate": project["rates"],
-            'featured':  project["featured"]
+            'featured':  project["featured"],
+            'user': project["user"]
         })
         if(index == 4):
             break
         index = index + 1
-
-    return render(request, 'Project/home.html', {'projects': contextToSend["projects"], 'updatedProjects': updatedProjects["projects"], 'featuredP': featuredProjectsContextToSend["projects"], "categories": categoriesContext["categories"]})
+    return render(request, 'Project/home.html', {'projects': contextToSend["projects"], 'updatedProjects': updatedProjects["projects"], 'featuredP': featuredProjectsContextToSend["projects"], "categories": categoriesContext["categories"], "userID": request.session.get('0')})
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -451,17 +464,18 @@ def lisCategoryProjects(request, cat_id):
             if project.cat_id == cat_id:
                 if project.Nor != 0:
                     context["projects"].append({
-                    "id": project.id,
-                    "title": project.title,
-                    "details": project.details,
-                    "totaltarget": project.totaltarget,
-                    "totalrate": round(float(project.rate/project.Nor), 1),
-                    "rates": donations,
-                    'startdate': project.startdate,
-                    'enddate': project.enddate,
-                    'featured': project.featured,
-                    'created_at': project.created_at
-                })
+                        "id": project.id,
+                        "title": project.title,
+                        "details": project.details,
+                        "totaltarget": project.totaltarget,
+                        "totalrate": round(float(project.rate/project.Nor), 1),
+                        "rates": donations,
+                        'startdate': project.startdate,
+                        'enddate': project.enddate,
+                        'featured': project.featured,
+                        'created_at': project.created_at,
+                        'user': project.user_id
+                    })
                 else:
                     context["projects"].append({
                         "id": project.id,
@@ -473,10 +487,11 @@ def lisCategoryProjects(request, cat_id):
                         'startdate': project.startdate,
                         'enddate': project.enddate,
                         'featured': project.featured,
-                        'created_at': project.created_at
+                        'created_at': project.created_at,
+                        'user': project.user_id
                     })
 
-        return render(request, 'Project/catProjects.html',{ "projects" : context["projects"] , "category" : categoryTitle})
+        return render(request, 'Project/catProjects.html', {"projects": context["projects"], "category": categoryTitle, "userID": request.session.get('0')})
 
 
 @csrf_exempt

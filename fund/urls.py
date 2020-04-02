@@ -19,8 +19,9 @@ from users_auth import urls,views
 from Project import urls 
 from django.conf import settings
 from django.conf.urls.static import static
+import Project
 urlpatterns = [
-    path('', views.signup_new),
+    path('', Project.views.home),
     path('admin/', admin.site.urls),
     path('admins/addcategory/', views.addcategory, name='addcategory'),
     path('users_auth/', include('users_auth.urls')),

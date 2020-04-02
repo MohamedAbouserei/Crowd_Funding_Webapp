@@ -1,7 +1,7 @@
 <!-- Default form register -->
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}  add team {% endblock %}
+{% block title %}  Register {% endblock %}
 {% block content %}
 
  
@@ -44,11 +44,11 @@
         <div class="col-md-12 col-xs-12 login_control">
             <div class="panel-body">
                 {% if error_message %}
-                <p class="bg-danger p-d ml-b">{{ error_message }}</p>
+                <p class="bg-danger p-d ml-b" style="color: red;">{{ error_message }}</p>
                 {% endif %}
 
                 {% if error %}
-                <p class="bg-danger p-d ml-b">{{ error }}</p>
+                <p class="bg-danger p-d ml-b" style="color: red;">{{ error }}</p>
                 {% endif %}
 
                 {% if submitted %}
@@ -64,7 +64,7 @@
                 
                 
                 <div align="center">
-                     <button class="btn btn-orange"  value="Register" class="btn btn-success">LOGIN</button>
+                     <button class="btn btn-orange"  value="Register" class="btn btn-success">Sign Up</button>
                 </div>
                 
         </div>

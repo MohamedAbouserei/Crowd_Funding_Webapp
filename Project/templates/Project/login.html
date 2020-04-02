@@ -1,3 +1,15 @@
+<!-- Default form register -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}  Login {% endblock %}
+{% block content %}
+
+ 
+
+
+
+<!-- Default form register -->
+
 {% load bootstrap4 %} 
 {% bootstrap_messages %} 
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -30,11 +42,23 @@
         <form class="text-center border border-light p-5" method="post" action="/users_auth/login/">
             {% csrf_token %}
         <div class="col-md-12 col-xs-12 login_control">
-            {% if error_message %}
-            <p class="bg-danger p-d ml-b">{{ error_message }}</p>
-            {% endif %}
+            <div class="panel-body">
+                {% if error_message %}
+                <p class="bg-danger p-d ml-b" style="color: red;">{{ error_message }}</p>
+                {% endif %}
+
+                {% if error %}
+                <p class="bg-danger p-d ml-b" style="color: red;">{{ error }}</p>
+                {% endif %}
+
+                {% if val %}
+                <div class="alert alert-success">
+                    <strong>{{ val }}</strong>
+                  </div>
+                {% endif %}
+                </div>
                 <div class="control">
-                    <div class="label"><a href="/users_auth/sign_up">Not registered yet</a></div>
+                    <div class="label"><a href="/users_auth/sign_up">New Member Register NOW</a></div>
                     {% bootstrap_form form %}
                 </div>
                 
@@ -49,3 +73,4 @@
             
     </div>
 </div>
+{% endblock %}

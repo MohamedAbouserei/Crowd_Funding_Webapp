@@ -27,7 +27,9 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('user_profile/', views.user_profile, name='user_profile'),
     path('edit_user_profile/', views.update_user_data, name='uupdate_ser_profile'),
-    path('delete_profile/', views.delete_profile, name='uupdate_ser_profile'),
+    path('delete_profile/', views.delete_profile, name='update_ser_profile'),
+    path('view_projects/', views.view_projects, name='view_project'),
+
     path('categories/', views.categories, name='categories'),
     path('addcategory/', views.addcategory, name='addcategory'),
     path('<int:cat_id>/deletecategory/', views.deletecategory, name='deletecategory'),

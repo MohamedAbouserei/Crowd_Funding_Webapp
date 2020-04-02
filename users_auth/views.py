@@ -48,7 +48,10 @@ def signup_new(request):
         form = New_users(request.POST)
         if not re.match("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,6}$", request.POST.get('email')):
             return render(request, template, {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2fb0e2331579bf9e21b61b6623f11c9170b61381
                     'form': form,
                     'error_message': 'This Is Invalid Email.'
                 })
@@ -230,6 +233,10 @@ def update_user_data(request):
              form=User_profile( initial = initial_dict)
         return render(request,"users_auth/edit_profile.html",{"form":form })
         
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2fb0e2331579bf9e21b61b6623f11c9170b61381
 
 
 

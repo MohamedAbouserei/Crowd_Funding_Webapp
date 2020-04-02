@@ -29,7 +29,7 @@ class User_profile(ModelForm):
     # user = Users.objects.get(id=user_id)
     class Meta:
         model = Users
-        fields = ['first_name','last_name','email','password','us_phone','date_birth','faceboo_link']    
+        fields = ['picture','first_name','last_name','email','password','us_phone','date_birth','faceboo_link']    
       
     # def __init__(self, *args, **kwargs):
     #     self.instance= kwargs.pop('instance')

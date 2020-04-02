@@ -181,11 +181,14 @@ def update_user_data(request):
         variable=float(request.session.get('0'))
         var=int(variable)
         user=Users.objects.get(id=var)
-        initial_dict={"first_name":user.first_name,"last_name":user.last_name,"email":user.email,"password":user.password ,"us_phone":user.us_phone}
+        initial_dict={"first_name":user.first_name,"last_name":user.last_name,"email":user.email,
+        "password":user.password ,"us_phone":user.us_phone,"date_birth":user.date_birth,"facebook_link":user.faceboo_link,"picture":user.picture}
         print(initial_dict["first_name"])
-        form=User_profile(request.POST or None,request.FILES or None, initial = initial_dict)
+        form=User_profile(request.POST or  None, initial = initial_dict)
         
         if request.method== "POST":
+                form=User_profile(request.POST or  None,request.FILES, initial = initial_dict)
+
 
                 if form.is_valid():
                         user.first_name=form.cleaned_data['first_name']
@@ -196,11 +199,8 @@ def update_user_data(request):
                         user.us_phone=form.cleaned_data['us_phone']
                         user.date_birth=form.cleaned_data['date_birth']
                         user.faceboo_link=form.cleaned_data['faceboo_link']
+                        user.picture=form.cleaned_data['picture']
                         user.save()
-
-
-
-
 
                         return HttpResponse('your data saved')
         else:

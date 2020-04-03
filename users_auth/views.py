@@ -173,7 +173,32 @@ def user_profile(request):
     user = Users.objects.get(id=user_id)
     donation = Project_User_Donation.objects.filter(user_id=user_id)
     return render(request, "users_auth/user_profile.html",
-                  {"user": user, "donation": donation})
+                  {"user": user})
+
+
+def view_donations(request):
+    variable=float(request.session.get('0'))
+    var=int(variable)
+    donations = Project_User_Donation.objects.filter(user_id=var)
+    project_ids=[]
+    project_names=[]
+    for don in donations:
+        project_ids.append(don.prj_id)
+    print(project_ids)
+
+    for project_id in project_ids:
+        project= Projects.objects.get(id=project_id)
+        project_names.append(project.title)
+    
+    print(project_names)
+
+
+    if donations.exists():
+      return render(request, "users_auth/view_donation.html",
+                  {"donations": donations,"project_names": project_names})
+    else:
+        return render(request, "users_auth/view_donation.html"
+                  ,{"error": "No donations Created by this User Yet"})
 
 
 

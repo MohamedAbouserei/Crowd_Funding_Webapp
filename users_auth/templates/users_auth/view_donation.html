@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}  edit profile {% endblock %}
+{% block content %}
+
+ 
+<div class="container">
+  <div class="project-page">
+    <div class="page">
+<div class="d-flex flex-column">
+    {% if error %}
+    <div class="p-2">{{ error  }}</div>
+
+    {%  endif %}
+    <!-- {% for donation in donations %}
+    <div class="p-2">  {{ donation.rate }}</div>
+    {% endfor %}
+    {% for name in project_names %}
+    <div class="p-2">  {{ name }} </div>
+    {% endfor %}  -->
+
+    {% for donation in donations %}
+    {% for name in project_names %}
+      {% if forloop.counter == forloop.parentloop.counter %}
+      <div class="p-2">  {{ name }} => {{ donation.rate }} </div>
+
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+
+
+  </div>
+
+
+
+</div>
+</div>
+
+
+  
+
+     
+  
+
+
+
+
+</div>
+  {% endblock %}

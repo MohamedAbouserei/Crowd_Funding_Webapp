@@ -29,7 +29,6 @@ def index(request):
         'prj_id').annotate(Sum('rate'))
     pics = Project_pics.objects.all()
     projects = Projects.objects.values().order_by("-updated_at")
-    print(rates)
     for project in projects:
         for rate in rates:
             if rate["prj_id"] == project["id"]:
@@ -439,7 +438,7 @@ def home(request):
 def lisCategoryProjects(request, cat_id):
     if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
-    if request.method == 'GET':
+    if request.method == 'GET':        
         projects = Projects.objects.all().order_by("-created_at")
         category = Categories.objects.get(id=cat_id)
         categoryTitle = category.title
@@ -490,7 +489,6 @@ def lisCategoryProjects(request, cat_id):
                         'created_at': project.created_at,
                         'user': project.user_id
                     })
-
         return render(request, 'Project/catProjects.html', {"projects": context["projects"], "category": categoryTitle, "userID": request.session.get('0')})
 
 

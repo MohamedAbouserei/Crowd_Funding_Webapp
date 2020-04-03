@@ -1,9 +1,13 @@
 {% extends "Project/index.html" %}
 {% load bootstrap4 %}
 {% bootstrap_messages %}
+
 {% block title %}{{category}} Projects{% endblock %}
-{%block page_name %}Category Projects{% endblock %}
 {% block projects %}current-menu-item{% endblock %}
+
+
+{%block page_name %}{{category}} Projects{% endblock %}
+
 
 {% block body %}
 <div class="featured-cause" style="width: 100%;">
@@ -16,22 +20,32 @@
             {% endif %}
             <div class="col-12 col-lg-6">
                 <div class="cause-wrap d-flex flex-wrap justify-content-between"
-                    style="width: 550px;text-align: center;">
+                    style="width: 550px;text-align: center; height:312px;">
 
                     <div class="cause-content-wrap">
-                        <header class="entry-header d-flex flex-wrap align-items-center">
-                            <h3 class="entry-title w-100 m-0"><a href="#">{{project.title}}</a></h3>
+                        <div>
+                            <header class="entry-header d-flex flex-wrap align-items-center">
+                                <h3 class="entry-title w-100 m-0"><a href="#">{{project.title}}</a></h3>
 
-                            <div class="posted-date">
-                                <a href="#"> {{ project.startdate|date:"D d M Y" }}</a>
-                            </div><!-- .posted-date -->
+                                <div class="posted-date">
+                                    <a href="#"> {{ project.startdate|date:"D d M Y" }}</a>
+                                </div><!-- .posted-date -->
 
-                            <div class="cats-links">
-                                <a href="#">{{ project.enddate|date:"D d M Y" }}</a>
-                            </div><!-- .cats-links -->
-                        </header><!-- .entry-header -->
-
-                        <div class="cats-links">
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#">{{ project.enddate|date:"D d M Y" }}</a>
+                                </div><!-- .cats-links -->
+                                {% if project.featured %}
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#" style="color: green;font-weight: bold;">Featured</a>
+                                </div><!-- .cats-links -->
+                                {% else %}
+                                <div class="posted-date" class="homeDetailsFont">
+                                    <a href="#" style="color: #F05731;font-weight: bold;">Not Featured</a>
+                                </div><!-- .cats-links -->
+                                {% endif %}
+                            </header><!-- .entry-header -->
+                        </div>
+                        <div class="cats-links homeDetailsFont" style="height: 70%; box-sizing: initial;">
                             <p class="m-0">{{ project.details }}</p>
                         </div><!-- .entry-content -->
 
@@ -55,18 +69,11 @@
                             <div class="row">
                                 <div class="fund-raised-total mt-4 col-12 col-lg-6">
 
-                                    {% for rate in rates %}
-                                    {% if rate.prj_id == project.id and rate %}
-                                    Raised:${{ rate.rate__sum }}
-                                    {% endif %}
-                                    {% empty %}
-                                    Raised:$0
-                                    {% endfor %}
+                                    Raised:${{ project.rates }}
 
                                 </div><!-- .fund-raised-total -->
 
-                                <div class="fund-raised-goal mt-4 col-12 col-lg-6"
-                                    style="float: right; text-align: right;">
+                                <div class="fund-raised-goal mt-4 col-12 col-lg-6">
                                     Goal: ${{ project.totaltarget }}
 
                                 </div><!-- .fund-raised-goal -->
@@ -81,8 +88,11 @@
         {% endif %}
         {% endfor %}
         {% else %}
-        <h1 class="title" style=" float: left; padding-right: 15px;"> No Projects in </h1><p></p>
-        <h1 class="title" style="color: #F05731; float: left; padding-right: 15px; font-weight: bold;"> {{category}}</h1><p></p>
+        <h1 class="title" style=" float: left; padding-right: 15px;"> No Projects in </h1>
+        <p></p>
+        <h1 class="title" style="color: #F05731; float: left; padding-right: 15px; font-weight: bold;"> {{category}}
+        </h1>
+        <p></p>
         <h1 class="title" style="margin-top: 150px"> Category </h1>
 
         {% endif %}

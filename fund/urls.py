@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from users_auth import urls,views
-from Project import urls 
+from users_auth import urls, views
+from Project import urls
 from django.conf import settings
 from django.conf.urls.static import static
 import Project
+
 urlpatterns = [
     path('', Project.views.home),
     path('admin/', admin.site.urls),
@@ -28,4 +29,4 @@ urlpatterns = [
     path('project/', include('Project.urls')),
 ]
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -28,6 +28,8 @@ urlpatterns = [
     path('edit_user_profile/', views.update_user_data, name='uupdate_ser_profile'),
     path('delete_profile/', views.delete_profile, name='update_ser_profile'),
     path('view_projects/', views.view_projects, name='view_project'),
+    path('view_donations/', views.view_donations, name='view_project'),
+
 
     path('categories/', views.categories, name='categories'),
     path('addcategory/', views.addcategory, name='addcategory'),

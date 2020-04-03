@@ -1,8 +1,8 @@
 <div class="featured-cause homeDetailsFont" style="margin-top: 0px;">
     <div style="height: 10px;"></div>
 
-   
-    <h1 class="title">  {{ header }} </h1>
+
+    <h1 class="title"> {{ header }} </h1>
     <div class="container">
         {%for project in projectsToDraw %}
         {% if  forloop.counter0|divisibleby:2 %}
@@ -40,9 +40,15 @@
                         </div><!-- .entry-content -->
 
                         <div class="entry-footer mt-5">
+                            {% if project.user == userID %}
+                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
+                                for Yourself Now</a>
+                            {% else %}
                             <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
                                 style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
                                 Now</a>
+                            {% endif %}
                         </div><!-- .entry-footer -->
                     </div><!-- .cause-content-wrap -->
 
@@ -53,7 +59,7 @@
                             <div class="row">
                                 <div class="fund-raised-total mt-4 col-12 col-lg-6">
 
-                                    Raised:${{ project.rate }}
+                                    Raised:${{ project.rates }}
 
                                 </div><!-- .fund-raised-total -->
 

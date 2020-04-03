@@ -208,14 +208,17 @@ def view_projects(request):
                   {"projects": project_detail, "user": user, "rates": rates})
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def view_donations(request):
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+        return HttpResponseRedirect('/users_auth/login/')
     variable = float(request.session.get('0'))
     var = int(variable)
-    donations = Project_User_Donation.objects.filter(user_id=var)
+    donations = Project_User_Donation.objects.values('prj_id','user_id').filter(user_id=var).annotate(Sum('rate')).order_by("-prj_id")
     project_ids = []
     project_names = []
     for don in donations:
-        project_ids.append(don.prj_id)
+        project_ids.append(don["prj_id"])
     print(project_ids)
 
     for project_id in project_ids:
@@ -224,11 +227,8 @@ def view_donations(request):
 
     print(project_names)
 
-    if donations.exists():
-        return render(request, "users_auth/view_donation.html",
-                      {"donations": donations, "project_names": project_names})
-    else:
-        return render(request, "users_auth/view_donation.html", {"error": "No donations Created by this User Yet"})
+    return render(request, "users_auth/listUserDonations.html",
+                  {"donations": donations, "project_names": project_names})
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -239,21 +239,19 @@ def update_user_data(request):
     var = int(variable)
     user = Users.objects.get(id=var)
     initial_dict = {"first_name": user.first_name, "last_name": user.last_name, "email": user.email, "password": user.password,
-                    "us_phone": user.us_phone, "date_birth": user.date_birth, "faceboo_link": user.faceboo_link, "picture": user.picture
-                    ,"country":user.country
+                    "us_phone": user.us_phone, "date_birth": user.date_birth, "faceboo_link": user.faceboo_link, "picture": user.picture, "country": user.country
                     }
-
 
     print(initial_dict["first_name"])
 
     form = User_profile(initial=initial_dict)
 
     if request.method == "POST":
-        form = User_profile(request.POST or None,initial=initial_dict)
-        
+        form = User_profile(request.POST or None, initial=initial_dict)
+
         if form.is_valid():
             regx = ".+www.facebook.com\/[^\/]+$"
-            
+
             result = re.match(regx, form.cleaned_data['faceboo_link'])
             template = "users_auth/edit_profile.html"
             if not result:
@@ -271,18 +269,19 @@ def update_user_data(request):
                 user.date_birth = form.cleaned_data['date_birth']
                 user.faceboo_link = form.cleaned_data['faceboo_link']
                 user.country = form.cleaned_data['country']
-                
-                if request.FILES.get('picture',False):
-                    ext = request.FILES['picture'].name.split('.')[1]  # [0] returns path filename
-                    valid = ['jpg', 'jpeg','png']
+
+                if request.FILES.get('picture', False):
+                    ext = request.FILES['picture'].name.split(
+                        '.')[1]  # [0] returns path filename
+                    valid = ['jpg', 'jpeg', 'png']
                     if ext not in valid:
                         return render(request, template, {
-                                 'form': form,
-                                 'error': 'This Invalid Image extension.'
-                                            })
-                    tmp=str(user.id)+"_"+request.FILES['picture'].name
-                    request.FILES['picture'].name=tmp
-                    user.picture=request.FILES['picture']
+                            'form': form,
+                            'error': 'This Invalid Image extension.'
+                        })
+                    tmp = str(user.id)+"_"+request.FILES['picture'].name
+                    request.FILES['picture'].name = tmp
+                    user.picture = request.FILES['picture']
 
                 user.save()
 

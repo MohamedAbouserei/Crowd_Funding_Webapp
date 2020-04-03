@@ -34,6 +34,7 @@ class User_profile(ModelForm):
                   'faceboo_link']
 
 
+
 class DeleteAccount(ModelForm):
     class Meta:
         model = Users

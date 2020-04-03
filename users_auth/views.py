@@ -36,6 +36,7 @@ import re
 
 user_id = ""
 
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
     if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
@@ -171,6 +172,7 @@ def user_login(request):
                 request.session['submitted'] = False
                 return render(request, "Project/login.html", {"form": form, "val": tempVar})
 
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def user_profile(request):
     if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
@@ -182,6 +184,7 @@ def user_profile(request):
     return render(request, "users_auth/user_profile.html",
                   {"user": user, "donation": donation})
 
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def view_projects(request):
     if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
@@ -190,7 +193,8 @@ def view_projects(request):
     var = int(variable)
     rates = Project_User_Donation.objects.values(
         'prj_id').annotate(Sum('rate'))
-    project_detail = Projects.objects.values().filter(user_id=var).order_by("-created_at")
+    project_detail = Projects.objects.values().filter(
+        user_id=var).order_by("-created_at")
     user = Users.objects.get(id=var)
     for project in project_detail:
         for rate in rates:
@@ -199,9 +203,33 @@ def view_projects(request):
                 break
             else:
                 project["flag"] = False
-                
+
     return render(request, "users_auth/listUserProjects.html",
-                  {"projects": project_detail, "user": user,"rates":rates})
+                  {"projects": project_detail, "user": user, "rates": rates})
+
+
+def view_donations(request):
+    variable = float(request.session.get('0'))
+    var = int(variable)
+    donations = Project_User_Donation.objects.filter(user_id=var)
+    project_ids = []
+    project_names = []
+    for don in donations:
+        project_ids.append(don.prj_id)
+    print(project_ids)
+
+    for project_id in project_ids:
+        project = Projects.objects.get(id=project_id)
+        project_names.append(project.title)
+
+    print(project_names)
+
+    if donations.exists():
+        return render(request, "users_auth/view_donation.html",
+                      {"donations": donations, "project_names": project_names})
+    else:
+        return render(request, "users_auth/view_donation.html", {"error": "No donations Created by this User Yet"})
+
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def update_user_data(request):
@@ -210,8 +238,9 @@ def update_user_data(request):
     variable = float(request.session.get('0'))
     var = int(variable)
     user = Users.objects.get(id=var)
-    initial_dict = {"first_name": user.first_name, "last_name": user.last_name, "email": user.email,
-                    "password": user.password, "us_phone": user.us_phone, "date_birth": user.date_birth, "faceboo_link": user.faceboo_link, "picture": user.picture}
+    initial_dict = {"first_name": user.first_name, "last_name": user.last_name, "email": user.email, "password": user.password,
+                    "us_phone": user.us_phone, "date_birth": user.date_birth, "faceboo_link": user.faceboo_link, "picture": user.picture}
+
     print(initial_dict["first_name"])
 
     form = User_profile(initial=initial_dict)
@@ -243,9 +272,36 @@ def update_user_data(request):
                 user.save()
 
                 return HttpResponse('your data saved')
+        else:
+            form = User_profile(initial=initial_dict)
+            return render(request, "users_auth/edit_profile.html", {"form": form})
+
+            regx = "/(?:http:\/\/)?(?:www\.)?facebook\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-]*)/"
+            result = re.match(regx, form.cleaned_data['faceboo_link'])
+            template = "users_auth/edit_profile.html"
+            if not result:
+                return render(request, template, {
+                    'form': form,
+                    'error': 'you must enter facebook link'
+                })
+            else:
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                user.email = form.cleaned_data['email']
+                user.password = form.cleaned_data['password']
+                user.re_password = form.cleaned_data['password']
+                user.us_phone = form.cleaned_data['us_phone']
+                user.date_birth = form.cleaned_data['date_birth']
+                user.faceboo_link = form.cleaned_data['faceboo_link']
+                user.picture = form.cleaned_data['picture']
+                user.country = form.cleaned_data['country']
+                user.save()
+
+                return HttpResponse('your data saved')
     else:
         form = User_profile(initial=initial_dict)
-    return render(request, "users_auth/edit_profile.html", {"form": form})
+        return render(request, "users_auth/edit_profile.html", {"form": form})
+
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def delete_profile(request):

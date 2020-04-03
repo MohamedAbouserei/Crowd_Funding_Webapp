@@ -6,7 +6,15 @@
     <form class="text-center border border-light p-5" method="post" action="/users_auth/delete_profile/">
         {% csrf_token %}
         <h1>Do you want to delete your account</h1>
-        <p><input type="submit"  value="yes"><a href="/user_auth/user_profile/">Cancel</a></p>
+
+        <input type="password" name="password" class="form-control"
+               placeholder="Password" title="" required="" style="width: 20em; display:block; margin : 0 auto; margin-bottom: 10px;">
+
+
+        <p>
+            <input type="submit"  value="yes">
+            <a href="/user_auth/user_profile/">Cancel</a>
+        </p>
     <!--   {{ form.as_p }}-->
 
     </form>

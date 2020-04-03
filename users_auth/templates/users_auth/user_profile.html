@@ -8,7 +8,29 @@
 {% block css %}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="static/css/style.css" />
+<style>
+  .wrap
+  {
+      padding-top: 30px;
+  }
+
+  .glyphicon
+  {
+      margin-bottom: 10px;
+      margin-right: 10px;
+  }
+
+  small
+  {
+      display: block;
+      color: #888;
+  }
+
+  .well
+  {
+      border: 1px solid blue;
+  }
+</style>
 {% endblock %}
 
 {%block page_name %}User Profile{% endblock %}
@@ -57,74 +79,41 @@ integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh
             <span class="profile-picture">
               <img class="editable img-responsive " alt=" Avatar" id="avatar2" src="http://bootdey.com/img/Content/avatar/avatar6.png">
             </span>
-
-          <div class="col-xs-12 col-sm-9">
-            <h4 class="blue">
-              <span class="middle">{{ user.first_name }} {{ user.last_name }}</span>
-
-              <span class="label label-purple arrowed-in-right">
-                <i class="ace-icon fa fa-circle smaller-80 align-middle"></i>
-                online
-              </span>
-            </h4>
-
-
-              <div class="profile-info-row">
-                <div class="profile-info-name"> Location </div>
-
-                <div class="profile-info-value">
-                  <i class="fa fa-map-marker light-orange bigger-110"></i>
-                  <span>{{ user.country }}</span>
-                 
-                </div>
-              </div>
-
-              <div class="profile-info-row">
-                <div class="profile-info-name"> Email </div>
-
-                <div class="profile-info-value">
-                  <span>{{ user.email }}</span>
-                </div>
-              </div>
-
-              <div class="profile-info-row">
-                <div class="profile-info-name"> Password</div>
-
-                <div class="profile-info-value">
-                  <span>{{ user.password }}</span>
-                </div>
-              </div>
-
-              <div class="profile-info-row">
-                <div class="profile-info-name">Phone </div>
-
-                <div class="profile-info-value">
-                  <span>{{ user.us_phone }}</span>
-                </div>
-              </div>
-              <div class="profile-info-row">
-                <div class="profile-info-name">Facebook Link </div>
-
-                <div class="profile-info-value">
-                  <span>{{ user.faceboo_link }}</span>
-                </div>
-              </div>
-
-              <div class="profile-info-row">
-                <div class="profile-info-name">Date of Birth </div>
-
-                <div class="profile-info-value">
-                  <span>{{ user.date_birth }}</span>
-                </div>
-              </div>
-
             </div>
             </div>
             </div>
             </div>
-            </div>
-            </div>
-            
+           <div class="container wrap">
+              <div class="row">
+                  <div class="col-xs-12 col-md-6 ">
+                      <div class="well well-sm">
+                          <div class="row">
+                              <div class="col-sm-4 col-md-6 col-lg-9">
+                                <img class="editable img-responsive img-rounded img-responsive" alt=" Avatar" id="avatar2" src="http://bootdey.com/img/Content/avatar/avatar6.png">
+                              </div>
+                              <div class="col-sm-8 col-md-6 col-lg-9">
+                                  <h4>{{ person.first_name }} {{ person.last_name }}</h4>
+                                  <small><cite title="{{ person.country }}">{{ person.country }} <i class="glyphicon glyphicon-map-marker"></i></cite></small>
+                                  <p>
+                                      <i class="glyphicon glyphicon-envelope"></i>{{ person.email }}
+                                      <br />
+                                      <i class="glyphicon glyphicon-globe"></i><a href="{{ person.faceboo_link }}">{{ person.faceboo_link }}</a>
+                                      <br />
+                                      <i class="glyphicon glyphicon-gift"></i>{{ person.date_birth }}
+                                      <br />
+                                      <i class="glyphicon glyphicon-phone"></i>{{ person.us_phone }}
+                                  </p>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div> 
+          
+         
+          </div>
+        
 
 
 

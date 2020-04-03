@@ -50,6 +50,7 @@ confirmation message before deleting)
 25% of the target
 
 3- Homepage
+if user want to add categories ,they must be admin so must use email :admin@admin.com with password : admin
 
 ## Installation
 

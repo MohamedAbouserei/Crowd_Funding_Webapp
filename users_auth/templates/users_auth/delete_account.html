@@ -14,8 +14,10 @@
         <h1>Do you want to delete your account</h1>
 
         {% if message %}
-            <p class="bg-danger p-d ml-b" style="color: red;">{{ message }}</p>
-        {% endif %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+          </div>        
+          {% endif %}
 
         <input type="password" name="password" class="form-control"
                placeholder="Password" title="" required="" style="width: 20em; display:block; margin : 0 auto; margin-bottom: 10px;">
@@ -23,7 +25,7 @@
 
         <p>
             <button type="submit"  value="yes" class="btn btn-danger">Yes</button>
-            <a href="/user_auth/user_profile/" class="btn btn-info">Cancel</a>
+            <a href="/users_auth/user_profile/" class="btn btn-info">Cancel</a>
         </p>
     <!--   {{ form.as_p }}-->
 

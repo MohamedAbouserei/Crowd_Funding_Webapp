@@ -120,9 +120,9 @@ def activate_account(request, uidb64, token):
         user.save()
         # login(request, user)
         # return redirect('home')
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return render(request, 'users_auth/login.html', {'form': form,"message":"Thanks for your activation you can now login"})
     else:
-        return HttpResponse('Activation link is invalid!')
+        return render(request, 'users_auth/login.html', {'form': form,"message":"invalid url"})
 
 
 def thanks(request):

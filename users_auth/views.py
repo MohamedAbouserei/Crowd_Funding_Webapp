@@ -234,12 +234,33 @@ def delete_profile(request):
     var = int(variable)
 
     if request.method == "POST":
-        form = DeleteAccount(request.POST)
-        if form.is_valid:
-            user = Users.objects.get(id=var)
-            user.delete()
+        delete_form = DeleteAccount(request.POST)
+        delete_form.save()
+
+        if delete_form.is_valid:
+            entered_password = delete_form.cleaned_data.get('password')
+            try:
+                user = Users.objects.get(id=var)
+            except ObjectDoesNotExist:
+                return render(request, 'users_auth/delete_account.html', {
+                    'form': delete_form,
+                    'message': 'account does not exist'
+                })
+
+            if user.password == entered_password:
+                user.delete()
+                return render(request, 'users_auth/delete_account.html', {
+                    'form': delete_form,
+                    'message': 'ACCOUNT DELETED'
+                })
+            else:
+                return render(request, 'users_auth/delete_account.html', {
+                    'form': delete_form,
+                    'message': 'Invalid password'
+                })
+
     else:
-        form = DeleteAccount()
+        pass
     return render(request, "users_auth/delete_account.html")
 
 

@@ -7,6 +7,10 @@
         {% csrf_token %}
         <h1>Do you want to delete your account</h1>
 
+        {% if message %}
+            <p class="bg-danger p-d ml-b" style="color: red;">{{ message }}</p>
+        {% endif %}
+
         <input type="password" name="password" class="form-control"
                placeholder="Password" title="" required="" style="width: 20em; display:block; margin : 0 auto; margin-bottom: 10px;">
 

@@ -38,3 +38,4 @@ class DeleteAccount(ModelForm):
     class Meta:
         model = Users
         fields = ['password']
+

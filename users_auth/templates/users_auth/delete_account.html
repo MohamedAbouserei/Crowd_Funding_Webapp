@@ -1,8 +1,14 @@
 <!-- Default form register -->
-{% extends 'base.html' %}
-{% load static %}
-{% block title %}  add team {% endblock %}
-{% block content %}
+{% extends "Project/index.html" %}
+{% load bootstrap4 %}
+{% bootstrap_messages %}
+
+{% block title %}Delete Your Porfile{% endblock %}
+{% block profile %}current-menu-item{% endblock %}
+{%block page_name %}Hate to see you go{% endblock %}
+
+
+{% block body %}
     <form class="text-center border border-light p-5" method="post" action="/users_auth/delete_profile/">
         {% csrf_token %}
         <h1>Do you want to delete your account</h1>
@@ -16,8 +22,8 @@
 
 
         <p>
-            <input type="submit"  value="yes">
-            <a href="/user_auth/user_profile/">Cancel</a>
+            <button type="submit"  value="yes" class="btn btn-danger">Yes</button>
+            <a href="/user_auth/user_profile/" class="btn btn-info">Cancel</a>
         </p>
     <!--   {{ form.as_p }}-->
 

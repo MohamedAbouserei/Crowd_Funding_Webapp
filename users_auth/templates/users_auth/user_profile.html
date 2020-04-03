@@ -1,8 +1,20 @@
 <!-- Default form register -->
-{% extends 'base.html' %}
-{% load static %}
-{% block title %}  add team {% endblock %}
-{% block content %}
+{% extends "Project/index.html" %}
+{% load bootstrap4 %}
+{% bootstrap_messages %}
+
+{% block title %}Profile{% endblock %}
+{% block profile %}current-menu-item{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="static/css/style.css" />
+{% endblock %}
+
+{%block page_name %}User Profile{% endblock %}
+
+
+{% block body %}
 <div id="user-profile-2" class="user-profile">
   <div class="tabbable">
     <ul class="nav nav-tabs padding-18">

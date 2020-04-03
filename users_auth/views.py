@@ -3,7 +3,7 @@ from django.shortcuts import render
 from users_auth.forms import New_users, User_Login, User_profile
 from users_auth.models import Users
 import re
-
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -249,11 +249,11 @@ def update_user_data(request):
     form = User_profile(initial=initial_dict)
 
     if request.method == "POST":
-        form = User_profile(request.POST or None, initial=initial_dict)
-
+        form = User_profile(request.POST or None,initial=initial_dict)
+        
         if form.is_valid():
             regx = ".+www.facebook.com\/[^\/]+$"
-
+            
             result = re.match(regx, form.cleaned_data['faceboo_link'])
             template = "users_auth/edit_profile.html"
             if not result:
@@ -271,6 +271,19 @@ def update_user_data(request):
                 user.date_birth = form.cleaned_data['date_birth']
                 user.faceboo_link = form.cleaned_data['faceboo_link']
                 user.country = form.cleaned_data['country']
+                
+                if request.FILES.get('picture',False):
+                    ext = request.FILES['picture'].name.split('.')[1]  # [0] returns path filename
+                    valid = ['.jpg', '.jpeg','.png']
+                    if ext not in valid:
+                        return render(request, template, {
+                                 'form': form,
+                                 'error': 'This Invalid Image extension.'
+                                            })
+                    tmp=str(user.id)+"_"+request.FILES['picture'].name
+                    request.FILES['picture'].name=tmp
+                    user.picture=request.FILES['picture']
+
                 user.save()
 
                 return render(request, template, {

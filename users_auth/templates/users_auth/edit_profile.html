@@ -26,7 +26,11 @@
 	<div class="row login_box">
 	    <div class="col-md-12 col-xs-12" align="center">
             <div class="line"><h3>{% now "TIME_FORMAT" %}</h3></div>
+            {% if person.picture %}
+            <div class="outter"><img src="/media/{{ person.picture }}" class="image-circle"/></div>
+            {% else %}
             <div class="outter"><img src="/static/images/teamwork.png" class="image-circle"/></div>   
+            {% endif %}
             <h1>Hi Guest</h1>
             <span>Egyption</span>
 	    </div>
@@ -40,7 +44,7 @@
                  Endless <br/> <span>INVESTMENTS</span>
             </h3>
         </div>
-        <form class="text-center border border-light p-5" method="post" action="/users_auth/edit_user_profile/">
+        <form class="text-center border border-light p-5" method="post" action="/users_auth/edit_user_profile/" enctype="multipart/form-data">
             {% csrf_token %}
         <div class="col-md-12 col-xs-12 login_control">
             <div class="panel-body">
@@ -61,12 +65,15 @@
                 </div>
                 <div class="control">
                     <div class="label">Edit Your profile </a></div>
+                    <input id="id_image" type="file" class="" name="picture">
                     {% bootstrap_form form %}
                 </div>
                 
                 
                 <div align="center">
-                     <button class="btn btn-orange"  value="Register" class="btn btn-success">LOGIN</button>
+                     <button class="btn btn-orange"  value="Register" class="btn btn-success">Save</button>
+                     <a class="btn btn-orange" href="/">Home</a>
+
                 </div>
                 
         </div>

@@ -89,7 +89,12 @@ integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh
                       <div class="well well-sm">
                           <div class="row">
                               <div class="col-sm-4 col-md-6 col-lg-9">
-                                <img class="editable img-responsive img-rounded img-responsive" alt=" Avatar" id="avatar2" src="http://bootdey.com/img/Content/avatar/avatar6.png">
+                                {% if person.picture %}
+
+                                <img class="editable img-responsive img-rounded img-responsive" alt=" Avatar" id="avatar2" src="/media/{{ person.picture }}" >
+                                  {% else %}
+                                   <img class="editable img-responsive img-rounded img-responsive" alt=" Avatar" id="avatar2" src="http://bootdey.com/img/Content/avatar/avatar6.png">
+                                  {% endif %}
                               </div>
                               <div class="col-sm-8 col-md-6 col-lg-9">
                                   <h4>{{ person.first_name }} {{ person.last_name }}</h4>

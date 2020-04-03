@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import *
 
 # Create your models here.
 class Users(models.Model):
@@ -12,10 +13,11 @@ class Users(models.Model):
     us_phone=models.CharField(null=True,max_length=12)
     date_birth =models.DateField(null=True)
     faceboo_link= models.URLField(null=True)
-    picture = models.ImageField(upload_to='images', blank=True)
+    picture = models.ImageField(upload_to='users', blank=True)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     email_confirmed = models.BooleanField(default=False)
+    
 
 
 

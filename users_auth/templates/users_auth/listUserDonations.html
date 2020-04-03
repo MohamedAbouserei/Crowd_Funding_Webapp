@@ -1,0 +1,73 @@
+{% extends "Project/index.html" %}
+{% load bootstrap4 %}
+{% bootstrap_messages %}
+
+
+{%block page_name %}{{user.first_name}} Projects{% endblock %}
+{% block profile %}current-menu-item{% endblock %}
+{% block title %}{{user.first_name}} Projects{% endblock %}
+
+
+
+{% block body %}
+<div class="featured-cause" style="width: 100%;">
+    <div class="container">
+
+        {% if donations %}
+        {% for donation in donations %}
+        {%for project in project_names %}
+        {% if forloop.counter == forloop.parentloop.counter %}
+        {% if  forloop.counter0|divisibleby:2 %}
+        <div class="row">
+            {% endif %}
+            <div class="col-12 col-lg-6">
+                <div class="cause-wrap d-flex flex-wrap justify-content-between"
+                    style="width: 550px;text-align: center; height:312px;">
+
+                    <div class="cause-content-wrap">
+                        <div style="justify-content: center; display: flex; align-items: center; margin-top: 50px;">
+                            <header class="entry-header d-flex flex-wrap align-items-center">
+                                <h3 class="entry-title w-100 m-0"><a href="/project/{{ donation.prj_id }}/details">{{ project }}</a></h3>
+                            </header><!-- .entry-header -->
+                        </div>
+                        <div class="cats-links homeDetailsFont" style="height: 70%; box-sizing: initial;">
+                            <p class="m-0">{{ project.details }}</p>
+                        </div><!-- .entry-content -->
+
+                        <div class="entry-footer mt-5 btn gradient-bg mr-2"
+                        style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">
+                             You Have Donated for this project with {{donation.rate__sum}}$ 
+                        </div><!-- .entry-footer -->
+                    </div><!-- .cause-content-wrap -->
+                    <div class="fund-raised w-100">
+                        <!-- .fund-raised-bar -->
+
+                    </div><!-- .fund-raised -->
+                </div><!-- .cause-wrap -->
+            </div><!-- .col -->
+
+            {% if forloop.counter|divisibleby:2 %}
+        </div><!-- .row -->
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+        {% else %}
+        <h1 class="title" style=" float: left; padding-right: 15px;"> You </h1>
+        <p></p>
+        <h1 class="title" style="color: #F05731; float: left; padding-right: 15px; font-weight: bold;">
+            Have not
+        </h1>
+        <p></p>
+        <h1 class="title" style="margin-top: 150px"> Donated Yet </h1>
+
+        {% endif %}
+    </div><!-- .container -->
+</div><!-- .featured-cause -->
+
+
+
+{% endblock %}
+{% block js %}
+
+{% endblock %}

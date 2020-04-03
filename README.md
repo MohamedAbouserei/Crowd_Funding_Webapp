@@ -4,23 +4,7 @@ amounts of money from a large number of people, typically via the Internet.
 Crowdfunding is a form of crowdsourcing and alternative finance. In 2015,
 over US$34 billion was raised worldwide by crowdfunding.
 
-[![2.1.15][Django]]
-[![0.1.0][bootstrap4]]
-[![0.3.8][ajaxuploader]]
-[![4.8.2][beautifulsoup4]]
-[![3.2.6][asgiref]]
-[![1.14.0][cffi]][npm-url]
-[![2.8][cryptography]]
-[![1.1.1][django-bootstrap4]][travis-url]
-[![2.11.1][Jinja2]][npm-url]
-[![1.1.1][MarkupSafe]]
-[![7.0.0][Pillow]][travis-url]
-[![2.2.0][pycparser]][npm-url]
-[![2019.3][pytz]][travis-url]
-[![5.3.1][PyYAML]][npm-url]
-[![1.14.0][six]][travis-url]
-[![2.0][soupsieve]][npm-url]
-[![0.3.1][sqlparse]][npm-url]
+
 ## Aim of the project
 Create a web platform for starting fundraise
 projects in Egypt.
@@ -70,7 +54,7 @@ OS centos
 program VScode
 ```
 ## Development setup
-install virtualenv  then activate it and install all dependences
+install virtualenv  then activate it and install all dependences which in requirements.txt
 
 
 ```sh

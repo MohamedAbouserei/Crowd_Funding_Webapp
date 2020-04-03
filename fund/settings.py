@@ -131,7 +131,14 @@ EMAIL_HOST_USER = 'crowdfunding.iti40@gmail.com'
 EMAIL_HOST_PASSWORD = 'crowdfunding40'
 EMAIL_PORT = 587
 
+# os.environ['HTTPS'] = "on"
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+SOCIAL_AUTH_FACEBOOK_KEY = '503065400577376'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'faec81a42f6276e80194d11245eb7a36'

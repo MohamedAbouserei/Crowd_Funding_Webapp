@@ -30,7 +30,7 @@ class User_profile(ModelForm):
 
     class Meta:
         model = Users
-        fields = ['picture', 'first_name', 'last_name', 'email', 'password', 'country', 'us_phone', 'date_birth',
+        fields = [ 'first_name', 'last_name', 'email', 'password', 'country', 'us_phone', 'date_birth',
                   'faceboo_link']
 
 

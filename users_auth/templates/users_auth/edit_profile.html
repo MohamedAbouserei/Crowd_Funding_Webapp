@@ -49,6 +49,12 @@
                 <p class="bg-danger p-d ml-b" style="color: red;">{{ error }}</p>
                 {% endif %}
 
+            {% if submit %}
+                <div class="alert alert-success" role="alert">
+                    {{ submit }}
+                  </div>
+                  {% endif %}
+
       
                 </div>
                 <div class="control">

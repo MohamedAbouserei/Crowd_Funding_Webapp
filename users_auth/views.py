@@ -239,18 +239,21 @@ def update_user_data(request):
     var = int(variable)
     user = Users.objects.get(id=var)
     initial_dict = {"first_name": user.first_name, "last_name": user.last_name, "email": user.email, "password": user.password,
-                    "us_phone": user.us_phone, "date_birth": user.date_birth, "faceboo_link": user.faceboo_link, "picture": user.picture}
+                    "us_phone": user.us_phone, "date_birth": user.date_birth, "faceboo_link": user.faceboo_link, "picture": user.picture
+                    ,"country":user.country
+                    }
+
 
     print(initial_dict["first_name"])
 
     form = User_profile(initial=initial_dict)
 
     if request.method == "POST":
-        if form.is_valid():
-            form = User_profile(request.POST or None,
-                                request.FILES or None, initial=initial_dict)
+        form = User_profile(request.POST or None, initial=initial_dict)
 
-            regx = "/(?:http:\/\/)?(?:www\.)?facebook\.com\/(?:(?:\w)*#!\/)?(?:pages\/)?(?:[\w\-]*\/)*([\w\-]*)/"
+        if form.is_valid():
+            regx = ".+www.facebook.com\/[^\/]+$"
+
             result = re.match(regx, form.cleaned_data['faceboo_link'])
             template = "users_auth/edit_profile.html"
             if not result:
@@ -267,11 +270,13 @@ def update_user_data(request):
                 user.us_phone = form.cleaned_data['us_phone']
                 user.date_birth = form.cleaned_data['date_birth']
                 user.faceboo_link = form.cleaned_data['faceboo_link']
-                user.picture = form.cleaned_data['picture']
                 user.country = form.cleaned_data['country']
                 user.save()
 
-                return HttpResponse('your data saved')
+                return render(request, template, {
+                    'form': form,
+                    'submit': 'your data saved'
+                })
         else:
             form = User_profile(initial=initial_dict)
             return render(request, "users_auth/edit_profile.html", {"form": form})

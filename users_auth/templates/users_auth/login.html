@@ -44,11 +44,15 @@
         <div class="col-md-12 col-xs-12 login_control">
             <div class="panel-body">
                 {% if error_message %}
-                <p class="bg-danger p-d ml-b" style="color: red;">{{ error_message }}</p>
+                <div class="alert alert-danger" role="alert">
+                    {{ error_message }}
+                </div>
                 {% endif %}
 
                 {% if error %}
-                <p class="bg-danger p-d ml-b" style="color: red;">{{ error }}</p>
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
                 {% endif %}
 
                 {% if val %}

@@ -274,7 +274,7 @@ def update_user_data(request):
                 
                 if request.FILES.get('picture',False):
                     ext = request.FILES['picture'].name.split('.')[1]  # [0] returns path filename
-                    valid = ['.jpg', '.jpeg','.png']
+                    valid = ['jpg', 'jpeg','png']
                     if ext not in valid:
                         return render(request, template, {
                                  'form': form,

@@ -1,14 +1,16 @@
 # Crowd-Funding Web app
-> Crowdfunding is the practice of funding a project or venture by raising small
-amounts of money from a large number of people, typically via the Internet.
-Crowdfunding is a form of crowdsourcing and alternative finance. In 2015,
-over US$34 billion was raised worldwide by crowdfunding.
 [![PyPi Version](https://img.shields.io/pypi/v/yt2mp3.svg)](https://pypi.python.org/pypi/yt2mp3/)
 [![PyPi Version Alt](https://badge.fury.io/py/yt2mp3.svg)](https://pypi.python.org/pypi/yt2mp3/)  
 [![PyPi Python Versions](https://img.shields.io/pypi/pyversions/yt2mp3.svg)](https://pypi.python.org/pypi/yt2mp3/)
 [![PyPi Downloads](http://pepy.tech/badge/yt2mp3)](http://pepy.tech/project/yt2mp3)
 [![Python Versions](https://img.shields.io/pypi/pyversions/yt2mp3.svg)](https://pypi.python.org/pypi/yt2mp3/)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+
+> Crowdfunding is the practice of funding a project or venture by raising small
+amounts of money from a large number of people, typically via the Internet.
+Crowdfunding is a form of crowdsourcing and alternative finance. In 2015,
+over US$34 billion was raised worldwide by crowdfunding.
+
 
 ## Aim of the project
 Create a web platform for starting fundraise

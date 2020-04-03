@@ -28,8 +28,12 @@ def index(request):
     rates = Project_User_Donation.objects.values(
         'prj_id').annotate(Sum('rate'))
     pics = Project_pics.objects.all()
+    today = dateFormat(datetime.now())
     projects = Projects.objects.values().order_by("-updated_at")
     for project in projects:
+        project["startdate"] = dateFormat(project["startdate"])
+        project["enddate"] = dateFormat(project["enddate"])
+        project["today"] = today
         for rate in rates:
             if rate["prj_id"] == project["id"]:
                 project["flag"] = True
@@ -136,7 +140,9 @@ def project(request, prj_id):
             'prj_id').annotate(Sum('rate')).filter(prj_id=prj_id)
         if Projects.objects.get(id=prj_id):
             project = Projects.objects.get(id=prj_id)
-
+            today = dateFormat(datetime.now())
+            project.startdate = dateFormat(project.startdate)
+            project.enddate = dateFormat(project.enddate)
             pics = project.oproject.all()
             comments = Project_comments.objects.filter(
                 prj_comment=prj_id).order_by('updated_at').reverse()
@@ -160,9 +166,9 @@ def project(request, prj_id):
             else:
                 overall = 0
             if rates:
-                return render(request, 'Project/project.html', {'reports': reports, 'dislikes': dislikes, 'likes': likes, 'similar': similar, 'project': project, "pics": pics, "overall": overall, "rates": rates[0]['rate__sum'], "comments": comments, "users": users})
+                return render(request, 'Project/project.html', {'reports': reports, 'dislikes': dislikes, 'likes': likes, 'similar': similar, 'project': project, "pics": pics, "overall": overall, "rates": rates[0]['rate__sum'], "comments": comments, "users": users,"today" : today})
             else:
-                return render(request, 'Project/project.html', {'reports': reports, 'dislikes': dislikes, 'likes': likes, 'similar': similar, 'project': project, "pics": pics, "overall": overall, "comments": comments, "users": users})
+                return render(request, 'Project/project.html', {'reports': reports, 'dislikes': dislikes, 'likes': likes, 'similar': similar, 'project': project, "pics": pics, "overall": overall, "comments": comments, "users": users,"today" : today})
         else:
             return HttpResponseRedirect('/project/')
 
@@ -288,6 +294,12 @@ def person(request):
         return {}
 
 
+def dateFormat(dateToFormat):
+    myFormat = "%Y-%m-%d %H:%M:%S"
+    dateToFormat = dateToFormat.strftime(myFormat)
+    dateToFormat = datetime.strptime(dateToFormat, "%Y-%m-%d %H:%M:%S")
+    return dateToFormat
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
     if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
@@ -309,6 +321,7 @@ def home(request):
         "projects": [
         ]
     }
+    today = dateFormat(datetime.now())
     for project in projects:
         donations = 0
         rates = Project_User_Donation.objects.values(
@@ -326,11 +339,12 @@ def home(request):
                 "totaltarget": project.totaltarget,
                 "totalrate": round(float(project.rate/project.Nor), 1),
                 "rates": donations,
-                'startdate': project.startdate,
-                'enddate': project.enddate,
+                'startdate': dateFormat(project.startdate),
+                'enddate': dateFormat(project.enddate),
                 'featured': project.featured,
                 'created_at': project.created_at,
-                'user': project.user_id
+                'user': project.user_id,
+                'today' : today
             })
         else:
             context["projects"].append({
@@ -340,11 +354,12 @@ def home(request):
                 "totaltarget": project.totaltarget,
                 "totalrate": float(0),
                 "rates": donations,
-                'startdate': project.startdate,
-                'enddate': project.enddate,
+                'startdate': dateFormat(project.startdate),
+                'enddate': dateFormat(project.enddate),
                 'featured': project.featured,
                 'created_at': project.created_at,
-                'user': project.user_id
+                'user': project.user_id,
+                'today' : today
             })
     # context["projects"] = sorted(
     #     context["projects"], key=lambda k: k['created_at'], reverse=True)
@@ -364,7 +379,8 @@ def home(request):
                 'startdate': project["startdate"],
                 'enddate': project["enddate"],
                 'featured':  project["featured"],
-                'user': project["user"]
+                'user': project["user"],
+                'today' : project["today"]
             })
     index = 0
     featuredProjectsContextToSend = {
@@ -382,7 +398,8 @@ def home(request):
             'startdate': project["startdate"],
             'enddate': project["enddate"],
             'featured':  project["featured"],
-            'user': project["user"]
+            'user': project["user"],
+            'today' : project["today"]
         })
         if(index == 4):
             break
@@ -404,7 +421,8 @@ def home(request):
             'startdate': project["startdate"],
             'enddate': project["enddate"],
             'featured':  project["featured"],
-            'user': project["user"]
+            'user': project["user"],
+            'today' : project["today"]
         })
         if(index == 4):
             break
@@ -426,7 +444,8 @@ def home(request):
             "totalrate": project["totalrate"],
             "rate": project["rates"],
             'featured':  project["featured"],
-            'user': project["user"]
+            'user': project["user"],
+            'today' : project["today"]
         })
         if(index == 4):
             break
@@ -451,6 +470,7 @@ def lisCategoryProjects(request, cat_id):
             "projects": [
             ]
         }
+        today = dateFormat(datetime.now())
         for project in projects:
             donations = 0
             rates = Project_User_Donation.objects.values(
@@ -469,11 +489,12 @@ def lisCategoryProjects(request, cat_id):
                         "totaltarget": project.totaltarget,
                         "totalrate": round(float(project.rate/project.Nor), 1),
                         "rates": donations,
-                        'startdate': project.startdate,
-                        'enddate': project.enddate,
+                        'startdate': dateFormat(project.startdate),
+                        'enddate': dateFormat(project.enddate),
                         'featured': project.featured,
                         'created_at': project.created_at,
-                        'user': project.user_id
+                        'user': project.user_id,
+                        'today' : today
                     })
                 else:
                     context["projects"].append({
@@ -483,11 +504,12 @@ def lisCategoryProjects(request, cat_id):
                         "totaltarget": project.totaltarget,
                         "totalrate": float(0),
                         "rates": donations,
-                        'startdate': project.startdate,
-                        'enddate': project.enddate,
+                        'startdate': dateFormat(project.startdate),
+                        'enddate': dateFormat(project.enddate),
                         'featured': project.featured,
                         'created_at': project.created_at,
-                        'user': project.user_id
+                        'user': project.user_id,
+                        'today' : today
                     })
         return render(request, 'Project/catProjects.html', {"projects": context["projects"], "category": categoryTitle, "userID": request.session.get('0')})
 

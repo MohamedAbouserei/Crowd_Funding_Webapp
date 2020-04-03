@@ -17,8 +17,8 @@
               {% csrf_token %}
             <input type="text" placeholder="Add a public comment" name="title" id="title">
             <button type="submit" class="btn btn-default">Comment</button>
-            <button type="cancel" class="btn btn-default">Cancel</button>
-            </form>
+          </form>
+          <button type="cancel" class="btn btn-default">Cancel</button>
           </span>
         </div>
         {% for comment in comments %}

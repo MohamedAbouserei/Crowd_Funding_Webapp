@@ -33,6 +33,9 @@ from django.views.decorators.cache import cache_control
 from django.db.models import *
 from django.contrib.auth.models import User
 import re
+import Project
+from datetime import datetime
+
 
 user_id = ""
 
@@ -195,8 +198,12 @@ def view_projects(request):
         'prj_id').annotate(Sum('rate'))
     project_detail = Projects.objects.values().filter(
         user_id=var).order_by("-created_at")
+    today = Project.views.dateFormat(datetime.now())
     user = Users.objects.get(id=var)
     for project in project_detail:
+        project["startdate"] = Project.views.dateFormat(project["startdate"])
+        project["enddate"] = Project.views.dateFormat(project["enddate"])
+        project["today"] = today
         for rate in rates:
             if rate["prj_id"] == project["id"]:
                 project["flag"] = True

@@ -1,265 +1,279 @@
 {% extends "Project/index.html" %}
-   {% load bootstrap4 %} 
-   {% bootstrap_messages %} 
-   {% block css %}
-   <title>Example of Bootstrap 3 Carousel</title>
+{% load bootstrap4 %}
+{% bootstrap_messages %}
+{% block css %}
+<title>Example of Bootstrap 3 Carousel</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="/static/css/comment.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script src="/static/js/comment.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-   {% endblock %}
-   {% block title %}Add Project{% endblock %}
-   {%block page_name %}{{ project.title}}{% endblock %}
-   {% block projects %}current-menu-item{% endblock %}
-   {% block pageHeader %} style="margin: 0 0 60px 0" {% endblock %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+{% endblock %}
+{% block title %}Add Project{% endblock %}
+{%block page_name %}{{ project.title}}{% endblock %}
+{% block projects %}current-menu-item{% endblock %}
+{% block pageHeader %} style="margin: 0 0 60px 0" {% endblock %}
 
-   {% block body %}
-   <span style="float:left;"><a href="#" class="demo">
-       {% if person.id == project.id %}
-    <form method="POST" action="/project/{{ project.id }}/deleteproject/">{% csrf_token %}
-        <button  class="btn btn-danger submit">
-      <span class="glyphicon glyphicon-remove" style="font-size: 50px;color: red;"></span>
-      </button>
-    </form>
-    {% endif %}
+{% block body %}
+<span style="float:left;"><a href="#" class="demo">
+        {% if person.id == project.id %}
+        <form method="POST" action="/project/{{ project.id }}/deleteproject/">{% csrf_token %}
+            <button class="btn btn-danger submit">
+                <span class="glyphicon glyphicon-remove" style="font-size: 50px;color: red;"></span>
+            </button>
+        </form>
+        {% endif %}
     </a>
-    </span>
-    {% for report in reports %}
-   {% empty %}
-   <form method="POST" action="/project/{{ project.id }}/report/">{% csrf_token %}<input type="hidden" name="report" id="report" value="{{ project.id }}"/><button class="submit"><i class="fa fa-flag" aria-hidden="true"></i></button></form> 
-    {% endfor %}
-       <div class="highlighted-cause">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-lg-7 order-2 order-lg-1">
-                    <div class="section-heading">
-                        <h2 class="entry-title">{{ project.title}}</h2>
-                    </div><!-- .section-heading -->
+</span>
+{% for report in reports %}
+{% empty %}
+<form method="POST" action="/project/{{ project.id }}/report/">{% csrf_token %}<input type="hidden" name="report"
+        id="report" value="{{ project.id }}" /><button class="submit"><i class="fa fa-flag"
+            aria-hidden="true"></i></button></form>
+{% endfor %}
+  <div class="highlighted-cause" >
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-7 order-2 order-lg-1">
+                <div class="section-heading">
+                    <h2 class="entry-title">{{ project.title}}</h2>
+                </div><!-- .section-heading -->
 
-                    <div class="fund-raised w-100 mt-5">
-                        <div class="featured-fund-raised-bar barfiller">
-                            <div class="tipWrap">
-                                <span class="tip"></span>
-                            </div><!-- .tipWrap -->
-                            {% if project.totaltarget != 0 %}
-                            {% widthratio rates project.totaltarget 100 as ratio %}
-                            <span class="fill" data-percentage="{{ ratio }}"></span>
-                            {% endif %}
-                        </div><!-- .fund-raised-bar -->
+                <div class="fund-raised w-100 mt-5">
+                    <div class="featured-fund-raised-bar barfiller">
+                        <div class="tipWrap">
+                            <span class="tip"></span>
+                        </div><!-- .tipWrap -->
+                        {% if project.totaltarget != 0 %}
+                        {% widthratio rates project.totaltarget 100 as ratio %}
+                        <span class="fill" data-percentage="{{ ratio }}"></span>
+                        {% endif %}
+                    </div><!-- .fund-raised-bar -->
 
-                        <div class="fund-raised-details d-flex flex-wrap justify-content-between align-items-center">
-                            <div class="fund-raised-total mt-4">
-                                Raised: ${{ rates}}
-                            </div><!-- .fund-raised-total -->
+                    <div class="fund-raised-details d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="fund-raised-total mt-4">
+                            Raised: ${{ rates}}
+                        </div><!-- .fund-raised-total -->
 
-                            <div class="fund-raised-goal mt-4">
-                                Goal: ${{ project.totaltarget}}
-                            </div><!-- .fund-raised-goal -->
-                        </div><!-- .fund-raised-details -->
-                    </div><!-- .fund-raised -->
-
-                   
-                </div><!-- .col -->
-
-                <div class="col-12 col-lg-5 order-1 order-lg-2" height="1000">
-                    
+                        <div class="fund-raised-goal mt-4">
+                            Goal: ${{ project.totaltarget}}
+                        </div><!-- .fund-raised-goal -->
+                    </div><!-- .fund-raised-details -->
+                </div><!-- .fund-raised -->
 
 
-                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                        <!-- Indicators -->
-                        <ol class="carousel-indicators">
-                            {% for i in pics %}
-                            {% if forloop.counter0 == 0 %}
-                            <li data-target="#myCarousel" data-slide-to="{{forloop.counter0}}" class="active"></li>
-                            {% else %}
-                            <li data-target="#myCarousel" data-slide-to="{{forloop.counter0}}" ></li>
-                            {% endif %}
-                            {% endfor %}
-                        </ol>
-                        
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner" role="listbox">
-                            {% for p in pics %}
-                            {% if forloop.counter == 1 %}
-                            <div class="item active">
+            </div><!-- .col -->
+
+            <div class="col-12 col-lg-5 order-1 order-lg-2" height="1000">
+
+
+
+                <div id="myCarousel" class="carousel slide" data-ride="carousel" style="display: flex; justify-content: center; align-items: center;">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        {% for i in pics %}
+                        {% if forloop.counter0 == 0 %}
+                        <li data-target="#myCarousel" data-slide-to="{{forloop.counter0}}" class="active"></li>
+                        {% else %}
+                        <li data-target="#myCarousel" data-slide-to="{{forloop.counter0}}"></li>
+                        {% endif %}
+                        {% endfor %}
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox"  style="display: flex; justify-content: center; align-items: center;">
+                        {% for p in pics %}
+                        {% if forloop.counter == 1 %}
+                        <div class="item active">
                             {% else %}
                             <div class="item">
-                            {% endif %}                         
-                            
-                            <img src="{{ p.picture.url }}" alt=""  width="1000" max-height="300">
-                            
+                                {% endif %}
+
+                                <img src="{{ p.picture.url }}" alt="" width="1000" max-height="300">
+
                             </div>
                             {% empty %}
-                            <img src="/static/images/default.png" alt="" width="1000" max-height="300" >
-                                
-                         
-                            </div>
-                            {% endfor %}
-                            </div>
-                        <input type="hidden" value="{{overall}}" id="rater"/>
-                            <!-- Left and right controls -->
-                            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
+                            <img src="/static/images/default.png" alt="" width="100%" max-height="300">
+
+
                         </div>
+                        {% endfor %}
+                    </div>
+                    <input type="hidden" value="{{overall}}" id="rater" />
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
 
 
 
 
-                </div><!-- .col -->
-            </div><!-- .row -->
-        </div><!-- .container -->
-    </div><!-- .highlighted-cause -->
-       <div id="rate" name="rate"></div>
-      <div class="short-content-wrap">
-        <div class="container">
-            <div class="row">
-                {% include "Project/commentsection.html" %}
-            </div>
+            </div><!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div><!-- .highlighted-cause -->
+ <div id="rate" name="rate" style="display: contents;"></div>
+<div class="short-content-wrap">
+    <div class="container">
+        <div class="row">
+            {% include "Project/commentsection.html" %}
         </div>
     </div>
-      <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="donation-form-wrap">
-                    <h2>Make a donation</h2>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="donation-form-wrap">
+                {% if project.startdate <= today and project.enddate > today %}
+                <h2>Make a donation</h2>
 
-                    <h4 class="mt-5">How much do you want to donate?</h4>
+                <h4 class="mt-5">How much do you want to donate?</h4>
 
-                    <form class="donation-form" method="POST" action="/project/{{ project.id }}/donate/">
-                        {% csrf_token %}
-                        <div class="donate-amount-wrap d-flex flex-wrap align-items-center mt-5">
-                            <label class="radio-label">
-                                <input type="radio" name="donation_amount" value="10" />
-                                <span class="donate-amount">$10</span>
-                            </label>
+                <form class="donation-form" method="POST" action="/project/{{ project.id }}/donate/">
+                    {% csrf_token %}
+                    <div class="donate-amount-wrap d-flex flex-wrap align-items-center mt-5">
+                        <label class="radio-label">
+                            <input type="radio" name="donation_amount" value="10" />
+                            <span class="donate-amount">$10</span>
+                        </label>
 
-                            <label class="radio-label">
-                                <input type="radio" name="donation_amount" value="20" />
-                                <span class="donate-amount">$20</span>
-                            </label>
+                        <label class="radio-label">
+                            <input type="radio" name="donation_amount" value="20" />
+                            <span class="donate-amount">$20</span>
+                        </label>
 
-                            <label class="radio-label">
-                                <input type="radio" name="donation_amount" value="25" checked="checked"/>
-                                <span class="donate-amount">$25</span>
-                            </label>
+                        <label class="radio-label">
+                            <input type="radio" name="donation_amount" value="25" checked="checked" />
+                            <span class="donate-amount">$25</span>
+                        </label>
 
-                            <label class="radio-label">
-                                <input type="radio" name="donation_amount" value="50" />
-                                <span class="donate-amount">$50</span>
-                            </label>
+                        <label class="radio-label">
+                            <input type="radio" name="donation_amount" value="50" />
+                            <span class="donate-amount">$50</span>
+                        </label>
 
-                            <label class="radio-label">
-                                <input type="radio" name="donation_amount" value="100" />
-                                <span class="donate-amount">$100</span>
-                            </label>
+                        <label class="radio-label">
+                            <input type="radio" name="donation_amount" value="100" />
+                            <span class="donate-amount">$100</span>
+                        </label>
 
-                            <label class="radio-label">
-                                <input type="radio" name="donation_amount" value="200" />
-                                <span class="donate-amount">$200</span>
-                            </label>
-                        </div>
-
-                        <input class="btn gradient-bg mt-5" type="submit" value="Donate Now">
-                    </form>
+                        <label class="radio-label">
+                            <input type="radio" name="donation_amount" value="200" />
+                            <span class="donate-amount">$200</span>
+                        </label>
+                    </div>
+                    <input class="btn gradient-bg mt-5" style="width: fit-content;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px; margin-top: 50px;" type="submit" value="Donate Now">
                     
-                </div>
-                
+                    
+                    
+                    
+                </form>
+
+                {% elif project.enddate <= today %}
+                    <h2 class="btn gradient-bg mr-2"
+                    style="width: fit-content;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Sorry, You can not donate for this, the project is Ended</h2>
+                {% elif project.startdate >= today %}
+                    <h2 class="btn gradient-bg mr-2"
+                    style="width: fit-content;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Sorry, You can not donate for this, the project does not Started yet</h2>
+                {% endif %}
+
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="donation-form-wrap">
-                    
-                    <h4 class="mt-5">Similar Projects .....</h4>
 
-                    <form class="donation-form" >
-                        {% csrf_token %}
-                        <div class="donate-amount-wrap d-flex flex-wrap align-items-center mt-5">
-                            {% for proj in similar %}
-                            {% if proj.id != project.id%}
-                            <a href="/project/{{ proj.id }}/details/">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="donation-form-wrap">
+
+                <h4 class="mt-5">Similar Projects .....</h4>
+
+                <form class="donation-form">
+                    {% csrf_token %}
+                    <div class="donate-amount-wrap d-flex flex-wrap align-items-center mt-5">
+                        {% for proj in similar %}
+                        {% if proj.id != project.id%}
+                        <a href="/project/{{ proj.id }}/details/">
                             <label class="radio-label">
-                                <input type="hidden" name="donation_amount" href="/proj/{{ project.id }}/details/"  />
+                                <input type="hidden" name="donation_amount" href="/proj/{{ project.id }}/details/" />
                                 <span class="donate-amount">{{proj.title}}</span>
                             </label>
-                            </a>
+                        </a>
                         {% endif %}
                         {% empty %}
                         <a href="#">
                             <label class="radio-label">
-                                <input type="button" name="donation_amount" href="#"  />
+                                <input type="button" name="donation_amount" href="#" />
                                 <span class="donate-amount">No Project Avaliables</span>
                             </label>
                         </a>
-                            {% endfor %}
-                            
-                        </div>
-                    
-                </div>
-                
+                        {% endfor %}
+
+                    </div>
+
             </div>
+
         </div>
     </div>
+</div>
 
 
-    {% endblock %}
+{% endblock %}
 {% block js %}
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <script>
-    
-jQuery(document).ready(function ($) {
-  
-    $("#rate").rateYo({
-        
-        onInit: function ( rateYoInstance) {
-      console.log("RateYo initialized! with " +$('#rater').val());
-        },
-      starWidth: "40px",
-      ratedFill: "#E74C3C",
-      rating: $('#rater').val(),
-    halfStar: true,
-    onSet: function (rating, rateYoInstance) {
- 
- alert("Rating is set to: " + rating);
- 
- $.ajax({
-            headers: { "X-CSRFToken": '{{csrf_token}}' },
-            url: window.location.pathname,
-            type: 'POST',
-            data:rating,
-            success: function (response) {
-                $('.error').remove();
-                console.log(response)
-                if(response.error){
-                    console.log("somthig went wrong")
-                }
-                else{
-                    console.log(response.message)
-                    window.location = ""
-                }
+    jQuery(document).ready(function ($) {
+
+        $("#rate").rateYo({
+
+            onInit: function (rateYoInstance) {
+                console.log("RateYo initialized! with " + $('#rater').val());
             },
-            cache: false,
-            contentType: false,
-            processData: false
+            starWidth: "40px",
+            ratedFill: "#E74C3C",
+            rating: $('#rater').val(),
+            halfStar: true,
+            onSet: function (rating, rateYoInstance) {
+
+                alert("Rating is set to: " + rating);
+
+                $.ajax({
+                    headers: {
+                        "X-CSRFToken": '{{csrf_token}}'
+                    },
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: rating,
+                    success: function (response) {
+                        $('.error').remove();
+                        console.log(response)
+                        if (response.error) {
+                            console.log("somthig went wrong")
+                        } else {
+                            console.log(response.message)
+                            window.location = ""
+                        }
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
         });
-}
+
     });
-   
-  });
 </script>
 {% endblock %}

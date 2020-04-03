@@ -40,14 +40,22 @@
                         </div><!-- .entry-content -->
 
                         <div class="entry-footer mt-5">
-                            {% if project.user == userID %}
-                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
-                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
-                                for Yourself Now</a>
-                            {% else %}
-                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
-                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
-                                Now</a>
+                            {% if project.startdate <= project.today and project.enddate > project.today %}
+                                {% if project.user == userID %}
+                                <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                    style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
+                                    for Yourself Now</a>
+                                {% else %}
+                                <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                    style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
+                                    Now</a>
+                                {% endif %}
+                                {% elif project.enddate <= project.today %}
+                                    <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                    style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Sorry, You can only see details, project is Ended</a>
+                                {% elif project.startdate >= project.today %}
+                                    <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                    style="width: 500px;text-align: center; font-size: 16.7px; font-weight: bold;border-radius: 30px;">Sorry, You can only see details, project does not Started</a>
                             {% endif %}
                         </div><!-- .entry-footer -->
                     </div><!-- .cause-content-wrap -->

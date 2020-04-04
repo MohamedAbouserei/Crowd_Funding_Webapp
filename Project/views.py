@@ -140,6 +140,9 @@ def project(request, prj_id):
             pics = project.oproject.all()
             comments = Project_comments.objects.filter(
                 prj_comment=prj_id).order_by('updated_at').reverse()
+            #############################################################
+            replies = comment_reply.objects.all()
+            #############################################################
             users = Users.objects.all()
             tags = project.tags.split(",")
             if tags:
@@ -160,9 +163,9 @@ def project(request, prj_id):
             else:
                 overall = 0
             if rates:
-                return render(request, 'Project/project.html', {'reports': reports, 'dislikes': dislikes, 'likes': likes, 'similar': similar, 'project': project, "pics": pics, "overall": overall, "rates": rates[0]['rate__sum'], "comments": comments, "users": users})
+                return render(request, 'Project/project.html', {'reports': reports, 'dislikes': dislikes, 'likes': likes, 'similar': similar, 'project': project, "pics": pics, "overall": overall, "rates": rates[0]['rate__sum'], "comments": comments, "replies": replies, "users": users})
             else:
-                return render(request, 'Project/project.html', {'reports': reports, 'dislikes': dislikes, 'likes': likes, 'similar': similar, 'project': project, "pics": pics, "overall": overall, "comments": comments, "users": users})
+                return render(request, 'Project/project.html', {'reports': reports, 'dislikes': dislikes, 'likes': likes, 'similar': similar, 'project': project, "pics": pics, "overall": overall, "comments": comments, "replies": replies, "users": users})
         else:
             return HttpResponseRedirect('/project/')
 
@@ -218,6 +221,17 @@ def deletecomment(request, prj_id):
         Project_comments.objects.get(
             id=request.POST.get('comment_id')).delete()
         return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def replycomment(request, prj_id, comment_id):
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+        return HttpResponseRedirect('/users_auth/login/')
+    if request.method == 'POST':
+        reply = comment_reply.objects.create(reply=request.POST.get('reply'), comment=Project_comments.objects.get(
+            id=comment_id))
+        reply.save()
+        return HttpResponseRedirect('/project/' + str(prj_id) + '/details')
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)

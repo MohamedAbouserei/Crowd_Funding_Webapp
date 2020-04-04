@@ -15,6 +15,7 @@ urlpatterns = [
         path('<int:prj_id>/like/', views.addlike),
         path('<int:prj_id>/dislike/', views.adddislike),
         path('<int:prj_id>/deletecomment/', views.deletecomment),
+        path('<int:prj_id>/<int:comment_id>/replycomment/', views.replycomment),
         path('<int:prj_id>/donate/', views.donate),
         path('<int:prj_id>/report/', views.addreport),
         path('<int:prj_id>/deleteproject/', views.deleteproject),

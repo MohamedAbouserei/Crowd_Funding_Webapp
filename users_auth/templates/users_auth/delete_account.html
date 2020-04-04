@@ -11,7 +11,7 @@
 {% block body %}
     <form class="text-center border border-light p-5" method="post" action="/users_auth/delete_profile/">
         {% csrf_token %}
-        <h1>Do you want to delete your account</h1>
+        <h1>Do you want to delete your account ?</h1>
 
         {% if message %}
         <div class="alert alert-danger" role="alert">
@@ -23,10 +23,12 @@
                placeholder="Password" title="" required="" style="width: 20em; display:block; margin : 0 auto; margin-bottom: 10px;">
 
 
-        <p>
-            <button type="submit"  value="yes" class="btn btn-danger">Yes</button>
-            <a href="/users_auth/user_profile/" class="btn btn-info">Cancel</a>
-        </p>
+                        <div align="center">
+
+            <button  value="yes" class="btn btn-orange">Yes</button>
+            <a class="btn btn-orange"  href="/users_auth/user_profile/">Cancel</a>
+            </div>
+      
     <!--   {{ form.as_p }}-->
 
     </form>

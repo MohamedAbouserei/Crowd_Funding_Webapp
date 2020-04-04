@@ -43,11 +43,16 @@
             {% csrf_token %}
         <div class="col-md-12 col-xs-12 login_control">
             <div class="panel-body">
-                {% if error_message %}
+                {% if pass_message  %}
                 <div class="alert alert-danger" role="alert">
-                    {{ error_message }}
+                    {{ pass_message }}
+                  </div>
+                  <div class="alert alert-danger" role="alert">
+                    {{ phone_message }}
                   </div>
                  {% endif %}
+
+
 
                 {% if error %}
                 <div class="alert alert-danger" role="alert">
@@ -55,9 +60,15 @@
                   </div>
                 {% endif %}
 
+                {% if error_message  %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error_message }}
+                  </div>
+                  {% endif %}
+
                 {% if submitted %}
                 <div class="alert alert-success">
-                    <strong>{{ submitted }}</strong>
+                        {{ submitted }}
                   </div>
                 {% endif %}
                 </div>

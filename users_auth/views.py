@@ -69,11 +69,10 @@ def signup_new(request):
                 result = re.match(
                     "(01)[0-9]{9}", form.cleaned_data['us_phone'])
                 if form.cleaned_data['password'] != form.cleaned_data['re_password'] and not result:
-                    result_arr = ['Passwords do not match',
-                                  'your phone not match egyptian phones']
                     return render(request, template, {
                         'form': form,
-                        'error_message': result_arr
+                        'pass_message': 'Passwords do not match',
+                        'phone_message':'your phone not match egyptian phones'
                     })
                 elif form.cleaned_data['password'] != form.cleaned_data['re_password']:
                     return render(request, template, {
@@ -123,9 +122,13 @@ def activate_account(request, uidb64, token):
         user.save()
         # login(request, user)
         # return redirect('home')
-        return render(request, 'users_auth/login.html', {'form': form,"message":"Thanks for your activation you can now login"})
+        form = User_Login()
+
+        return render(request, 'users_auth/login.html', {'form': form,"succ_message":"Thanks for your activation you can now login"})
     else:
-        return render(request, 'users_auth/login.html', {'form': form,"message":"invalid url"})
+        form = User_Login()
+
+        return render(request, 'users_auth/login.html', {'form': form,"fail_message":"invalid url"})
 
 
 def thanks(request):

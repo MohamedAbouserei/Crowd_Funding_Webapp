@@ -55,6 +55,17 @@
                 </div>
                 {% endif %}
 
+                {% if succ_message %}
+                <div class="alert alert-success" role="alert">
+                    {{ succ_message }}
+                </div>
+                {% endif %}
+                {% if fail_message %}
+                <div class="alert alert-success" role="alert">
+                    {{ fail_message }}
+                </div>
+                {% endif %}
+
                 {% if val %}
                 <div class="alert alert-success">
                     <strong>{{ val }}</strong>

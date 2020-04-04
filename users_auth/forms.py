@@ -32,7 +32,10 @@ class User_profile(ModelForm):
         model = Users
         fields = [ 'first_name', 'last_name', 'email', 'password', 'country', 'us_phone', 'date_birth',
                   'faceboo_link']
-
+        date_birth = forms.DateField(
+        widget=forms.DateInput(format='%m/%d/%Y'),
+        input_formats=('%m/%d/%Y', )
+        )
 
 
 class DeleteAccount(ModelForm):

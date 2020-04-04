@@ -30,9 +30,18 @@
         <form class="text-center border border-light p-5" method="post" action="/users_auth/login/">
             {% csrf_token %}
         <div class="col-md-12 col-xs-12 login_control">
-            {% if error_message %}
-            <p class="bg-danger p-d ml-b">{{ error_message }}</p>
-            {% endif %}
+                {% if pass_message  %}
+                <div class="alert alert-danger" role="alert">
+                    {{ pass_message }}
+                    {{ phone_message }}
+                  </div>
+                 {% endif %}
+
+                {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                  </div>
+                {% endif %}
                 <div class="control">
                     <div class="label">Email Address</div>
                     {% bootstrap_form form %}

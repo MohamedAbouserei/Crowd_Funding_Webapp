@@ -203,7 +203,7 @@
                     <div class="donate-amount-wrap d-flex flex-wrap align-items-center mt-5">
                         {% for proj in similar %}
                         {% if proj.id != project.id%}
-                        <a href="/project/{{ proj.id }}/details/">
+                        <a href="/project/{{ proj.id }}/details/" style="color: #757586;">
                             <label class="radio-label">
                                 <input type="hidden" name="donation_amount" href="/proj/{{ project.id }}/details/" />
                                 <span class="donate-amount">{{proj.title}}</span>

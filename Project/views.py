@@ -15,15 +15,17 @@ from django.views.decorators.cache import cache_control
 from django.template.response import TemplateResponse
 from django.contrib.postgres.search import SearchVector
 from django.views.decorators.csrf import csrf_exempt
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 # Create your views here.
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def index(request):
-
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     rates = Project_User_Donation.objects.values(
         'prj_id').annotate(Sum('rate'))
@@ -36,12 +38,14 @@ def index(request):
                 break
             else:
                 project["flag"] = False
-    return render(request, 'Project/projects.html', {'projects': projects, "rates": rates, "pics": pics, "userID": request.session.get('0')})
+    return render(request, 'Project/projects.html',
+                  {'projects': projects, "rates": rates, "pics": pics, "userID": request.session.get('0')})
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def categories(request):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is True:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is True:
         return HttpResponseRedirect('/users_auth/login/')
     categories = Categories.objects.all()
     return render(request, 'users_auth/categories.html', {'categories': categories})
@@ -49,7 +53,8 @@ def categories(request):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def addcategory(request):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is True:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is True:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         category = Categories.objects.create(
@@ -60,7 +65,8 @@ def addcategory(request):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def addproject(request):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         details = ProjectForm(request.POST, user_id=request.session.get('0'))
@@ -96,7 +102,8 @@ def addproject(request):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def django_image_and_file_upload_ajax(request):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         form = ImageFileUploadForm(request.POST, request.FILES)
@@ -105,9 +112,9 @@ def django_image_and_file_upload_ajax(request):
             tmp = Projects.objects.get(id=request.POST.get('prj_pic'))
             pic = request.FILES['picture']
             request.FILES['picture'].name = str(request.POST.get(
-                'prj_pic'))+"_"+request.FILES['picture'].name
+                'prj_pic')) + "_" + request.FILES['picture'].name
             prj = Project_pics(picture=request.FILES['picture'], prj_pic=tmp)
-            prj.save("projects/"+str(request.POST.get('prj_pic')))
+            prj.save("projects/" + str(request.POST.get('prj_pic')))
             # form.save()
             return JsonResponse({'error': False, 'message': "uploaded"})
         else:
@@ -121,15 +128,16 @@ def django_image_and_file_upload_ajax(request):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def project(request, prj_id):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         project = Projects.objects.get(id=prj_id)
-        project.Nor = project.Nor+1
-        fullrate = project.rate+float(request.body)
+        project.Nor = project.Nor + 1
+        fullrate = project.rate + float(request.body)
         project.rate = fullrate
         project.save()
-        overall = project.rate/project.Nor
+        overall = project.rate / project.Nor
         return JsonResponse({'error': False, 'message': str(overall)})
     else:
         rates = Project_User_Donation.objects.values(
@@ -140,9 +148,11 @@ def project(request, prj_id):
             pics = project.oproject.all()
             comments = Project_comments.objects.filter(
                 prj_comment=prj_id).order_by('updated_at').reverse()
-            #############################################################
+            ####################################################################################################
+
+            # replies = comment_reply.objects.filter(comment__in=comments)
             replies = comment_reply.objects.all()
-            #############################################################
+            ####################################################################################################
             users = Users.objects.all()
             tags = project.tags.split(",")
             if tags:
@@ -158,32 +168,40 @@ def project(request, prj_id):
             reports = Project_User_Report.objects.filter(
                 prj_id=prj_id, user_id=request.session.get('0'))
 
-            if(project.Nor != 0):
-                overall = project.rate/project.Nor
+            if (project.Nor != 0):
+                overall = project.rate / project.Nor
             else:
                 overall = 0
             if rates:
-                return render(request, 'Project/project.html', {'reports': reports, 'dislikes': dislikes, 'likes': likes, 'similar': similar, 'project': project, "pics": pics, "overall": overall, "rates": rates[0]['rate__sum'], "comments": comments, "replies": replies, "users": users})
+                return render(request, 'Project/project.html',
+                              {'reports': reports, 'dislikes': dislikes, 'likes': likes, 'similar': similar,
+                               'project': project, "pics": pics, "overall": overall, "rates": rates[0]['rate__sum'],
+                               "comments": comments, "replies": replies, "users": users})
             else:
-                return render(request, 'Project/project.html', {'reports': reports, 'dislikes': dislikes, 'likes': likes, 'similar': similar, 'project': project, "pics": pics, "overall": overall, "comments": comments, "replies": replies, "users": users})
+                return render(request, 'Project/project.html',
+                              {'reports': reports, 'dislikes': dislikes, 'likes': likes, 'similar': similar,
+                               'project': project, "pics": pics, "overall": overall, "comments": comments,
+                               "replies": replies, "users": users})
         else:
             return HttpResponseRedirect('/project/')
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def addcomment(request, prj_id):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         comment = Project_comments.objects.create(title=request.POST.get('title'), prj_comment=Projects.objects.get(
             id=prj_id), user=Users.objects.get(id=request.session.get('0')))
         comment.save()
-        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+        return HttpResponseRedirect('/project/' + str(prj_id) + '/details')
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def addlike(request, prj_id):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         comment, created = Project_User_Comment_Post.objects.get_or_create(
@@ -194,12 +212,13 @@ def addlike(request, prj_id):
         else:
             comment.status = 1
             comment.save()
-        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+        return HttpResponseRedirect('/project/' + str(prj_id) + '/details')
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def adddislike(request, prj_id):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         comment, created = Project_User_Comment_Post.objects.get_or_create(
@@ -210,22 +229,24 @@ def adddislike(request, prj_id):
         else:
             comment.status = 2
             comment.save()
-        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+        return HttpResponseRedirect('/project/' + str(prj_id) + '/details')
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def deletecomment(request, prj_id):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         Project_comments.objects.get(
             id=request.POST.get('comment_id')).delete()
-        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+        return HttpResponseRedirect('/project/' + str(prj_id) + '/details')
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def replycomment(request, prj_id, comment_id):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         reply = comment_reply.objects.create(reply=request.POST.get('reply'), comment=Project_comments.objects.get(
@@ -236,7 +257,8 @@ def replycomment(request, prj_id, comment_id):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def donate(request, prj_id):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         rates = Project_User_Donation.objects.values(
@@ -245,18 +267,21 @@ def donate(request, prj_id):
         if rates:
             if not (rates[0]['rate__sum'] + int(request.POST.get('donation_amount'))) > project.totaltarget:
                 donation = Project_User_Donation.objects.create(prj=Projects.objects.get(
-                    id=prj_id), user=Users.objects.get(id=request.session.get('0')), rate=request.POST.get('donation_amount'))
+                    id=prj_id), user=Users.objects.get(id=request.session.get('0')),
+                    rate=request.POST.get('donation_amount'))
                 donation.save()
         else:
             donation = Project_User_Donation.objects.create(prj=Projects.objects.get(
-                id=prj_id), user=Users.objects.get(id=request.session.get('0')), rate=request.POST.get('donation_amount'))
+                id=prj_id), user=Users.objects.get(id=request.session.get('0')),
+                rate=request.POST.get('donation_amount'))
             donation.save()
-        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+        return HttpResponseRedirect('/project/' + str(prj_id) + '/details')
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def addreport(request, prj_id):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         project, created = Project_User_Report.objects.get_or_create(
@@ -267,12 +292,13 @@ def addreport(request, prj_id):
         else:
             project.reports = True
             project.save()
-        return HttpResponseRedirect('/project/'+str(prj_id)+'/details')
+        return HttpResponseRedirect('/project/' + str(prj_id) + '/details')
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def deleteproject(request, prj_id):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         project = Projects.objects.get(id=prj_id)
@@ -280,7 +306,7 @@ def deleteproject(request, prj_id):
             'prj_id').annotate(Sum('rate')).filter(prj_id=prj_id)
         if rates:
             ratio = float(Project_User_Donation.objects.values('prj_id').annotate(
-                Sum('rate')).filter(prj_id=prj_id)[0]['rate__sum'])/project.totaltarget * 100
+                Sum('rate')).filter(prj_id=prj_id)[0]['rate__sum']) / project.totaltarget * 100
             if ratio <= 25:
                 project.delete()
         else:
@@ -304,7 +330,8 @@ def person(request):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     projects = Projects.objects.all().order_by("-created_at")
     categories = Categories.objects.all().order_by("-created_at")
@@ -338,7 +365,7 @@ def home(request):
                 "title": project.title,
                 "details": project.details,
                 "totaltarget": project.totaltarget,
-                "totalrate": round(float(project.rate/project.Nor), 1),
+                "totalrate": round(float(project.rate / project.Nor), 1),
                 "rates": donations,
                 'startdate': project.startdate,
                 'enddate': project.enddate,
@@ -377,7 +404,7 @@ def home(request):
                 "rate": project["rates"],
                 'startdate': project["startdate"],
                 'enddate': project["enddate"],
-                'featured':  project["featured"],
+                'featured': project["featured"],
                 'user': project["user"]
             })
     index = 0
@@ -395,10 +422,10 @@ def home(request):
             "rate": project["rate"],
             'startdate': project["startdate"],
             'enddate': project["enddate"],
-            'featured':  project["featured"],
+            'featured': project["featured"],
             'user': project["user"]
         })
-        if(index == 4):
+        if (index == 4):
             break
         index = index + 1
 
@@ -417,10 +444,10 @@ def home(request):
             "rate": project["rates"],
             'startdate': project["startdate"],
             'enddate': project["enddate"],
-            'featured':  project["featured"],
+            'featured': project["featured"],
             'user': project["user"]
         })
-        if(index == 4):
+        if (index == 4):
             break
         index = index + 1
     context["projects"] = sorted(
@@ -439,20 +466,24 @@ def home(request):
             "totaltarget": project["totaltarget"],
             "totalrate": project["totalrate"],
             "rate": project["rates"],
-            'featured':  project["featured"],
+            'featured': project["featured"],
             'user': project["user"]
         })
-        if(index == 4):
+        if (index == 4):
             break
         index = index + 1
-    return render(request, 'Project/home.html', {'projects': contextToSend["projects"], 'updatedProjects': updatedProjects["projects"], 'featuredP': featuredProjectsContextToSend["projects"], "categories": categoriesContext["categories"], "userID": request.session.get('0')})
+    return render(request, 'Project/home.html',
+                  {'projects': contextToSend["projects"], 'updatedProjects': updatedProjects["projects"],
+                   'featuredP': featuredProjectsContextToSend["projects"],
+                   "categories": categoriesContext["categories"], "userID": request.session.get('0')})
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def lisCategoryProjects(request, cat_id):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
-    if request.method == 'GET':        
+    if request.method == 'GET':
         projects = Projects.objects.all().order_by("-created_at")
         category = Categories.objects.get(id=cat_id)
         categoryTitle = category.title
@@ -481,7 +512,7 @@ def lisCategoryProjects(request, cat_id):
                         "title": project.title,
                         "details": project.details,
                         "totaltarget": project.totaltarget,
-                        "totalrate": round(float(project.rate/project.Nor), 1),
+                        "totalrate": round(float(project.rate / project.Nor), 1),
                         "rates": donations,
                         'startdate': project.startdate,
                         'enddate': project.enddate,
@@ -503,13 +534,15 @@ def lisCategoryProjects(request, cat_id):
                         'created_at': project.created_at,
                         'user': project.user_id
                     })
-        return render(request, 'Project/catProjects.html', {"projects": context["projects"], "category": categoryTitle, "userID": request.session.get('0')})
+        return render(request, 'Project/catProjects.html',
+                      {"projects": context["projects"], "category": categoryTitle, "userID": request.session.get('0')})
 
 
 @csrf_exempt
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def django_search_ajax(request):
-    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[0].usertype is False:
+    if request.session.get('0', False) is False or Users.objects.filter(id=request.session.get('0'))[
+        0].usertype is False:
         return HttpResponseRedirect('/users_auth/login/')
     if request.method == 'POST':
         projects = Projects.objects.all()
@@ -518,6 +551,5 @@ def django_search_ajax(request):
         if starts_with:
             for project in projects:
                 if starts_with in project.tags or project.title:
-
                     result.update({project.id: str(project)})
         return JsonResponse({'error': False, 'message': result})

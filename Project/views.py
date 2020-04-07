@@ -15,6 +15,8 @@ from django.views.decorators.cache import cache_control
 from django.template.response import TemplateResponse
 from django.contrib.postgres.search import SearchVector
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Create your views here.
@@ -40,7 +42,14 @@ def index(request):
                 break
             else:
                 project["flag"] = False
-    return render(request, 'Project/projects.html', {'projects': projects, "rates": rates, "pics": pics, "userID": request.session.get('0')})
+    paginatorProjects = Paginator(projects,5)
+    page_numberProjects = request.GET.get('page')
+    page_objProjects = paginatorProjects.get_page(page_numberProjects)
+    
+    paginatorRates = Paginator(rates,5)
+    page_numberRates = request.GET.get('page')
+    page_objRates = paginatorRates.get_page(page_numberRates)
+    return render(request, 'Project/projects.html', {'projects': page_objProjects, "rates": page_objRates, "pics": pics, "userID": request.session.get('0')})
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)

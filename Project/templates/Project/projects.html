@@ -46,21 +46,23 @@
 
                         <div class="entry-footer mt-5" style="height: 60px; margin-top: 20px !important;">
                             {% if project.startdate <= project.today and project.enddate > project.today %}
-                                {% if project.user == userID %}
-                                <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
-                                    style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
-                                    for Yourself Now</a>
-                                {% else %}
-                                <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
-                                    style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
-                                    Now</a>
-                                {% endif %}
-                                {% elif project.enddate <= project.today %}
-                                    <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
-                                    style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px; justify-content: center; display: flex;">Sorry, You can only see details, project is Ended</a>
-                                {% elif project.startdate >= project.today %}
-                                    <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
-                                    style="width: 500px;text-align: center; font-size: 16.3px; font-weight: bold;border-radius: 30px; justify-content: center; display: flex;">Sorry, You can only see details, project is does not Started</a>
+                            {% if project.user == userID %}
+                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
+                                for Yourself Now</a>
+                            {% else %}
+                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px;">Donate
+                                Now</a>
+                            {% endif %}
+                            {% elif project.enddate <= project.today %}
+                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                style="width: 500px;text-align: center; font-size: 18px; font-weight: bold;border-radius: 30px; justify-content: center; display: flex;">Sorry,
+                                You can only see details, project is Ended</a>
+                            {% elif project.startdate >= project.today %}
+                            <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"
+                                style="width: 500px;text-align: center; font-size: 16.3px; font-weight: bold;border-radius: 30px; justify-content: center; display: flex;">Sorry,
+                                You can only see details, project is does not Started</a>
                             {% endif %}
                         </div><!-- .entry-footer -->
                     </div><!-- .cause-content-wrap -->
@@ -96,7 +98,37 @@
         </div><!-- .row -->
         {% endif %}
         {% endfor %}
+
+
+
+
+
     </div><!-- .container -->
+    <div class="pagination"
+        style="width: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+        <span class="step-links">
+            <div style="float: left;">
+                {% if projects.has_previous %}
+                <a href="?page=1" style="font-size: 15px;">&laquo; first</a>
+                <a href="?page={{ projects.previous_page_number }}" style="font-size: 15px;">previous</a>
+                {% endif %}
+            </div>
+            <div style="float: left; padding-right: 15px;">
+                <span class="current">
+                    <p>
+                        Page  
+                        <span style="color: #F05731">{{ projects.number }}</span>
+                        of {{ projects.paginator.num_pages }}
+                    </p>
+                </span>
+            </div>
+
+            {% if projects.has_next %}
+            <a href="?page={{ projects.next_page_number }}" style="font-size: 15px;">next</a>
+            <a href="?page={{ projects.paginator.num_pages }}" style="font-size: 15px;">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 </div><!-- .featured-cause -->
 
 

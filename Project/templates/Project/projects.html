@@ -41,10 +41,10 @@
                             </header><!-- .entry-header -->
                         </div>
                         <div class="cats-links homeDetailsFont" style="height: 70%; box-sizing: initial;">
-                            <p class="m-0">{{ project.details }}</p>
+                            <p class="m-0" style="overflow: scroll; height: 60px;">{{ project.details }}</p>
                         </div><!-- .entry-content -->
 
-                        <div class="entry-footer mt-5">
+                        <div class="entry-footer mt-5" style="height: 60px; margin-top: 20px !important;">
                             {% if project.startdate <= project.today and project.enddate > project.today %}
                                 {% if project.user == userID %}
                                 <a href="/project/{{ project.id }}/details" class="btn gradient-bg mr-2"

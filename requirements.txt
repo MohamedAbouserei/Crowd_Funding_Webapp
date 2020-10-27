@@ -3,7 +3,7 @@ asgiref==3.2.6
 beautifulsoup4==4.8.2
 bootstrap4==0.1.0
 cffi==1.14.0
-cryptography==2.8
+cryptography==3.2
 Django==2.1.15
 django-bootstrap4==1.1.1
 Jinja2==2.11.1

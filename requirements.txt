@@ -6,7 +6,7 @@ cffi==1.14.0
 cryptography==2.8
 Django==2.1.15
 django-bootstrap4==1.1.1
-Jinja2==2.11.1
+Jinja2==2.11.3
 MarkupSafe==1.1.1
 Pillow==7.0.0
 pycparser==2.20

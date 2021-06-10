@@ -4,7 +4,7 @@ beautifulsoup4==4.8.2
 bootstrap4==0.1.0
 cffi==1.14.0
 cryptography==2.8
-Django==2.1.15
+Django==2.2.24
 django-bootstrap4==1.1.1
 Jinja2==2.11.1
 MarkupSafe==1.1.1
